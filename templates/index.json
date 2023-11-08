@@ -5,7 +5,10 @@
     },
     "featured-collection": {
       "type": "featured-collection"
+    },
+    "testimonials": {
+      "type": "testimonials"
     }
   },
-  "order": ["hero", "featured-collection"]
+  "order": ["hero", "featured-collection", "testimonials"]
 }
