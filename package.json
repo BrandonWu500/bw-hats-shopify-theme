@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "shopify theme dev --store STORE_NAME",
+    "dev": "shopify theme dev --store bw-hats.myshopify.com",
     "tw": "npx tailwindcss -i ./globals.css -o ./assets/globals.css --watch"
   },
   "devDependencies": {
