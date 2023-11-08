@@ -112,19 +112,16 @@
           <div class='flex flex-1'>
             <a href='/'>
               <span class='sr-only'>BW Hats</span>
-              <img
-                class='h-6 w-auto'
-                src='../assets/logo.svg'
-                alt=''
-              >
+              {% render 'logo' %}
             </a>
           </div>
 
           <div class='hidden lg:flex lg:flex-1 lg:justify-center lg:space-x-8'>
+            <!-- Links -->
             {% for link in linklists['main-menu'].links %}
               <a
                 href='{{ link.url }}'
-                class='-m-2 block p-2 font-medium text-gray-900'
+                class='-m-2 block p-2 whitespace-nowrap font-medium text-gray-900'
               >
                 {{- link.title -}}
               </a>
@@ -133,7 +130,7 @@
 
           <div class='flex flex-1 items-center gap-2 justify-end'>
             <!-- Search -->
-            <div class='mt-1 lg:mt-0'>
+            <div>
               <a
                 href='#'
                 class='flex p-2 text-gray-400 hover:text-gray-500'
@@ -172,7 +169,7 @@
               </a>
             </div>
 
-            <div class='lg:hidden mt-1'>
+            <div class='lg:hidden mt-0.5'>
               <!-- Mobile menu toggle, controls the 'mobileMenuOpen' state. -->
               <button
                 @click='mobileMenuOpen = true'
