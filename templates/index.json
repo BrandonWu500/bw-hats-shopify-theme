@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero"
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "featured_collection": "the-collection"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials"
+    },
+    "blog-section": {
+      "type": "blog-section"
+    }
+  },
+  "order": ["hero", "featured-collection", "testimonials", "blog-section"]
+}
