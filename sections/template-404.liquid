@@ -1,7 +1,7 @@
 <div class='grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8'>
   <div class='text-center'>
     <p class='text-base font-semibold text-indigo-600'>404</p>
-    <h1 class='mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl'>
+    <h1 class='capitalize mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl'>
       {{ section.settings.title }}
     </h1>
     <p class='mt-6 text-base leading-7 text-gray-600'>
@@ -15,12 +15,12 @@
       {% endif %}
       <a
         href='{{ shop_url }}'
-        class='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+        class='capitalize rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
       >
         {{- section.settings.button_label -}}
       </a>
       <a href='#' class='text-sm font-semibold text-gray-900'
-        >Contact support <span aria-hidden='true'>&rarr;</span></a
+        >Contact Support <span aria-hidden='true'>&rarr;</span></a
       >
     </div>
   </div>
@@ -34,13 +34,13 @@
     {
       "type": "text",
       "id": "title",
-      "default": "404",
+      "default": "Page not found",
       "label": "404 Heading Title"
     },
     {
       "type": "text",
       "id": "subtext_title",
-      "default": "The page you are looking for does not exist.",
+      "default": "Sorry, we couldn’t find the page you’re looking for.",
       "label": "404 Subtext Title"
     },
     {
@@ -52,7 +52,7 @@
     {
       "type": "url",
       "id": "button_url",
-      "default": "Back to homepage",
+      "default": "/",
       "label": "Button URL"
     }
   ]
