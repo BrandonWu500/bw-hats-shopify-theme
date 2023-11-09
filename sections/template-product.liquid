@@ -111,7 +111,7 @@
         </div>
       </div>
 
-      {% form 'product', product, class: 'mt-6' %}
+      {% form 'product', product, class: 'mt-6', id: 'product-form' %}
         <input
           type='hidden'
           name='product-id'
@@ -147,15 +147,21 @@
             {%- endfor -%}
           </div>
         {% endunless %}
-        <div class='mt-10 flex'>
-          {% comment %} Quantity select {% endcomment %}
-
+        <div class='mt-10 flex gap-4'>
           {% comment %} Add to bag button {% endcomment %}
           <button
+            {% unless product.selected_or_first_available_variant.available %}
+              disabled
+            {% endunless %}
             type='submit'
-            class='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full'
+            id='add-to-cart'
+            class='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full disabled:bg-red-500'
           >
-            Add to bag
+            {% if product.selected_or_first_available_variant.available %}
+              Add to bag
+            {% else %}
+              Out of stock
+            {% endif %}
           </button>
         </div>
       {% endform %}
@@ -193,11 +199,27 @@
       hiddenInput.value = matchedVariant.id
       
       window.history.replaceState({}, '', `${hiddenInput.dataset.url}?variant=${matchedVariant.id}`)
+      // Refreshes page without hard reloading, but still causes image to flicker
+      // window.location = window.location
+
+      // This seems to be the better method, and more similar to what Amazon does
+      // Only do this if want to update product.selected_variant on every variant change
+      // window.location.reload()
 
       document.querySelector('#product-price').textContent = formatPrice(matchedVariant.price)
 
       if (matchedVariant.featured_image) {
         document.querySelector('#product-image').setAttribute('src', matchedVariant.featured_image.src)
+      }
+
+      const addToCartButton = document.querySelector('#add-to-cart')
+
+      if (matchedVariant.available) {
+        addToCartButton.textContent = 'Add to cart'
+        addToCartButton.disabled = false
+      } else {
+        addToCartButton.textContent = 'Out of stock'
+        addToCartButton.disabled = true
       }
     })
   ))
@@ -208,6 +230,19 @@
       document.querySelector('#product-image').setAttribute('src', tab.querySelector('img').getAttribute('src'))
     })
   ))
+
+  document.querySelector('#buy-it-now').addEventListener('click', (e) => {
+    e.preventDefault()
+
+    const input = document.createElement('input')
+    input.value = '/checkout'
+    input.type = 'hidden'
+    input.name = 'return_to'
+
+    const form = querySelector('#product-form')
+    form.appendChild(input)
+    form.submit()
+  })
 </script>
 
 {% schema %}
