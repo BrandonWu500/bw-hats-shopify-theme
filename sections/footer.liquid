@@ -1,0 +1,69 @@
+<footer class='bg-slate-600 text-orange-200' aria-labelledby='footer-heading'>
+  <h2 id='footer-heading' class='sr-only'>Footer</h2>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    {% comment %} Links {% endcomment %}
+    <ul class='flex w-full flex-col items-center justify-between gap-6 py-6 font-body text-lg xl:flex-row xl:gap-8'>
+      {% for link in linklists.footer.links %}
+        <li>
+          <a href='{{ link.url }}'>{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% comment %} Newsletter {% endcomment %}
+    <div class='mb-6 w-full border-t border-orange-200 pt-6 lg:flex lg:items-center lg:justify-between'>
+      <div>
+        <h3 class='font-medium leading-6 text-orange-200'>
+          Subscribe to our newsletter
+        </h3>
+        <p class='mt-2 leading-6 text-orange-100'>
+          The latest news, articles, and resources, sent to your inbox weekly.
+        </p>
+      </div>
+      <form class='mt-6 sm:flex sm:max-w-md lg:mt-0'>
+        <label htmlFor='email-address' class='sr-only'> Email address </label>
+        <input
+          type='email'
+          name='email-address'
+          id='email-address'
+          autoComplete='email'
+          required
+          class='w-full min-w-0 appearance-none rounded-md border-0 bg-slate-100 px-3 py-1.5 text-base  text-slate-700 shadow-sm ring-1 ring-inset ring-slate-400 placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-orange-200 sm:w-56 sm:text-sm sm:leading-6'
+          placeholder='Enter your email'
+        >
+        <div class='mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0'>
+          <button
+            type='submit'
+            class='flex w-full items-center justify-center rounded-md bg-orange-200 px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-orange-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-200'
+          >
+            Subscribe
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {% comment %} Copyright and Social Links {% endcomment %}
+    <div class='flex w-full flex-col-reverse items-center gap-6 border-t border-orange-200 py-6 xl:flex-row'>
+      <p class='flex-1 text-center xl:text-left'>
+        © 2023 BW Hats Inc. All rights reserved.
+      </p>
+      <div class='flex w-full flex-1 items-center justify-center gap-14 px-8 xl:justify-end xl:gap-7 xl:p-0'>
+        <a href='https://twitter.com/BW_Hats' target='_blank'>
+          {% render 'icon-twitter', class: 'h-6 w-6' %}
+        </a>
+        <a
+          href='https://www.facebook.com/people/BW-Hats/61553078035122'
+          target='_blank'
+        >
+          {% render 'icon-facebook', class: 'h-6 w-6' %}
+        </a>
+        <a href='https://www.instagram.com/bw.hats' target='_blank'>
+          {% render 'icon-instagram', class: 'h-6 w-6' %}
+        </a>
+        <a href='https://www.tiktok.com/@bw.hats' target='_blank'>
+          {% render 'icon-tiktok', class: 'h-6 w-6' %}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
