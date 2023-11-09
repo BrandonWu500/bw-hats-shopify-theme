@@ -27,16 +27,15 @@
           >
             {% for image in product.images %}
               <button
-                id='tabs-1-tab-1'
-                class='relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4'
-                aria-controls='tabs-1-panel-1'
+                id='tab-{{ forloop.index0 }}'
+                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4'
                 role='tab'
                 type='button'
               >
                 <span class='sr-only'>Alternate view</span>
                 <span class='absolute inset-0 overflow-hidden rounded-md'>
                   <img
-                    src='{{ image |  image_url: width: 250 }}'
+                    src='{{ image |  image_url: master }}'
                     alt='{{ image.alt }}'
                     class='h-full w-full object-cover'
                   >
@@ -44,8 +43,17 @@
                 <!--
                   Selected: "ring-indigo-500", Not Selected: "ring-transparent"
                 -->
+
                 <span
-                  class='ring-transparent pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2'
+                  id='gallery-tab-border'
+                  class='
+                    {% if featured == image %}
+                      ring-indigo-500
+                      {% else %}
+                      ring-transparent
+                    {% endif %}
+                     pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2
+                  '
                   aria-hidden='true'
                 ></span>
               </button>
@@ -57,19 +65,28 @@
       <div class='aspect-h-1 aspect-w-1 w-full'>
         <!-- Tab panel, show/hide based on tab state. -->
         <div
-          id='tabs-1-panel-1'
-          aria-labelledby='tabs-1-tab-1'
           role='tabpanel'
           tabindex='0'
+          id='panel-{{ forloop.index0 }}'
         >
-          <img
-            src='{{ product.images[0] |  image_url: width: 800 }}'
-            alt='{{ product.images[0].alt }}'
-            class='h-full w-full object-cover object-center rounded-lg'
-          >
+          {% if product.selected_or_first_available_variant.featured_image %}
+            {% assign featured = product.selected_or_first_available_variant.featured_image %}
+            <img
+              id='product-image'
+              src='{{ featured |  image_url: width: 800 }}'
+              alt='{{ featured.alt }}'
+              class='h-full w-full object-cover object-center rounded-lg'
+            >
+          {% else %}
+            {% assign featured = product.featured_image %}
+            <img
+              id='product-image'
+              src='{{ featured |  image_url: width: 800 }}'
+              alt='{{ featured.alt }}'
+              class='h-full w-full object-cover object-center rounded-lg'
+            >
+          {% endif %}
         </div>
-
-        <!-- More images... -->
       </div>
     </div>
 
@@ -178,6 +195,17 @@
       window.history.replaceState({}, '', `${hiddenInput.dataset.url}?variant=${matchedVariant.id}`)
 
       document.querySelector('#product-price').textContent = formatPrice(matchedVariant.price)
+
+      if (matchedVariant.featured_image) {
+        document.querySelector('#product-image').setAttribute('src', matchedVariant.featured_image.src)
+      }
+    })
+  ))
+
+  const galleryTabs = document.querySelectorAll('.gallery-tab')
+  galleryTabs.forEach((tab) => (
+    tab.addEventListener(('click'), () => {
+      document.querySelector('#product-image').setAttribute('src', tab.querySelector('img').getAttribute('src'))
     })
   ))
 </script>
