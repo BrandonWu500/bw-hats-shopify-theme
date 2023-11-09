@@ -1,0 +1,142 @@
+<!--
+  This example requires some changes to your config:
+
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/typography'),
+      require('@tailwindcss/aspect-ratio'),
+    ],
+  }
+  ```
+-->
+<div class='mx-auto max-w-7xl p-4 sm:p-6 lg:p-8'>
+  <div class='lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8'>
+    <!-- Image gallery -->
+    <div class='flex flex-col-reverse'>
+      {% if product.images.size > 1 %}
+        <!-- Image selector -->
+        <div class='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
+          <div
+            class='grid grid-cols-4 gap-6'
+            aria-orientation='horizontal'
+            role='tablist'
+          >
+            {% for image in product.images %}
+              <button
+                id='tabs-1-tab-1'
+                class='relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4'
+                aria-controls='tabs-1-panel-1'
+                role='tab'
+                type='button'
+              >
+                <span class='sr-only'>Alternate view</span>
+                <span class='absolute inset-0 overflow-hidden rounded-md'>
+                  <img
+                    src='{{ image |  image_url: width: 250 }}'
+                    alt='{{ image.alt }}'
+                    class='h-full w-full object-cover'
+                  >
+                </span>
+                <!--
+                  Selected: "ring-indigo-500", Not Selected: "ring-transparent"
+                -->
+                <span
+                  class='ring-transparent pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2'
+                  aria-hidden='true'
+                ></span>
+              </button>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class='aspect-h-1 aspect-w-1 w-full'>
+        <!-- Tab panel, show/hide based on tab state. -->
+        <div
+          id='tabs-1-panel-1'
+          aria-labelledby='tabs-1-tab-1'
+          role='tabpanel'
+          tabindex='0'
+        >
+          <img
+            src='{{ product.images[0] |  image_url: width: 800 }}'
+            alt='{{ product.images[0].alt }}'
+            class='h-full w-full object-cover object-center rounded-lg'
+          >
+        </div>
+
+        <!-- More images... -->
+      </div>
+    </div>
+
+    <!-- Product info -->
+    <div class='mt-10 px-0.5 sm:mt-16 sm:px-0 lg:mt-0'>
+      <h1 class='text-3xl font-bold tracking-tight text-gray-900'>
+        {{ product.title }}
+      </h1>
+
+      <div class='mt-3'>
+        <h2 class='sr-only'>Product information</h2>
+        <p class='text-3xl tracking-tight text-gray-900'>
+          {{ product.price | money }}
+        </p>
+      </div>
+
+      <div class='mt-6'>
+        <h3 class='sr-only'>Description</h3>
+
+        <div class='space-y-6 text-base text-gray-700'>
+          {% render 'prose', content: product.content %}
+        </div>
+      </div>
+
+      <form class='mt-6'>
+        {% unless product.has_only_default_variant %}
+          <!-- Options -->
+          <div data-url='{{ product.url}}' data-section='{{ section.id }}'>
+            {% for option in product.options_with_values %}
+              <h3 class='text-sm text-gray-600'>{{ option.name }}</h3>
+
+              <fieldset class='mt-2'>
+                <legend class='sr-only'>Choose a {{ option.name }}</legend>
+                <span class='flex items-center space-x-3'>
+                  <!--
+                    Active and Checked: "ring ring-offset-1"
+                    Not Active and Checked: "ring-2"
+                  -->
+                  {% for value in option.values %}
+                    <label class='flex items-center justify-center rounded-md border py-3 px-3 text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none'>
+                      <input
+                        type='radio'
+                        name='size-choice'
+                        value='{{ value }}'
+                        class='sr-only'
+                        aria-labelledby='size-choice-0-label'
+                      >
+                      <span id='size-choice-0-label'>
+                        {{- value -}}
+                      </span>
+                    </label>
+                  {% endfor %}
+                </span>
+              </fieldset>
+            {% endfor %}
+          </div>
+        {% endunless %}
+
+        <div class='mt-10 flex'>
+          <button
+            type='submit'
+            class='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full'
+          >
+            Add to bag
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
