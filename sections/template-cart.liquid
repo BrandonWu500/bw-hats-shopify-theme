@@ -81,8 +81,9 @@
                       </label>
                       <select
                         id='updates_{{ item.key }}'
+                        name='updates[]'
                         value='{{ item.quantity }}'
-                        class='max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                        class='quantity-select max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
                       >
                         {% assign num = item.variant.inventory_quantity %}
                         {% assign range = (1..num) %}
@@ -144,6 +145,16 @@
           </div>
 
           <div class='mt-10'>
+            <div class='my-2'>
+              <button
+                type='submit'
+                name='update'
+                class='hidden'
+                id='cart-update-button'
+              >
+                Update
+              </button>
+            </div>
             <button
               type='submit'
               name='checkout'
@@ -172,6 +183,27 @@
     {% endif %}
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function (event) {
+    var scrollpos = localStorage.getItem('scrollpos');
+    if (scrollpos) window.scrollTo(0, scrollpos);
+  });
+
+  window.onbeforeunload = function (e) {
+    localStorage.setItem('scrollpos', window.scrollY);
+  };
+
+  const selects = document.querySelectorAll('.quantity-select');
+  const cartUpdateButton = document.querySelector('#cart-update-button');
+  console.log(selects);
+  selects.forEach((select) => {
+    select.addEventListener('change', () => {
+      console.log('test');
+      cartUpdateButton.click();
+    });
+  });
+</script>
 
 {% schema %}
 {
