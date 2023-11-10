@@ -1,0 +1,197 @@
+<!--
+  This example requires some changes to your config:
+
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+<div class='bg-white'>
+  <div class='mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8'>
+    {% if cart.item_count > 0 %}
+      <h1 class='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+        Shopping Bag
+      </h1>
+      <form
+        class='mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16'
+        action='{{ routes.cart_url }}'
+        method='post'
+        id='cart'
+      >
+        <section aria-labelledby='cart-heading' class='lg:col-span-7'>
+          <h2 id='cart-heading' class='sr-only'>Items in your shopping cart</h2>
+          <ul
+            role='list'
+            class='divide-y divide-gray-200 border-b border-t border-gray-200'
+          >
+            {% for item in cart.items %}
+              <li class='flex py-6 sm:py-10'>
+                <div class='flex-shrink-0'>
+                  <img
+                    src='{{ item.image | image_url: width: 300 }}'
+                    alt='{{ item.image.alt }}'
+                    class='h-full w-24 rounded-md object-cover object-center sm:h-48 sm:w-48'
+                  >
+                </div>
+
+                <div class='ml-4 flex flex-1 flex-col justify-between sm:ml-6'>
+                  <div class='relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0'>
+                    <div>
+                      <div class='flex justify-between'>
+                        <h3 class='text-lg'>
+                          <a
+                            href='{{ item.url }}'
+                            class='font-medium text-gray-700 hover:text-gray-800'
+                          >
+                            {{ item.product.title | escape }}
+                          </a>
+                        </h3>
+                      </div>
+                      {%- unless item.product.has_only_default_variant -%}
+                        {% comment %}
+                          <dl class='mt-1 flex flex-col'>
+                            {%- for option in item.options_with_values -%}
+                              <div class='flex items-center gap-4 text-lg text-slate-600'>
+                                <dt class=''>{{ option.name }}:</dt>
+                                <dd class='font-medium'>
+                                  {{ option.value }}
+                                </dd>
+                              </div>
+                            {%- endfor -%}
+                          </dl>
+                        {% endcomment %}
+                        <div class='mt-1 flex text-lg'>
+                          <p class='text-gray-500'>{{ item.variant.title }}</p>
+                        </div>
+                      {%- endunless -%}
+                      <p class='mt-1 text-lg font-medium text-gray-900'>
+                        {{ item.final_line_price | money }}
+                      </p>
+                    </div>
+
+                    <div class='mt-4 sm:mt-0 sm:pr-9'>
+                      <label for='quantity-0' class='sr-only'
+                        >Quantity, {{ item.product.title | escape -}}
+                      </label>
+                      <select
+                        id='updates_{{ item.key }}'
+                        value='{{ item.quantity }}'
+                        class='max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                      >
+                        {% assign num = item.variant.inventory_quantity %}
+                        {% assign range = (1..num) %}
+                        {% for i in range %}
+                          <option
+                            value='{{ i }}'
+                            {% if item.quantity == i %}
+                              selected
+                            {% endif %}
+                          >
+                            {{ i }}
+                          </option>
+                        {% endfor %}
+                      </select>
+
+                      <div class='absolute right-0 top-0'>
+                        <a
+                          href='{{ item.url_to_remove }}'
+                          class='-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500'
+                        >
+                          <span class='sr-only'>Remove</span>
+                          <svg
+                            class='h-8 w-8'
+                            viewBox='0 0 20 20'
+                            fill='currentColor'
+                            aria-hidden='true'
+                          >
+                            <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <!-- Order summary -->
+        <section
+          aria-labelledby='summary-heading'
+          class='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8'
+        >
+          <h2 id='summary-heading' class='sr-only'>Order summary</h2>
+
+          <div>
+            <dl class='space-y-4'>
+              <div class='flex items-center justify-between'>
+                <dt class='text-xl font-medium text-gray-900'>Subtotal</dt>
+                <dd class='ml-4 text-xl font-medium text-gray-900'>
+                  {{ cart.total_price | money }}
+                </dd>
+              </div>
+            </dl>
+            <p class='mt-4 text-gray-500'>
+              Shipping and taxes will be calculated at checkout.
+            </p>
+          </div>
+
+          <div class='mt-10'>
+            <button
+              type='submit'
+              name='checkout'
+              class='w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
+            >
+              Checkout
+            </button>
+          </div>
+
+          <div class='mt-6 text-center text-sm'>
+            <p>
+              or
+              <a
+                href='/'
+                class='font-medium text-indigo-600 hover:text-indigo-500'
+              >
+                Continue Shopping
+                <span aria-hidden='true'> &rarr;</span>
+              </a>
+            </p>
+          </div>
+        </section>
+      </form>
+    {% else %}
+      {% render 'empty-cart' %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Template Cart",
+  "blocks": [
+    {
+      "type": "subtotal",
+      "name": "Subtotal",
+      "limit": 1
+    },
+    {
+      "type": "update_button",
+      "name": "Update Button",
+      "limit": 1
+    },
+    {
+      "type": "checkout_button",
+      "name": "Checkout Button",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}
