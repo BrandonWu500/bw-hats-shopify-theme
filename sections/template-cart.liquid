@@ -12,7 +12,7 @@
   }
   ```
 -->
-<div class='bg-white'>
+<div class='bg-white' data-currency='{{ currency.iso_code }}'>
   <div class='mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8'>
     {% if cart.item_count > 0 %}
       <h1 class='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
@@ -31,7 +31,10 @@
             class='divide-y divide-gray-200 border-b border-t border-gray-200'
           >
             {% for item in cart.items %}
-              <li class='flex py-6 sm:py-10'>
+              <li
+                class='cart-item flex py-6 sm:py-10'
+                data-key='{{ item.key }}'
+              >
                 <div class='flex-shrink-0'>
                   <img
                     src='{{ item.image | image_url: width: 300 }}'
@@ -70,16 +73,19 @@
                           <p class='text-gray-500'>{{ item.variant.title }}</p>
                         </div>
                       {%- endunless -%}
-                      <p class='mt-1 text-lg font-medium text-gray-900'>
+                      <p
+                        class='line-item-price mt-1 text-lg font-medium text-gray-900'
+                      >
                         {{ item.final_line_price | money }}
                       </p>
                     </div>
 
                     <div class='mt-4 sm:mt-0 sm:pr-9'>
-                      <label for='quantity-0' class='sr-only'
+                      <label for='updates_{{ item.key }}' class='sr-only'
                         >Quantity, {{ item.product.title | escape -}}
                       </label>
                       <select
+                        data-key='{{ item.key }}'
                         id='updates_{{ item.key }}'
                         name='updates[]'
                         value='{{ item.quantity }}'
@@ -100,9 +106,8 @@
                       </select>
 
                       <div class='absolute right-0 top-0'>
-                        <a
-                          href='{{ item.url_to_remove }}'
-                          class='-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500'
+                        <button
+                          class='remove-cart-item -m-2 inline-flex p-2 text-gray-400 hover:text-gray-500'
                         >
                           <span class='sr-only'>Remove</span>
                           <svg
@@ -113,7 +118,7 @@
                           >
                             <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
                           </svg>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -134,7 +139,10 @@
             <dl class='space-y-4'>
               <div class='flex items-center justify-between'>
                 <dt class='text-xl font-medium text-gray-900'>Subtotal</dt>
-                <dd class='ml-4 text-xl font-medium text-gray-900'>
+                <dd
+                  class='ml-4 text-xl font-medium text-gray-900'
+                  id='cart-total-price'
+                >
                   {{ cart.total_price | money }}
                 </dd>
               </div>
@@ -184,23 +192,75 @@
   </div>
 </div>
 
+<script
+  src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js'
+  integrity='sha512-m9S8W3a9hhBHPFAbEIaG7J9P92dzcAWwM42VvJp5n1/M599ldK6Z2st2SfJGsX0QR4LfCVr681vyU5vW8d218w=='
+  crossorigin='anonymous'
+  referrerpolicy='no-referrer'
+></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function (event) {
-    var scrollpos = localStorage.getItem('scrollpos');
-    if (scrollpos) window.scrollTo(0, scrollpos);
-  });
+  // document.addEventListener('DOMContentLoaded', function (event) {
+  //   var scrollpos = localStorage.getItem('scrollpos');
+  //   if (scrollpos) window.scrollTo(0, scrollpos);
+  // });
 
-  window.onbeforeunload = function (e) {
-    localStorage.setItem('scrollpos', window.scrollY);
-  };
+  // window.onbeforeunload = function (e) {
+  //   localStorage.setItem('scrollpos', window.scrollY);
+  // };
+
+  function changeItemQuantity(key, quantity) {
+    axios
+      .post('/cart/change.js', {
+        id: key,
+        quantity,
+      })
+      .then((res) => {
+        const totalPrice = res.data.total_price;
+        const item = res.data.items.find((item) => item.key === key);
+        const itemPrice = item.final_line_price;
+
+        document.querySelector('#cart-total-price').textContent =
+          formatPrice(totalPrice);
+        document.querySelector(
+          `[data-key="${key}"] .line-item-price`
+        ).textContent = formatPrice(itemPrice);
+      });
+  }
 
   const selects = document.querySelectorAll('.quantity-select');
   const cartUpdateButton = document.querySelector('#cart-update-button');
-  console.log(selects);
   selects.forEach((select) => {
     select.addEventListener('change', () => {
-      console.log('test');
-      cartUpdateButton.click();
+      // cartUpdateButton.click();
+      changeItemQuantity(select.dataset.key, Number(select.value));
+    });
+  });
+
+  const removeItemButtons = document.querySelectorAll('.remove-cart-item');
+  removeItemButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      const item = button.closest('.cart-item');
+      const key = item.dataset.key;
+
+      axios
+        .post('/cart/change.js', {
+          id: key,
+          quantity: 0,
+        })
+        .then((res) => {
+          if (res.data.items.length === 0) {
+            window.location.reload();
+          } else {
+            item.remove();
+
+            const totalPrice = res.data.total_price;
+
+            document.querySelector('#cart-total-price').textContent =
+              formatPrice(totalPrice);
+          }
+        });
     });
   });
 </script>
