@@ -1,5 +1,5 @@
 <!--
-  This example requires some changes to your config:
+  example requires some changes to your config:
 
   ```
   // tailwind.config.js
@@ -27,16 +27,15 @@
           >
             {% for image in product.images %}
               <button
-                id='tabs-1-tab-1'
-                class='relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4'
-                aria-controls='tabs-1-panel-1'
+                id='tab-{{ forloop.index0 }}'
+                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4'
                 role='tab'
                 type='button'
               >
                 <span class='sr-only'>Alternate view</span>
                 <span class='absolute inset-0 overflow-hidden rounded-md'>
                   <img
-                    src='{{ image |  image_url: width: 250 }}'
+                    src='{{ image |  image_url: master }}'
                     alt='{{ image.alt }}'
                     class='h-full w-full object-cover'
                   >
@@ -44,8 +43,17 @@
                 <!--
                   Selected: "ring-indigo-500", Not Selected: "ring-transparent"
                 -->
+
                 <span
-                  class='ring-transparent pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2'
+                  id='gallery-tab-border'
+                  class='
+                    {% if featured == image %}
+                      ring-indigo-500
+                      {% else %}
+                      ring-transparent
+                    {% endif %}
+                     pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2
+                  '
                   aria-hidden='true'
                 ></span>
               </button>
@@ -57,32 +65,41 @@
       <div class='aspect-h-1 aspect-w-1 w-full'>
         <!-- Tab panel, show/hide based on tab state. -->
         <div
-          id='tabs-1-panel-1'
-          aria-labelledby='tabs-1-tab-1'
           role='tabpanel'
           tabindex='0'
+          id='panel-{{ forloop.index0 }}'
         >
-          <img
-            src='{{ product.images[0] |  image_url: width: 800 }}'
-            alt='{{ product.images[0].alt }}'
-            class='h-full w-full object-cover object-center rounded-lg'
-          >
+          {% if product.selected_or_first_available_variant.featured_image %}
+            {% assign featured = product.selected_or_first_available_variant.featured_image %}
+            <img
+              id='product-image'
+              src='{{ featured |  image_url: width: 800 }}'
+              alt='{{ featured.alt }}'
+              class='h-full w-full object-cover object-center rounded-lg'
+            >
+          {% else %}
+            {% assign featured = product.featured_image %}
+            <img
+              id='product-image'
+              src='{{ featured |  image_url: width: 800 }}'
+              alt='{{ featured.alt }}'
+              class='h-full w-full object-cover object-center rounded-lg'
+            >
+          {% endif %}
         </div>
-
-        <!-- More images... -->
       </div>
     </div>
 
     <!-- Product info -->
-    <div class='mt-10 px-0.5 sm:mt-16 sm:px-0 lg:mt-0'>
+    <div class='mt-10 px-0.5 sm:mt-16 sm:px-6 lg:px-0 lg:mt-0 mx-auto max-w-2xl lg:max-w-7xl'>
       <h1 class='text-3xl font-bold tracking-tight text-gray-900'>
         {{ product.title }}
       </h1>
 
       <div class='mt-3'>
         <h2 class='sr-only'>Product information</h2>
-        <p class='text-3xl tracking-tight text-gray-900'>
-          {{ product.price | money }}
+        <p class='text-3xl tracking-tight text-gray-900' id='product-price'>
+          {{ product.selected_or_first_available_variant.price | money }}
         </p>
       </div>
 
@@ -94,49 +111,266 @@
         </div>
       </div>
 
-      <form class='mt-6'>
-        {% unless product.has_only_default_variant %}
-          <!-- Options -->
-          <div data-url='{{ product.url}}' data-section='{{ section.id }}'>
-            {% for option in product.options_with_values %}
-              <h3 class='text-sm text-gray-600'>{{ option.name }}</h3>
+      {% form 'product', product, class: 'mt-6', id: 'product-form' %}
+        <input
+          type='hidden'
+          name='product-id'
+          id='product-id'
+          value='{{ product.selected_or_first_available_variant }}'
+          data-url='{{ product.url }}'
+        >
 
-              <fieldset class='mt-2'>
-                <legend class='sr-only'>Choose a {{ option.name }}</legend>
-                <span class='flex items-center space-x-3'>
-                  <!--
-                    Active and Checked: "ring ring-offset-1"
-                    Not Active and Checked: "ring-2"
-                  -->
+        {% unless product.has_only_default_variant %}
+          <div class='product-option'>
+            {%- liquid
+              assign variants_available_arr = product.variants | map: 'available'
+              assign variants_option1_arr = product.variants | map: 'option1'
+              assign variants_option2_arr = product.variants | map: 'option2'
+              assign variants_option3_arr = product.variants | map: 'option3'
+            -%}
+            {%- for option in product.options_with_values -%}
+              <fieldset class='flex flex-col gap-4 mt-8'>
+                <legend class='text-sm font-medium text-gray-900 mb-2'>
+                  {{ option.name }}
+                </legend>
+                <div class='grid grid-cols-3 gap-3 sm:grid-cols-6'>
                   {% for value in option.values %}
-                    <label class='flex items-center justify-center rounded-md border py-3 px-3 text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none'>
+                    {%- liquid
+                      assign option_disabled = true
+
+                      for option1_name in variants_option1_arr
+                        case option.position
+                          when 1
+                            if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                              assign option_disabled = false
+                            endif
+                          when 2
+                            if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                              assign option_disabled = false
+                            endif
+                          when 3
+                            if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                              assign option_disabled = false
+                            endif
+                        endcase
+                      endfor
+                    -%}
+                    <div class='relative'>
                       <input
+                        {% if option.selected_value == value %}
+                          checked
+                        {% endif %}
                         type='radio'
-                        name='size-choice'
-                        value='{{ value }}'
-                        class='sr-only'
-                        aria-labelledby='size-choice-0-label'
+                        name='{{ option.name }}'
+                        value='{{ value | escape }}'
+                        id='{{ option.name |  handleize }}-{{ value |  handleize }}'
+                        {% if option_disabled %}
+                          disabled
+                        {% endif %}
+                        class='sr-only peer'
                       >
-                      <span id='size-choice-0-label'>
+                      <label
+                        for='{{ option.name |  handleize }}-{{ value |  handleize }}'
+                        class='
+                          flex items-center justify-center rounded-md border py-3 px-3 text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none peer-checked:border-transparent
+                          border-gray-200 bg-white text-gray-900 hover:bg-gray-50 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:hover:bg-indigo-700
+                          peer-disabled:opacity-25 peer-disabled:cursor-not-allowed
+                        '
+                      >
                         {{- value -}}
-                      </span>
-                    </label>
+                      </label>
+                    </div>
                   {% endfor %}
-                </span>
+                </div>
               </fieldset>
-            {% endfor %}
+            {%- endfor -%}
           </div>
         {% endunless %}
-
-        <div class='mt-10 flex'>
+        <div class='mt-10 flex gap-4'>
+          {% comment %} Add to bag button {% endcomment %}
           <button
+            {% unless product.selected_or_first_available_variant.available %}
+              disabled
+            {% endunless %}
             type='submit'
-            class='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full'
+            id='add-to-cart'
+            class='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full disabled:opacity-25 disabled:cursor-not-allowed'
           >
-            Add to bag
+            {% if product.selected_or_first_available_variant.available %}
+              Add to bag
+            {% else %}
+              Out of stock
+            {% endif %}
           </button>
         </div>
-      </form>
+      {% endform %}
     </div>
   </div>
 </div>
+
+<script>
+  const product = {{ product | json }}
+  const { options, variants } = product
+
+  // const combinations = variants.map((variant) => ({
+  //   id: variant.id,
+  //   avaiable: variant.avaiable,
+  //   // Adds key / value pairs for each variant (ie. "color": "Black" and "size": 'M").
+  //   ...variant.options.reduce(
+  //     (accumulator, option) => ({
+  //       ...accumulator,
+  //       [option.toLowerCase()]: variant.value,
+  //     }),
+  //     {}
+  //   ),
+  // }));
+  // const defaultCheckedInputs = document.querySelectorAll('.product-option input[type="radio"]:checked')
+  // defaultCheckedInputs.forEach((input) => {
+  //   input.parentElement.classList.add('ring-2', 'ring-indigo-600', 'ring-offset-2')
+  // })
+
+  const radioInputs = document.querySelectorAll('.product-option input[type="radio"]')
+  radioInputs.forEach((radio) => {
+    // const {option, value} = radio
+    // const isAvailableForSale = combinations.find((combination) =>
+    //   combinations.entries(
+    //     ([key, value]) =>
+    //       combination[key] === value && combination.avaiable
+    //   )
+    // );
+    // if (!isAvailableForSale) {
+    //   radio.disabled = true
+    // }
+
+
+    radio.addEventListener('change', () => {
+      const selectedOptions = []
+
+      const checkedInputs = document.querySelectorAll('.product-option input[type="radio"]:checked')
+      checkedInputs.forEach((checked) => (
+        selectedOptions.push(checked.value)
+      ))
+
+      console.log(checkedInputs)
+
+      const matchedVariant = variants.find(variant => {
+        let pass = true;
+
+        for (let i = 0; i < selectedOptions.length; i++) {
+          if (selectedOptions.indexOf(variant.options[i]) === -1) {
+            pass = false;
+            break;
+          }
+        }
+
+        return pass;
+      })
+
+      const addToCartButton = document.querySelector('#add-to-cart')
+      const priceEl = document.querySelector('#product-price')
+
+      if (!matchedVariant?.id) {
+        addToCartButton.textContent = 'Unavailable'
+        addToCartButton.disabled = true
+        priceEl.classList.add('hidden')
+        return
+      } else {
+        const hiddenInput = document.querySelector('#product-id')
+        hiddenInput.value = matchedVariant.id
+        window.history.replaceState({}, '', `${hiddenInput.dataset.url}?variant=${matchedVariant.id}`)
+        priceEl.textContent = formatPrice(matchedVariant.price)
+      }
+
+      
+      
+      // Refreshes page without hard reloading, but still causes image to flicker
+      // window.location = window.location
+
+      // This seems to be the better method, and more similar to what Amazon does
+      // Only do this if want to update product.selected_variant on every variant change
+      window.location.reload()
+
+      // NEED TO DO THIS WHEN HAVE MULTIPLE OPTIONS
+      // OTHERWISE WILL LOCK OUT CERTAIN VARAINTS UNLESS RELOAD PAGE
+
+      // Can also just use single option called varaints 
+      // and have it be a combo of options: like Blue / Adult
+
+      // or create a different product entirely if it's different brands
+      // For example: google and apple shouldn't be options for the same product
+
+      
+
+      if (matchedVariant.featured_image) {
+        document.querySelector('#product-image').setAttribute('src', matchedVariant.featured_image.src)
+      }
+
+
+      if (matchedVariant.available) {
+        addToCartButton.textContent = 'Add to cart'
+        addToCartButton.disabled = false
+      } else {
+        addToCartButton.textContent = 'Out of stock'
+        addToCartButton.disabled = true
+      }
+    })
+  })
+
+  const galleryTabs = document.querySelectorAll('.gallery-tab')
+  galleryTabs.forEach((tab) => (
+    tab.addEventListener(('click'), () => {
+      document.querySelector('#product-image').setAttribute('src', tab.querySelector('img').getAttribute('src'))
+    })
+  ))
+
+  // document.querySelector('#buy-it-now').addEventListener('click', (e) => {
+  //   e.preventDefault()
+
+  //   const input = document.createElement('input')
+  //   input.value = '/checkout'
+  //   input.type = 'hidden'
+  //   input.name = 'return_to'
+
+  //   const form = querySelector('#product-form')
+  //   form.appendChild(input)
+  //   form.submit()
+  // })
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant_selector",
+      "name": "Variant Selector",
+      "limit": 1
+    },
+    {
+      "type": "quantity",
+      "name": "Quantity",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "checkout_buttons",
+      "name": "Checkout Buttons",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

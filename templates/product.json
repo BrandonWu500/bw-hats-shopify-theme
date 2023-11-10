@@ -18,7 +18,10 @@
         "description",
         "checkout_buttons"
       ]
+    },
+    "recommendations": {
+      "type": "product-recommendations"
     }
   },
-  "order": ["template"]
+  "order": ["template", "recommendations"]
 }
