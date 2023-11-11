@@ -31,7 +31,8 @@ addToCartForms.forEach((form) => {
         'transition',
         'ease-in',
         'duration-150',
-        'opacity-0'
+        'opacity-0',
+        'hidden'
       );
       globalCartPopover.classList.add(
         'transition',
@@ -39,6 +40,8 @@ addToCartForms.forEach((form) => {
         'duration-200',
         'opacity-100'
       );
+
+      const showVariantTitle = addedItem.variant_title ? 'block' : 'hidden';
 
       document.querySelector(
         '#global-cart-popover-item'
@@ -55,7 +58,7 @@ addToCartForms.forEach((form) => {
                 ${addedItem.product_title}
               </a>
             </h3>
-            <p class='text-gray-500'>
+            <p class='text-gray-500 ${showVariantTitle}'>
               ${addedItem.variant_title}
             </p>
           </div>
@@ -80,8 +83,9 @@ addToCartForms.forEach((form) => {
 const closeGlobalCartPopover = document.querySelector(
   '#close-global-cart-popover'
 );
+const globalCartPopover = document.querySelector('#global-cart-popover');
+
 closeGlobalCartPopover.addEventListener('click', () => {
-  const globalCartPopover = document.querySelector('#global-cart-popover');
   globalCartPopover.classList.remove(
     'transition',
     'ease-out',
@@ -92,6 +96,27 @@ closeGlobalCartPopover.addEventListener('click', () => {
     'transition',
     'ease-in',
     'duration-150',
-    'opacity-0'
+    'opacity-0',
+    'hidden'
   );
+});
+
+document.body.addEventListener('click', () => {
+  globalCartPopover.classList.remove(
+    'transition',
+    'ease-out',
+    'duration-200',
+    'opacity-100'
+  );
+  globalCartPopover.classList.add(
+    'transition',
+    'ease-in',
+    'duration-150',
+    'opacity-0',
+    'hidden'
+  );
+});
+
+globalCartPopover.addEventListener('click', (event) => {
+  event.stopPropagation();
 });
