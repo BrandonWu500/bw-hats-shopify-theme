@@ -12,7 +12,10 @@
   }
   ```
 -->
-<div class='bg-white' x-data='{ mobileMenuOpen: false }'>
+<div
+  class='bg-white'
+  x-data='{ mobileMenuOpen: false }'
+>
   <!--
     Mobile menu
 
@@ -20,9 +23,10 @@
   -->
   <div
     x-show='mobileMenuOpen'
-    class='relative z-40 lg:hidden'
+    class='hidden relative z-40 lg:hidden'
     role='dialog'
     aria-modal='true'
+    id='mobile-menu'
   >
     <!--
       Off-canvas menu backdrop, show/hide based on off-canvas menu state.
@@ -150,8 +154,11 @@
             </div>
 
             <!-- Cart -->
-            <div>
-              <a href='{{ routes.cart_url }}' class='flex items-center p-2'>
+            <div class='relative'>
+              <a
+                href='{{ routes.cart_url }}'
+                class='flex items-center p-2'
+              >
                 <svg
                   class='h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
                   fill='none'
@@ -170,6 +177,58 @@
                 </span>
                 <span class='hidden lg:sr-only'>items in cart, view bag</span>
               </a>
+
+              {% comment %} Cart popover {% endcomment %}
+              <!--
+                Entering: "transition ease-out duration-200"
+                  From: "opacity-0"
+                  To: "opacity-100"
+                Leaving: "transition ease-in duration-150"
+                  From: "opacity-100"
+                  To: "opacity-0"
+              -->
+
+              <div
+                id='global-cart-popover'
+                class='z-50 absolute inset-x-0 top-16 mt-px bg-white pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-black lg:ring-opacity-5 opacity-0'
+              >
+                <div class='p-4 pb-0 flex items-center justify-between w-full'>
+                  <h2 class='flex items-center gap-2 capitalize text-lg font-medium text-gray-900'>
+                    {% render 'icon-check' %}
+                    <span>Added to Bag!</span>
+                  </h2>
+                  <button>
+                    {% render 'icon-close', id: 'close-global-cart-popover' %}
+                  </button>
+                </div>
+
+                <form
+                  class='mx-auto max-w-2xl px-4'
+                  action='{{ routes.cart_url }}'
+                  method='post'
+                >
+                  <div
+                    class='divide-y divide-gray-200'
+                    id='global-cart-popover-item'
+                  ></div>
+
+                  <button
+                    type='submit'
+                    name='checkout'
+                    class='w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
+                  >
+                    Checkout
+                  </button>
+
+                  <p class='mt-6 text-center'>
+                    <a
+                      href='/cart'
+                      class='text-sm font-medium text-indigo-600 hover:text-indigo-500'
+                      >View Shopping Bag</a
+                    >
+                  </p>
+                </form>
+              </div>
             </div>
 
             <div class='lg:hidden mt-0.5'>

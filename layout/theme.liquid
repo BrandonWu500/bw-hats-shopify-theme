@@ -21,6 +21,11 @@
       defer
       src='../assets/utils.js'
     ></script>
+    {% comment %} App.js NEEDS to be after alpine js script {% endcomment %}
+    <script
+      defer
+      src='../assets/app.js'
+    ></script>
   </head>
   <body>
     {% section 'header' %}
