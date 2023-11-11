@@ -1591,6 +1591,10 @@ select {
   max-width: 20ch;
 }
 
+.max-w-\[40ch\] {
+  max-width: 40ch;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1716,6 +1720,10 @@ select {
 
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-8 {
+  gap: 2rem;
 }
 
 .gap-x-4 {
@@ -1966,6 +1974,14 @@ select {
   padding: 0.75rem;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-1\.5 {
+  padding: 0.375rem;
+}
+
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
@@ -2044,6 +2060,11 @@ select {
 .py-16 {
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 }
 
 .pb-12 {

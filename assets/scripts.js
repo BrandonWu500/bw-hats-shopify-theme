@@ -59,6 +59,13 @@ addToCartForms.forEach((form) => {
           </p>
         </div>
       </div>`;
+
+      document
+        .querySelector('#product-page-variant-quantity')
+        .parentElement.classList.add('hidden');
+      const addToCartButton = document.querySelector('#add-to-cart');
+      addToCartButton.textContent = 'Item in bag';
+      addToCartButton.disabled = true;
     } catch (error) {
       console.error(error);
     }
