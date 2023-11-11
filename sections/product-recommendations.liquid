@@ -15,7 +15,14 @@
 
     <ul class='mt-6 flex gap-x-6 gap-y-10 xl:gap-x-8 overflow-x-auto'>
       {%- for product in recommendations.products -%}
-        <li class='product group relative flex-shrink-0 lg:flex-1'>
+        <li
+          class='
+            product group relative flex-shrink-0
+            {% if recommendations.products_count >= 4 %}
+              lg:flex-1
+            {% endif %}
+          '
+        >
           <a
             href='{{ product.url }}'
             class='aspect-square w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-[300px]'
