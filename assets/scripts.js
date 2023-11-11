@@ -42,22 +42,27 @@ addToCartForms.forEach((form) => {
 
       document.querySelector(
         '#global-cart-popover-item'
-      ).innerHTML = `<div class='flex items-center py-6'>
-        <img
-          src='${addedItem.image}'
-          alt=''
-          class='h-16 w-16 object-cover flex-none rounded-md border border-gray-200'
-        >
-        <div class='ml-4 flex-auto'>
-          <h3 class='font-medium text-gray-900'>
-            <a href='${addedItem.url}'>
-              ${addedItem.product_title}
-            </a>
-          </h3>
-          <p class='text-gray-500'>
-            ${addedItem.variant_title}
-          </p>
+      ).innerHTML = `<div class='flex items-center justify-between py-6'>
+        <div class='flex items-center'>
+          <img
+            src='${addedItem.image}'
+            alt=''
+            class='h-16 w-16 object-cover flex-none rounded-md border border-gray-200'
+          >
+          <div class='ml-4 flex-auto'>
+            <h3 class='font-medium text-gray-900'>
+              <a href='${addedItem.url}'>
+                ${addedItem.product_title}
+              </a>
+            </h3>
+            <p class='text-gray-500'>
+              ${addedItem.variant_title}
+            </p>
+          </div>
         </div>
+        <p class='text-gray-500'>
+          Qty: ${addedItem.quantity}
+        </p>
       </div>`;
 
       document
