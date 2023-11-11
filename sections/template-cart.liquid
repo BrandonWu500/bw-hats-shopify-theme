@@ -216,6 +216,7 @@
       })
       .then((res) => {
         const totalPrice = res.data.total_price;
+        const totalItemCount = res.data.item_count;
         const item = res.data.items.find((item) => item.key === key);
         const itemPrice = item.final_line_price;
 
@@ -224,6 +225,8 @@
         document.querySelector(
           `[data-key="${key}"] .line-item-price`
         ).textContent = formatPrice(itemPrice);
+        document.querySelector('#header-cart-item-count').textContent =
+          totalItemCount;
       });
   }
 
@@ -256,9 +259,12 @@
             item.remove();
 
             const totalPrice = res.data.total_price;
+            const totalItemCount = res.data.item_count;
 
             document.querySelector('#cart-total-price').textContent =
               formatPrice(totalPrice);
+            document.querySelector('#header-cart-item-count').textContent =
+              totalItemCount;
           }
         });
     });
