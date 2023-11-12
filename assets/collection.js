@@ -37,3 +37,11 @@ mobileFilterSectionButtons.forEach((button) => {
     handleFilterSectionButtonState(button)
   );
 });
+
+const mobileFilterForm = document.querySelector('#mobile-filter-form');
+if (mobileFilterForm) {
+  const sortSelect = document.querySelector('#mobile-filter-form select');
+  sortSelect.addEventListener('change', () => {
+    mobileFilterForm.submit();
+  });
+}
