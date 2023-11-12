@@ -114,9 +114,9 @@
       {% form 'product', product, class: 'mt-6', id: 'product-form' %}
         <input
           type='hidden'
-          name='product-id'
+          name='id'
           id='product-id'
-          value='{{ product.selected_or_first_available_variant }}'
+          value='{{ product.selected_or_first_available_variant.id }}'
           data-url='{{ product.url }}'
         >
 
@@ -186,7 +186,34 @@
             {%- endfor -%}
           </div>
         {% endunless %}
-        <div class='mt-10 flex gap-4'>
+        <div class='mt-10 flex gap-8'>
+          {% comment %} Quantity Select {% endcomment %}
+          {% if product.selected_or_first_available_variant.available %}
+            <div>
+              <label for='product-page-variant-quantity' class='sr-only'
+                >Quantity,
+                {{
+                  product.selected_or_first_available_variant.title
+                  | escape
+                -}}
+              </label>
+              <select
+                id='product-page-variant-quantity'
+                name='quantity'
+                class='quantity-select h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+              >
+                {% assign num = product.selected_or_first_available_variant.inventory_quantity %}
+                {% assign range = (1..num) %}
+                {% for i in range %}
+                  <option
+                    value='{{ i }}'
+                  >
+                    {{ i }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endif %}
           {% comment %} Add to bag button {% endcomment %}
           <button
             {% unless product.selected_or_first_available_variant.available %}
@@ -194,15 +221,27 @@
             {% endunless %}
             type='submit'
             id='add-to-cart'
-            class='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full disabled:opacity-25 disabled:cursor-not-allowed'
+            class='add-to-cart flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full disabled:opacity-25 disabled:cursor-not-allowed'
           >
-            {% if product.selected_or_first_available_variant.available %}
-              Add to bag
-            {% else %}
-              Out of stock
-            {% endif %}
+            {% render 'loading-spinner' %}
+            <p>
+              {% if product.selected_or_first_available_variant.available %}
+                Add to bag
+              {% else %}
+                Out of stock
+              {% endif %}
+            </p>
           </button>
         </div>
+        {% comment %}
+          <p
+            id='item-in-cart-info'
+            class='hidden mt-4 text-lg text-gray-500'
+          >
+            You can update the item quantity or remove the item from your cart on
+            the cart page.
+          </p>
+        {% endcomment %}
       {% endform %}
     </div>
   </div>
@@ -210,7 +249,44 @@
 
 <script>
   const product = {{ product | json }}
+  const cart = {{ cart | json }}
   const { options, variants } = product
+  
+
+  const selectedOptions = []
+
+      const checkedInputs = document.querySelectorAll('.product-option input[type="radio"]:checked')
+      checkedInputs.forEach((checked) => (
+        selectedOptions.push(checked.value)
+      ))
+
+      const matchedVariant = variants.find(variant => {
+        let pass = true;
+
+        for (let i = 0; i < selectedOptions.length; i++) {
+          if (selectedOptions.indexOf(variant.options[i]) === -1) {
+            pass = false;
+            break;
+          }
+        }
+
+        return pass;
+      })
+
+      if (matchedVariant?.id) {
+        const currentVariantInCart = cart.items.find((item) => item.variant_id === matchedVariant.id)
+        if (currentVariantInCart) {
+          document.querySelector('#product-page-variant-quantity').parentElement.classList.add('hidden')
+          const addToCartButton = document.querySelector('#add-to-cart')
+          addToCartButton.textContent = 'Item in bag'
+          addToCartButton.disabled = true
+
+          // const itemInCartInfo = document.querySelector('#item-in-cart-info')
+          // itemInCartInfo.classList.remove('hidden')
+        }
+      }
+
+
 
   // const combinations = variants.map((variant) => ({
   //   id: variant.id,
@@ -251,8 +327,6 @@
         selectedOptions.push(checked.value)
       ))
 
-      console.log(checkedInputs)
-
       const matchedVariant = variants.find(variant => {
         let pass = true;
 
@@ -279,10 +353,34 @@
         hiddenInput.value = matchedVariant.id
         window.history.replaceState({}, '', `${hiddenInput.dataset.url}?variant=${matchedVariant.id}`)
         priceEl.textContent = formatPrice(matchedVariant.price)
+
+        const currentVariantInCart = cart.items.find((item) => item.variant_id === matchedVariant.id)
+        
+        if (currentVariantInCart) {
+          document.querySelector('#product-page-variant-quantity').parentElement.classList.add('hidden')
+          const addToCartButton = document.querySelector('#add-to-cart')
+          addToCartButton.textContent = 'Item in bag'
+          addToCartButton.disabled = true
+
+          // const itemInCartInfo = document.querySelector('#item-in-cart-info')
+          // itemInCartInfo.classList.remove('hidden')
+        }
+
       }
 
-      
-      
+      if (matchedVariant.featured_image) {
+        document.querySelector('#product-image').setAttribute('src', matchedVariant.featured_image.src)
+      }
+
+
+      if (matchedVariant.available) {
+        addToCartButton.textContent = 'Add to cart'
+        addToCartButton.disabled = false
+      } else {
+        addToCartButton.textContent = 'Out of stock'
+        addToCartButton.disabled = true
+      }
+
       // Refreshes page without hard reloading, but still causes image to flicker
       // window.location = window.location
 
@@ -298,21 +396,6 @@
 
       // or create a different product entirely if it's different brands
       // For example: google and apple shouldn't be options for the same product
-
-      
-
-      if (matchedVariant.featured_image) {
-        document.querySelector('#product-image').setAttribute('src', matchedVariant.featured_image.src)
-      }
-
-
-      if (matchedVariant.available) {
-        addToCartButton.textContent = 'Add to cart'
-        addToCartButton.disabled = false
-      } else {
-        addToCartButton.textContent = 'Out of stock'
-        addToCartButton.disabled = true
-      }
     })
   })
 
