@@ -15,9 +15,17 @@
 <div class='bg-white' data-currency='{{ currency.iso_code }}'>
   <div class='mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8'>
     {% if cart.item_count > 0 %}
-      <h1 class='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-        Shopping Bag
-      </h1>
+      <div class='flex w-full justify-between'>
+        <h1 class='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+          Shopping Bag
+        </h1>
+        <button
+          id='clear-cart-button'
+          class='relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200'
+        >
+          Clear Cart
+        </button>
+      </div>
       <form
         class='mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16'
         action='{{ routes.cart_url }}'
@@ -199,14 +207,17 @@
   referrerpolicy='no-referrer'
 ></script>
 <script>
-  // document.addEventListener('DOMContentLoaded', function (event) {
-  //   var scrollpos = localStorage.getItem('scrollpos');
-  //   if (scrollpos) window.scrollTo(0, scrollpos);
-  // });
-
-  // window.onbeforeunload = function (e) {
-  //   localStorage.setItem('scrollpos', window.scrollY);
-  // };
+  const clearCartButton = document.querySelector('#clear-cart-button');
+  if (clearCartButton) {
+    clearCartButton.addEventListener('click', async () => {
+      try {
+        await axios.post('/cart/clear.js');
+        window.location.reload();
+      } catch (error) {
+        consle.error(error);
+      }
+    });
+  }
 
   function changeItemQuantity(key, quantity) {
     axios
