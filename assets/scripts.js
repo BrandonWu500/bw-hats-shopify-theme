@@ -32,13 +32,14 @@ addToCartForms.forEach((form) => {
         'ease-in',
         'duration-150',
         'opacity-0',
-        'hidden'
+        'lg:hidden'
       );
       globalCartPopover.classList.add(
         'transition',
         'ease-out',
         'duration-200',
-        'opacity-100'
+        'opacity-100',
+        'lg:block'
       );
 
       const showVariantTitle = addedItem.variant_title ? 'block' : 'hidden';
@@ -97,7 +98,7 @@ closeGlobalCartPopover.addEventListener('click', () => {
     'ease-in',
     'duration-150',
     'opacity-0',
-    'hidden'
+    'lg:hidden'
   );
 });
 
@@ -113,7 +114,7 @@ document.body.addEventListener('click', () => {
     'ease-in',
     'duration-150',
     'opacity-0',
-    'hidden'
+    'lg:hidden'
   );
 });
 
