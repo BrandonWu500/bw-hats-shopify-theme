@@ -1948,6 +1948,10 @@ select {
   margin: 0.25rem;
 }
 
+.-m-1 {
+  margin: -0.25rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -1981,6 +1985,16 @@ select {
 .-my-3 {
   margin-top: -0.75rem;
   margin-bottom: -0.75rem;
+}
+
+.-mx-4 {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .-mt-8 {
@@ -2101,6 +2115,10 @@ select {
 
 .ml-5 {
   margin-left: 1.25rem;
+}
+
+.ml-8 {
+  margin-left: 2rem;
 }
 
 .box-border {
@@ -2339,6 +2357,10 @@ select {
 
 .w-px {
   width: 1px;
+}
+
+.w-2 {
+  width: 0.5rem;
 }
 
 .min-w-0 {
@@ -3652,6 +3674,21 @@ select {
   background-color: transparent;
 }
 
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-gray-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
+.bg-indigo-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(238 242 255 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-25 {
   --tw-bg-opacity: 0.25;
 }
@@ -4013,6 +4050,22 @@ select {
 
 .pb-3 {
   padding-bottom: 0.75rem;
+}
+
+.pb-16 {
+  padding-bottom: 4rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
+}
+
+.pt-12 {
+  padding-top: 3rem;
 }
 
 .text-left {
@@ -6325,6 +6378,28 @@ select {
   }
 }
 
+@media (min-width: 1280px) {
+  .xl\:aspect-h-8 {
+    --tw-aspect-h: 8;
+  }
+
+  .xl\:aspect-w-7 {
+    position: relative;
+    padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+    --tw-aspect-w: 7;
+  }
+
+  .xl\:aspect-w-7 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
 .marker\:text-slate-700 *::marker {
   color: rgb(51 65 85 );
 }
@@ -6382,6 +6457,11 @@ select {
 .hover\:bg-orange-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 237 213 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-indigo-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(224 231 255 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-opacity-10:hover {
@@ -6945,6 +7025,14 @@ select {
     padding-right: 2.25rem;
   }
 
+  .sm\:pb-24 {
+    padding-bottom: 6rem;
+  }
+
+  .sm\:pt-16 {
+    padding-top: 4rem;
+  }
+
   .sm\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
@@ -7114,6 +7202,11 @@ select {
     margin-right: 0px;
   }
 
+  .lg\:mx-6 {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+
   .lg\:-mr-1 {
     margin-right: -0.25rem;
   }
@@ -7192,6 +7285,10 @@ select {
 
   .lg\:flex-1 {
     flex: 1 1 0%;
+  }
+
+  .lg\:flex-none {
+    flex: none;
   }
 
   .lg\:grid-cols-12 {
@@ -7333,6 +7430,10 @@ select {
 
   .xl\:h-7 {
     height: 1.75rem;
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .xl\:flex-row {
