@@ -566,24 +566,33 @@
 
         <!-- Active filters -->
         <div class='bg-gray-100'>
-          <div class='mx-auto max-w-7xl px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8'>
-            <h3 class='text-sm font-medium text-gray-500'>
-              Filters
-              <span class='sr-only'>, active</span>
-            </h3>
+          <div class='mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8'>
+            <div class='flex items-center'>
+              <h3 class='text-sm font-medium text-gray-500'>
+                Filters
+                <span class='sr-only'>, active</span>
+              </h3>
 
-            <div
-              aria-hidden='true'
-              class='hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block'
-            ></div>
+              <div
+                aria-hidden='true'
+                class='h-5 w-px bg-gray-300 ml-6 block'
+              ></div>
+              <div class='pl-6'>
+                <a
+                  href='{{ colllection.url }}?sort_by={{ collection.sort_by }}'
+                  class='text-gray-500'
+                  >Clear all</a
+                >
+              </div>
+            </div>
 
-            <div class='mt-2 sm:ml-4 sm:mt-0'>
-              <div class='-m-1 flex flex-wrap items-center'>
+            <div class='mt-2'>
+              <div class='-m-1 flex flex-wrap items-center gap-1'>
                 {% for filter in collection.filters %}
                   {%- for filter_value in filter.active_values -%}
-                    <span class='m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900'>
+                    <span class='my-1 mt-3 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900'>
                       <span>
-                        {{ filter.label }}: {{ filter_value.label }}
+                        {{ filter_value.label }}
                       </span>
                       <a
                         href='{{ filter_value.url_to_remove }}'
