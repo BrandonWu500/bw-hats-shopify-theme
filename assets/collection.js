@@ -40,10 +40,10 @@ expandCollapseFilterButtons.forEach((button) => {
   button.addEventListener('click', () => expandOrCollapseFilter(button));
 });
 
-const sortForm = document.querySelector('#sort-form');
-const sortSelect = document.querySelector('#sort-form select');
+const filterAndSortForm = document.querySelector('#filter-and-sort-form');
+const sortSelect = document.querySelector('#filter-and-sort-form select');
 sortSelect.addEventListener('change', () => {
-  sortForm.submit();
+  filterAndSortForm.submit();
 });
 
 // const filterCheckboxes = sortForm.querySelectorAll(
