@@ -65,20 +65,26 @@ expandCollapseFilterButtons.forEach((button) => {
   });
 });
 
-const filterAndSortForm = document.querySelector('#filter-and-sort-form');
-const sortSelect = document.querySelector('#filter-and-sort-form select');
-sortSelect.addEventListener('change', () => {
-  filterAndSortForm.submit();
+const dekstopFilterAndSortForm = document.querySelector(
+  '#desktop-filter-and-sort-form'
+);
+const desktopSortSelect = dekstopFilterAndSortForm.querySelector(
+  '#desktop-sort-select'
+);
+
+desktopSortSelect.addEventListener('change', () => {
+  dekstopFilterAndSortForm.submit();
 });
 
-// const filterCheckboxes = sortForm.querySelectorAll(
+// const filterCheckboxes = filterAndSortForm.querySelectorAll(
 //   'input[type="checkbox"]'
 // );
 // filterCheckboxes.forEach((checkbox) => {
 //   checkbox.addEventListener('change', () => {
-//     sortForm.submit();
+//     filterAndSortForm.submit();
 //   });
 // });
+
 const allFilterSectionValues = document.querySelectorAll(
   '.filter-section-values'
 );

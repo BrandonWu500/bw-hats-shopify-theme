@@ -2130,6 +2130,10 @@ select {
   margin-bottom: 0.25rem;
 }
 
+.ms-auto {
+  margin-inline-start: auto;
+}
+
 .box-border {
   box-sizing: border-box;
 }

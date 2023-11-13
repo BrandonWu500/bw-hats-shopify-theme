@@ -14,7 +14,7 @@
   ```
 -->
 <div class='bg-gray-50' x-data='{mobileFiltersOpen: false}'>
-  <form id='filter-and-sort-form'>
+  <div>
     <!--
       Mobile filter dialog
 
@@ -71,7 +71,7 @@
           class='relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl'
         >
           <div class='flex items-center justify-between px-4'>
-            <h2 class='text-lg font-medium text-gray-900'>Filters</h2>
+            <h2 class='text-lg font-medium text-gray-900'>Filter and Sort</h2>
             <button
               type='button'
               class='-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400'
@@ -91,7 +91,39 @@
           </div>
 
           <!-- Filters -->
-          <div class='mt-4'>
+          <form class='mt-4' id='mobile-filter-and-sort-form'>
+            <div
+              class='border-t border-gray-200 px-4 py-6 flex justify-between items-center'
+            >
+              <h3 class='-mx-2 -my-3 flow-root'>
+                <!-- Expand/collapse section button -->
+                <label
+                  class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
+                  for='mobile-sort-select'
+                >
+                  <span class='font-medium text-gray-900'>Sort</span>
+                </label>
+              </h3>
+              <select
+                id='mobile-sort-select'
+                class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                name='sort_by'
+              >
+                {%- assign sort_by = collection.sort_by
+                  | default: collection.default_sort_by
+                -%}
+                {% for option in collection.sort_options %}
+                  <option
+                    value='{{ option.value | escape }}'
+                    {% if option.value == sort_by %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
             {%- for filter in collection.filters -%}
               <div
                 class='filter-section border-t border-gray-200 px-4 py-6'
@@ -160,9 +192,9 @@
               type='submit'
               class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
             >
-              Apply Filters
+              Apply Filters and Sort
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -182,14 +214,15 @@
       </div>
 
       <!-- Filters -->
-      <section aria-labelledby='filter-heading'>
-        <h2 id='filter-heading' class='sr-only'>Filters</h2>
+      <form aria-labelledby='filter-heading' id='desktop-filter-and-sort-form'>
+        <h2 id='filter-heading' class='sr-only'>Filter and Sort</h2>
 
         <div class='border-b border-gray-200 bg-white pb-4'>
-          <div class='mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8'>
-            <div class='flex items-center gap-4 text-left'>
+          <div class='mx-auto flex max-w-7xl items-baseline justify-between px-4 sm:px-6 lg:px-8'>
+            <div class='hidden sm:flex items-center gap-4 text-left'>
               <h3 class='text-sm font-medium'>Sort By:</h3>
               <select
+                id='desktop-sort-select'
                 class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
                 name='sort_by'
               >
@@ -215,9 +248,10 @@
             <button
               @click='mobileFiltersOpen = true'
               type='button'
-              class='inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden'
+              class='ms-auto flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden'
             >
-              Filters
+              {% render 'icon-filter-and-sort' %}
+              Filter and Sort
             </button>
 
             {% comment %} Desktop Filters {% endcomment %}
@@ -277,7 +311,7 @@
                               >
                               <label
                                 for='Filter-{{ filter.param_name }}-{{ forloop.index }}'
-                                class='cursor-pointer ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
+                                class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
                               >
                                 {{- filter_value.label -}}
                               </label>
@@ -303,10 +337,7 @@
         <div class='bg-gray-100'>
           <div class='mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8'>
             <div class='flex items-center'>
-              <h3 class='text-sm font-medium text-gray-500'>
-                Filters
-                <span class='sr-only'>, active</span>
-              </h3>
+              <h3 class='text-sm font-medium text-gray-500'>Active Filters</h3>
 
               <div
                 aria-hidden='true'
@@ -353,7 +384,7 @@
             </div>
           </div>
         </div>
-      </section>
+      </form>
 
       <!-- Product grid -->
       <section
@@ -370,7 +401,6 @@
                   src='{{ product.featured_image |  image_url: width: master  }}'
                   alt='{{ product.featured_image.alt | escape }}'
                   class='h-full w-full object-cover object-center group-hover:opacity-75'
-                  loading='lazy'
                 >
               </div>
               <h3 class='mt-4 text-sm text-gray-700'>{{ product.title }}</h3>
@@ -382,7 +412,7 @@
         </div>
       </section>
     </div>
-  </form>
+  </div>
 </div>
 
 {{ 'collection.js' | asset_url | script_tag }}
