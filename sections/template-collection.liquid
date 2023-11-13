@@ -101,7 +101,7 @@
                   <button
                     type='button'
                     class='expand-collapse-filter-button flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
-                    aria-controls='filter-section-{{ forloop.index }}'
+                    aria-controls='mobile-filter-section-{{ forloop.index }}'
                     aria-expanded='false'
                   >
                     <span class='font-medium text-gray-900'>
@@ -128,7 +128,7 @@
                 <!-- Filter section, show/hide based on section state. -->
                 <div
                   class='filter-section-values pt-6 hidden'
-                  id='filter-section-{{ forloop.index }}'
+                  id='mobile-filter-section-{{ forloop.index }}'
                 >
                   <div class='space-y-6'>
                     {%- for filter_value in filter.values -%}
@@ -136,7 +136,7 @@
                         <input
                           name='{{ filter_value.param_name }}'
                           value='{{ filter_value.value }}'
-                          id='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                          id='mobile-filter-{{ filter.param_name }}-{{ forloop.index }}'
                           type='checkbox'
                           {% if filter_value.active -%}
                             checked
@@ -144,7 +144,7 @@
                           class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                         >
                         <label
-                          for='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                          for='mobile-filter-{{ filter.param_name }}-{{ forloop.index }}'
                           class='ml-3 text-sm text-gray-500'
                         >
                           {{- filter_value.label -}}
@@ -220,347 +220,79 @@
               Filters
             </button>
 
+            {% comment %} Desktop Filters {% endcomment %}
             <div class='hidden sm:block'>
               <div class='flow-root'>
-                <div class='-mx-4 flex items-center divide-x divide-gray-200'>
-                  <div class='relative inline-block px-4 text-left'>
-                    <button
-                      type='button'
-                      class='group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                      aria-expanded='false'
-                    >
-                      <span>Category</span>
-                      <span class='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'
-                        >1</span
+                <div class='-mx-4 flex items-baseline divide-x divide-gray-200'>
+                  {%- for filter in collection.filters -%}
+                    <div class='filter-section relative inline-block px-4 text-left'>
+                      <button
+                        type='button'
+                        class='expand-collapse-filter-button group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
+                        aria-controls='desktop-filter-section-{{ forloop.index }}'
+                        aria-expanded='false'
                       >
-                      <svg
-                        class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                        viewBox='0 0 20 20'
-                        fill='currentColor'
-                        aria-hidden='true'
+                        <span>{{ filter.label }}</span>
+                        {% if filter.active_values.size > 0 %}
+                          <span class='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>
+                            {{ filter.active_values.size }}
+                          </span>
+                        {% endif %}
+                        <svg
+                          class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                          viewBox='0 0 20 20'
+                          fill='currentColor'
+                          aria-hidden='true'
+                        >
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
+
+                      <!--
+                        'Category' dropdown, show/hide based on dropdown state.
+
+                        Entering: "transition ease-out duration-100"
+                          From: "transform opacity-0 scale-95"
+                          To: "transform opacity-100 scale-100"
+                        Leaving: "transition ease-in duration-75"
+                          From: "transform opacity-100 scale-100"
+                          To: "transform opacity-0 scale-95"
+                      -->
+                      <div
+                        id='desktop-filter-section-{{ forloop.index }}'
+                        class='filter-section-values desktop hidden absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'
                       >
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                    </button>
-
-                    <!--
-                      'Category' dropdown, show/hide based on dropdown state.
-
-                      Entering: "transition ease-out duration-100"
-                        From: "transform opacity-0 scale-95"
-                        To: "transform opacity-100 scale-100"
-                      Leaving: "transition ease-in duration-75"
-                        From: "transform opacity-100 scale-100"
-                        To: "transform opacity-0 scale-95"
-                    -->
-                    <div class='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                      <form class='space-y-4'>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-category-0'
-                            name='category[]'
-                            value='new-arrivals'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-category-0'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >All New Arrivals</label
-                          >
+                        <div class='space-y-4'>
+                          {%- for filter_value in filter.values -%}
+                            <div class='flex items-center'>
+                              <input
+                                name='{{ filter_value.param_name }}'
+                                value='{{ filter_value.value }}'
+                                id='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                                type='checkbox'
+                                {% if filter_value.active -%}
+                                  checked
+                                {%- endif %}
+                                class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                              >
+                              <label
+                                for='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                                class='cursor-pointer ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
+                              >
+                                {{- filter_value.label -}}
+                              </label>
+                            </div>
+                          {% endfor %}
                         </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-category-1'
-                            name='category[]'
-                            value='tees'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-category-1'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Tees</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-category-2'
-                            name='category[]'
-                            value='objects'
-                            type='checkbox'
-                            checked
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-category-2'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Objects</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-category-3'
-                            name='category[]'
-                            value='sweatshirts'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-category-3'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Sweatshirts</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-category-4'
-                            name='category[]'
-                            value='pants-shorts'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-category-4'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Pants &amp; Shorts</label
-                          >
-                        </div>
-                      </form>
+                      </div>
                     </div>
-                  </div>
-                  <div class='relative inline-block px-4 text-left'>
-                    <button
-                      type='button'
-                      class='group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                      aria-expanded='false'
-                    >
-                      <span>Color</span>
-                      <svg
-                        class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                        viewBox='0 0 20 20'
-                        fill='currentColor'
-                        aria-hidden='true'
-                      >
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                    </button>
-
-                    <!--
-                      'Color' dropdown, show/hide based on dropdown state.
-
-                      Entering: "transition ease-out duration-100"
-                        From: "transform opacity-0 scale-95"
-                        To: "transform opacity-100 scale-100"
-                      Leaving: "transition ease-in duration-75"
-                        From: "transform opacity-100 scale-100"
-                        To: "transform opacity-0 scale-95"
-                    -->
-                    <div class='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                      <form class='space-y-4'>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-color-0'
-                            name='color[]'
-                            value='white'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-color-0'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >White</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-color-1'
-                            name='color[]'
-                            value='beige'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-color-1'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Beige</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-color-2'
-                            name='color[]'
-                            value='blue'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-color-2'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Blue</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-color-3'
-                            name='color[]'
-                            value='brown'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-color-3'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Brown</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-color-4'
-                            name='color[]'
-                            value='green'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-color-4'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Green</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-color-5'
-                            name='color[]'
-                            value='purple'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-color-5'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >Purple</label
-                          >
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                  <div class='relative inline-block px-4 text-left'>
-                    <button
-                      type='button'
-                      class='group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                      aria-expanded='false'
-                    >
-                      <span>Sizes</span>
-                      <svg
-                        class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                        viewBox='0 0 20 20'
-                        fill='currentColor'
-                        aria-hidden='true'
-                      >
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                    </button>
-
-                    <!--
-                      'Sizes' dropdown, show/hide based on dropdown state.
-
-                      Entering: "transition ease-out duration-100"
-                        From: "transform opacity-0 scale-95"
-                        To: "transform opacity-100 scale-100"
-                      Leaving: "transition ease-in duration-75"
-                        From: "transform opacity-100 scale-100"
-                        To: "transform opacity-0 scale-95"
-                    -->
-                    <div class='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                      <form class='space-y-4'>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-sizes-0'
-                            name='sizes[]'
-                            value='xs'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-sizes-0'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >XS</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-sizes-1'
-                            name='sizes[]'
-                            value='s'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-sizes-1'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >S</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-sizes-2'
-                            name='sizes[]'
-                            value='m'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-sizes-2'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >M</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-sizes-3'
-                            name='sizes[]'
-                            value='l'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-sizes-3'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >L</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-sizes-4'
-                            name='sizes[]'
-                            value='xl'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-sizes-4'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >XL</label
-                          >
-                        </div>
-                        <div class='flex items-center'>
-                          <input
-                            id='filter-sizes-5'
-                            name='sizes[]'
-                            value='2xl'
-                            type='checkbox'
-                            class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                          >
-                          <label
-                            for='filter-sizes-5'
-                            class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                            >2XL</label
-                          >
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+                  {% endfor %}
+                  <button
+                    type='submit'
+                    class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
+                  >
+                    Apply Filters
+                  </button>
                 </div>
               </div>
             </div>

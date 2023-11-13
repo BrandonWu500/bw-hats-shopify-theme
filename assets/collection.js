@@ -3,7 +3,14 @@ const expandOrCollapseFilter = (button) => {
   const filterSectionValues = filterSection.querySelector(
     '.filter-section-values'
   );
+  collpaseAllFiltersExcept(filterSectionValues);
+
   filterSectionValues.classList.toggle('hidden');
+
+  button.setAttribute(
+    'aria-expanded',
+    button.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
+  );
 
   const svgArrow = filterSection.querySelector('svg');
   svgArrow.classList.toggle('rotate-0');
@@ -32,12 +39,30 @@ const expandOrCollapseFilter = (button) => {
   // }
 };
 
+const collpaseAllFiltersExcept = (filterSection = null) => {
+  const allFilterSectionValuesElements = document.querySelectorAll(
+    '.filter-section-values.desktop'
+  );
+  let allFilterSectionValues = Array.from(allFilterSectionValuesElements);
+  if (filterSection) {
+    allFilterSectionValues = allFilterSectionValues.filter(
+      (section) => section.id !== filterSection.id
+    );
+  }
+  allFilterSectionValues.forEach((section) => {
+    section.classList.add('hidden');
+  });
+};
+
 const expandCollapseFilterButtons = document.querySelectorAll(
   '.expand-collapse-filter-button'
 );
 
 expandCollapseFilterButtons.forEach((button) => {
-  button.addEventListener('click', () => expandOrCollapseFilter(button));
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    expandOrCollapseFilter(button);
+  });
 });
 
 const filterAndSortForm = document.querySelector('#filter-and-sort-form');
@@ -54,3 +79,14 @@ sortSelect.addEventListener('change', () => {
 //     sortForm.submit();
 //   });
 // });
+const allFilterSectionValues = document.querySelectorAll(
+  '.filter-section-values'
+);
+
+document.body.addEventListener('click', collpaseAllFiltersExcept);
+
+allFilterSectionValues.forEach((section) => {
+  section.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+});
