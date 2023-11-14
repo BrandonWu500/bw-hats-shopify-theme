@@ -13,1158 +13,485 @@
   }
   ```
 -->
-
-<div>
-  <!--
-    Mobile filter dialog
-
-    Off-canvas menu for mobile, show/hide based on off-canvas menu state.
-  -->
-  <div class='relative z-40 sm:hidden' role='dialog' aria-modal='true'>
+<div class='bg-gray-50' x-data='{mobileFiltersOpen: false}'>
+  <div>
     <!--
-      Off-canvas menu backdrop, show/hide based on off-canvas menu state.
+      Mobile filter dialog
 
-      Entering: "transition-opacity ease-linear duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "transition-opacity ease-linear duration-300"
-        From: "opacity-100"
-        To: "opacity-0"
+      Off-canvas filters for mobile, show/hide based on off-canvas filters state.
     -->
-    <div class='fixed inset-0 bg-black bg-opacity-25'></div>
-
-    <div class='fixed inset-0 z-40 flex'>
+    <div
+      x-show='mobileFiltersOpen'
+      class='hidden relative z-40 sm:hidden'
+      role='dialog'
+      aria-modal='true'
+      id='mobile-filters'
+    >
       <!--
-        Off-canvas menu, show/hide based on off-canvas menu state.
+        Off-canvas menu backdrop, show/hide based on off-canvas menu state.
 
-        Entering: "transition ease-in-out duration-300 transform"
-          From: "translate-x-full"
-          To: "translate-x-0"
-        Leaving: "transition ease-in-out duration-300 transform"
-          From: "translate-x-0"
-          To: "translate-x-full"
+        Entering: "transition-opacity ease-linear duration-300"
+          From: "opacity-0"
+          To: "opacity-100"
+        Leaving: "transition-opacity ease-linear duration-300"
+          From: "opacity-100"
+          To: "opacity-0"
       -->
-      <div class='relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl'>
-        <div class='flex items-center justify-between px-4'>
-          <h2 class='text-lg font-medium text-gray-900'>Filters</h2>
-          <button
-            type='button'
-            class='-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500'
-          >
-            <span class='sr-only'>Close menu</span>
-            <svg
-              class='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke-width='1.5'
-              stroke='currentColor'
-              aria-hidden='true'
+      <div
+        x-show='mobileFiltersOpen'
+        x-transition:enter='transition-opacity ease-linear duration-300'
+        x-transition:enter-start='opacity-0'
+        x-transition:enter-end='opacity-100'
+        x-transition:leave='transition-opacity ease-linear duration-300'
+        x-transition:leave-start='opacity-100'
+        x-transition:leave-end='opacity-0'
+        class='fixed inset-0 bg-black bg-opacity-25'
+      ></div>
+
+      <div class='fixed inset-0 z-40 flex'>
+        <!--
+          Off-canvas menu, show/hide based on off-canvas menu state.
+
+          Entering: "transition ease-in-out duration-300 transform"
+            From: "translate-x-full"
+            To: "translate-x-0"
+          Leaving: "transition ease-in-out duration-300 transform"
+            From: "translate-x-0"
+            To: "translate-x-full"
+        -->
+        <div
+          x-show='mobileFiltersOpen'
+          @click.away='mobileFiltersOpen = false'
+          x-transition:enter='transition ease-in-out duration-300 transform'
+          x-transition:enter-start='translate-x-full'
+          x-transition:enter-end='translate-x-0'
+          x-transition:leave='transition ease-in-out duration-300 transform'
+          x-transition:leave-start='translate-x-0'
+          x-transition:leave-end='translate-x-full'
+          class='relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl'
+        >
+          <div class='flex items-center justify-between px-4'>
+            <h2 class='text-lg font-medium text-gray-900'>Filter and Sort</h2>
+            <button
+              type='button'
+              class='-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400'
             >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+              <span class='sr-only'>Close menu</span>
+              <svg
+                class='h-6 w-6'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke-width='1.5'
+                stroke='currentColor'
+                aria-hidden='true'
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Filters -->
+          <form class='mt-4' id='mobile-filter-and-sort-form'>
+            <div
+              class='border-t border-gray-200 px-4 py-6 flex justify-between items-center'
+            >
+              <h3 class='-mx-2 -my-3 flow-root'>
+                <!-- Expand/collapse section button -->
+                <label
+                  class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
+                  for='mobile-sort-select'
+                >
+                  <span class='font-medium text-gray-900'>Sort</span>
+                </label>
+              </h3>
+              <select
+                id='mobile-sort-select'
+                class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                name='sort_by'
+              >
+                {%- assign sort_by = search.sort_by
+                  | default: search.default_sort_by
+                -%}
+                {% for option in search.sort_options %}
+                  <option
+                    value='{{ option.value | escape }}'
+                    {% if option.value == sort_by %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            {%- for filter in search.filters -%}
+              <div
+                class='filter-section border-t border-gray-200 px-4 py-6'
+              >
+                <h3 class='-mx-2 -my-3 flow-root'>
+                  <!-- Expand/collapse section button -->
+                  <button
+                    type='button'
+                    class='expand-collapse-filter-button flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
+                    aria-controls='mobile-filter-section-{{ forloop.index }}'
+                    aria-expanded='false'
+                  >
+                    <span class='font-medium text-gray-900'>
+                      {{ filter.label }}
+                    </span>
+
+                    <span class='ml-6 flex items-center'>
+                      <!--
+                        Expand/collapse icon, toggle classes based on section open state.
+
+                        Open: "-rotate-180", Closed: "rotate-0"
+                      -->
+                      <svg
+                        class='rotate-0 h-5 w-5 transform'
+                        viewBox='0 0 20 20'
+                        fill='currentColor'
+                        aria-hidden='true'
+                      >
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </span>
+                  </button>
+                </h3>
+                <!-- Filter section, show/hide based on section state. -->
+                <div
+                  class='filter-section-values pt-6 hidden'
+                  id='mobile-filter-section-{{ forloop.index }}'
+                >
+                  <div class='space-y-6'>
+                    {%- for filter_value in filter.values -%}
+                      <div class='flex items-center'>
+                        <input
+                          name='{{ filter_value.param_name }}'
+                          value='{{ filter_value.value }}'
+                          id='mobile-filter-{{ filter.param_name }}-{{ forloop.index }}'
+                          type='checkbox'
+                          {% if filter_value.active -%}
+                            checked
+                          {%- endif %}
+                          class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                        >
+                        <label
+                          for='mobile-filter-{{ filter.param_name }}-{{ forloop.index }}'
+                          class='ml-3 text-sm text-gray-500'
+                        >
+                          {{- filter_value.label -}}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            <input type='hidden' name='q' value='{{ search.terms }}'>
+            <button
+              @click='mobileFiltersOpen = false'
+              type='submit'
+              class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
+            >
+              Apply Filters and Sort
+            </button>
+          </form>
         </div>
-
-        <!-- Filters -->
-        <form class='mt-4'>
-          <div class='border-t border-gray-200 px-4 py-6'>
-            <h3 class='-mx-2 -my-3 flow-root'>
-              <!-- Expand/collapse question button -->
-              <button
-                type='button'
-                class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
-                aria-controls='filter-section-0'
-                aria-expanded='false'
-              >
-                <span class='font-medium text-gray-900'>Category</span>
-                <span class='ml-6 flex items-center'>
-                  <!--
-                    Expand/collapse icon, toggle classes based on question open state.
-
-                    Open: "-rotate-180", Closed: "rotate-0"
-                  -->
-                  <svg
-                    class='rotate-0 h-5 w-5 transform'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </button>
-            </h3>
-            <div class='pt-6' id='filter-section-0'>
-              <div class='space-y-6'>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-category-0'
-                    name='category[]'
-                    value='tees'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-category-0'
-                    class='ml-3 text-sm text-gray-500'
-                    >Tees</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-category-1'
-                    name='category[]'
-                    value='crewnecks'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-category-1'
-                    class='ml-3 text-sm text-gray-500'
-                    >Crewnecks</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-category-2'
-                    name='category[]'
-                    value='hats'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-category-2'
-                    class='ml-3 text-sm text-gray-500'
-                    >Hats</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-category-3'
-                    name='category[]'
-                    value='bundles'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-category-3'
-                    class='ml-3 text-sm text-gray-500'
-                    >Bundles</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-category-4'
-                    name='category[]'
-                    value='carry'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-category-4'
-                    class='ml-3 text-sm text-gray-500'
-                    >Carry</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-category-5'
-                    name='category[]'
-                    value='objects'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-category-5'
-                    class='ml-3 text-sm text-gray-500'
-                    >Objects</label
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class='border-t border-gray-200 px-4 py-6'>
-            <h3 class='-mx-2 -my-3 flow-root'>
-              <!-- Expand/collapse question button -->
-              <button
-                type='button'
-                class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
-                aria-controls='filter-section-1'
-                aria-expanded='false'
-              >
-                <span class='font-medium text-gray-900'>Brand</span>
-                <span class='ml-6 flex items-center'>
-                  <!--
-                    Expand/collapse icon, toggle classes based on question open state.
-
-                    Open: "-rotate-180", Closed: "rotate-0"
-                  -->
-                  <svg
-                    class='rotate-0 h-5 w-5 transform'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </button>
-            </h3>
-            <div class='pt-6' id='filter-section-1'>
-              <div class='space-y-6'>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-brand-0'
-                    name='brand[]'
-                    value='clothing-company'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-brand-0'
-                    class='ml-3 text-sm text-gray-500'
-                    >Clothing Company</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-brand-1'
-                    name='brand[]'
-                    value='fashion-inc'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-brand-1'
-                    class='ml-3 text-sm text-gray-500'
-                    >Fashion Inc.</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-brand-2'
-                    name='brand[]'
-                    value='shoes-n-more'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-brand-2'
-                    class='ml-3 text-sm text-gray-500'
-                    >Shoes &#039;n More</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-brand-3'
-                    name='brand[]'
-                    value='supplies-n-stuff'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-brand-3'
-                    class='ml-3 text-sm text-gray-500'
-                    >Supplies &#039;n Stuff</label
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class='border-t border-gray-200 px-4 py-6'>
-            <h3 class='-mx-2 -my-3 flow-root'>
-              <!-- Expand/collapse question button -->
-              <button
-                type='button'
-                class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
-                aria-controls='filter-section-2'
-                aria-expanded='false'
-              >
-                <span class='font-medium text-gray-900'>Color</span>
-                <span class='ml-6 flex items-center'>
-                  <!--
-                    Expand/collapse icon, toggle classes based on question open state.
-
-                    Open: "-rotate-180", Closed: "rotate-0"
-                  -->
-                  <svg
-                    class='rotate-0 h-5 w-5 transform'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </button>
-            </h3>
-            <div class='pt-6' id='filter-section-2'>
-              <div class='space-y-6'>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-color-0'
-                    name='color[]'
-                    value='white'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-color-0'
-                    class='ml-3 text-sm text-gray-500'
-                    >White</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-color-1'
-                    name='color[]'
-                    value='black'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-color-1'
-                    class='ml-3 text-sm text-gray-500'
-                    >Black</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-color-2'
-                    name='color[]'
-                    value='grey'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-color-2'
-                    class='ml-3 text-sm text-gray-500'
-                    >Grey</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-color-3'
-                    name='color[]'
-                    value='blue'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-color-3'
-                    class='ml-3 text-sm text-gray-500'
-                    >Blue</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-color-4'
-                    name='color[]'
-                    value='olive'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-color-4'
-                    class='ml-3 text-sm text-gray-500'
-                    >Olive</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-color-5'
-                    name='color[]'
-                    value='tan'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-color-5'
-                    class='ml-3 text-sm text-gray-500'
-                    >Tan</label
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class='border-t border-gray-200 px-4 py-6'>
-            <h3 class='-mx-2 -my-3 flow-root'>
-              <!-- Expand/collapse question button -->
-              <button
-                type='button'
-                class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
-                aria-controls='filter-section-3'
-                aria-expanded='false'
-              >
-                <span class='font-medium text-gray-900'>Sizes</span>
-                <span class='ml-6 flex items-center'>
-                  <!--
-                    Expand/collapse icon, toggle classes based on question open state.
-
-                    Open: "-rotate-180", Closed: "rotate-0"
-                  -->
-                  <svg
-                    class='rotate-0 h-5 w-5 transform'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </button>
-            </h3>
-            <div class='pt-6' id='filter-section-3'>
-              <div class='space-y-6'>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-sizes-0'
-                    name='sizes[]'
-                    value='xs'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-sizes-0'
-                    class='ml-3 text-sm text-gray-500'
-                    >XS</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-sizes-1'
-                    name='sizes[]'
-                    value='s'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-sizes-1'
-                    class='ml-3 text-sm text-gray-500'
-                    >S</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-sizes-2'
-                    name='sizes[]'
-                    value='m'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-sizes-2'
-                    class='ml-3 text-sm text-gray-500'
-                    >M</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-sizes-3'
-                    name='sizes[]'
-                    value='l'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-sizes-3'
-                    class='ml-3 text-sm text-gray-500'
-                    >L</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-sizes-4'
-                    name='sizes[]'
-                    value='xl'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-sizes-4'
-                    class='ml-3 text-sm text-gray-500'
-                    >XL</label
-                  >
-                </div>
-                <div class='flex items-center'>
-                  <input
-                    id='filter-mobile-sizes-5'
-                    name='sizes[]'
-                    value='2xl'
-                    type='checkbox'
-                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                  >
-                  <label
-                    for='filter-mobile-sizes-5'
-                    class='ml-3 text-sm text-gray-500'
-                    >2XL</label
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
       </div>
     </div>
-  </div>
 
-  <div>
-    <div class='mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8'>
-      <div class='py-24 text-center'>
-        <h1 class='text-4xl font-bold tracking-tight text-gray-900'>
-          New Arrivals
-        </h1>
-        <p class='mx-auto mt-4 max-w-3xl text-base text-gray-500'>
-          Thoughtfully designed objects for the workspace, home, and travel.
-        </p>
+    <div>
+      <div class='bg-white'>
+        <div class='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 flex flex-col gap-6 items-center'>
+          {% comment %} Search bar {% endcomment %}
+          <form
+            class='flex w-full max-w-[550px] items-center justify-between rounded-full bg-orange-200 pr-6'
+            id='search-bar-form'
+          >
+            <label for='search' class='sr-only'>Search</label>
+            <input
+              type='search'
+              name='q'
+              placeholder='What are you looking for today?'
+              autoComplete='off'
+              class='w-full grow rounded-full bg-orange-200 py-3 pl-6 pr-4 mr-4 font-body text-slate-700 placeholder:text-slate-600 focus:outline-none border-0 xl:text-lg'
+            >
+            <button type='submit' class='flex h-full items-center'>
+              {% render 'icon-search' %}
+            </button>
+          </form>
+
+          {% if search.performed %}
+            <p class='self-start pl-2 text-lg font-medium tracking-tight text-gray-900'>
+              <span>Found {{ search.results_count }}</span>
+              <span>
+                {% if search.results_count == 1 %}
+                  result
+                {% else %}
+                  results
+                {% endif %}
+              </span>
+              <span>for</span>
+              <span>&quot;{{ search.terms }}&quot;</span>
+            </p>
+          {% endif %}
+        </div>
       </div>
 
       <!-- Filters -->
-      <section
-        aria-labelledby='filter-heading'
-        class='border-t border-gray-200 pt-6'
-      >
-        <h2 id='filter-heading' class='sr-only'>Product filters</h2>
+      <form aria-labelledby='filter-heading' id='desktop-filter-and-sort-form'>
+        <h2 id='filter-heading' class='sr-only'>Filter and Sort</h2>
 
-        <div class='flex items-center justify-between'>
-          <div class='relative inline-block text-left'>
-            <div>
-              <button
-                type='button'
-                class='group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                id='menu-button'
-                aria-expanded='false'
-                aria-haspopup='true'
+        <div class='border-b border-gray-200 bg-white pb-4'>
+          <div class='mx-auto flex max-w-7xl items-baseline justify-between px-4 sm:px-6 lg:px-8'>
+            <div class='hidden sm:flex items-center gap-4 text-left'>
+              <h3 class='text-sm font-medium'>Sort By:</h3>
+              <select
+                id='desktop-sort-select'
+                class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                name='sort_by'
               >
-                Sort
-                <svg
-                  class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                  viewBox='0 0 20 20'
-                  fill='currentColor'
-                  aria-hidden='true'
-                >
-                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                </svg>
-              </button>
+                {%- assign sort_by = search.sort_by
+                  | default: search.default_sort_by
+                -%}
+                {% for option in search.sort_options %}
+                  <option
+                    value='{{ option.value | escape }}'
+                    {% if option.value == sort_by %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {% endfor %}
+              </select>
             </div>
 
             <!--
-              Dropdown menu, show/hide based on menu state.
-
-              Entering: "transition ease-out duration-100"
-                From: "transform opacity-0 scale-95"
-                To: "transform opacity-100 scale-100"
-              Leaving: "transition ease-in duration-75"
-                From: "transform opacity-100 scale-100"
-                To: "transform opacity-0 scale-95"
+              Mobile filter dialog toggle, controls the 'mobileFiltersOpen' state.
             -->
-            <div
-              class='absolute left-0 z-10 mt-2 w-40 origin-top-left rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'
-              role='menu'
-              aria-orientation='vertical'
-              aria-labelledby='menu-button'
-              tabindex='-1'
-            >
-              <div class='py-1' role='none'>
-                <!-- Active: "bg-gray-100", Not Active: "" -->
-                <a
-                  href='#'
-                  class='block px-4 py-2 text-sm font-medium text-gray-900'
-                  role='menuitem'
-                  tabindex='-1'
-                  id='menu-item-0'
-                  >Most Popular</a
-                >
-                <a
-                  href='#'
-                  class='block px-4 py-2 text-sm font-medium text-gray-900'
-                  role='menuitem'
-                  tabindex='-1'
-                  id='menu-item-1'
-                  >Best Rating</a
-                >
-                <a
-                  href='#'
-                  class='block px-4 py-2 text-sm font-medium text-gray-900'
-                  role='menuitem'
-                  tabindex='-1'
-                  id='menu-item-2'
-                  >Newest</a
-                >
-                <a
-                  href='#'
-                  class='block px-4 py-2 text-sm font-medium text-gray-900'
-                  role='menuitem'
-                  tabindex='-1'
-                  id='menu-item-3'
-                  >Price: Low to High</a
-                >
-                <a
-                  href='#'
-                  class='block px-4 py-2 text-sm font-medium text-gray-900'
-                  role='menuitem'
-                  tabindex='-1'
-                  id='menu-item-4'
-                  >Price: High to Low</a
-                >
-              </div>
-            </div>
-          </div>
+            {% if search.performed %}
+              <button
+                @click='mobileFiltersOpen = true'
+                type='button'
+                class='ms-auto flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden'
+              >
+                {% render 'icon-filter-and-sort' %}
+                Filter and Sort
+              </button>
+            {% endif %}
 
-          <!--
-            Mobile filter dialog toggle, controls the 'mobileFilterDialogOpen' state.
-          -->
-          <button
-            type='button'
-            class='inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden'
-          >
-            Filters
-          </button>
+            {% comment %} Desktop Filters {% endcomment %}
+            <div class='hidden sm:block'>
+              <div class='flow-root'>
+                <div class='-mx-4 flex items-baseline divide-x divide-gray-200'>
+                  {%- for filter in search.filters -%}
+                    <div class='filter-section relative inline-block px-4 text-left'>
+                      <button
+                        type='button'
+                        class='expand-collapse-filter-button group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
+                        aria-controls='desktop-filter-section-{{ forloop.index }}'
+                        aria-expanded='false'
+                      >
+                        <span>{{ filter.label }}</span>
+                        {% if filter.active_values.size > 0 %}
+                          <span class='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>
+                            {{ filter.active_values.size }}
+                          </span>
+                        {% endif %}
+                        <svg
+                          class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                          viewBox='0 0 20 20'
+                          fill='currentColor'
+                          aria-hidden='true'
+                        >
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
 
-          <div class='hidden sm:flex sm:items-baseline sm:space-x-8'>
-            <div id='menu' class='relative inline-block text-left'>
-              <div>
-                <button
-                  type='button'
-                  class='group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                  aria-expanded='false'
-                >
-                  <span>Category</span>
-                  <span class='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'
-                    >1</span
+                      <!--
+                        'Category' dropdown, show/hide based on dropdown state.
+
+                        Entering: "transition ease-out duration-100"
+                          From: "transform opacity-0 scale-95"
+                          To: "transform opacity-100 scale-100"
+                        Leaving: "transition ease-in duration-75"
+                          From: "transform opacity-100 scale-100"
+                          To: "transform opacity-0 scale-95"
+                      -->
+                      <div
+                        id='desktop-filter-section-{{ forloop.index }}'
+                        class='filter-section-values desktop hidden absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'
+                      >
+                        <div class='space-y-4'>
+                          {%- for filter_value in filter.values -%}
+                            <div class='flex items-center'>
+                              <input
+                                name='{{ filter_value.param_name }}'
+                                value='{{ filter_value.value }}'
+                                id='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                                type='checkbox'
+                                {% if filter_value.active -%}
+                                  checked
+                                {%- endif %}
+                                class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                              >
+                              <label
+                                for='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                                class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
+                              >
+                                {{- filter_value.label -}}
+                              </label>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                  <input type='hidden' name='q' value='{{ search.terms }}'>
+                  <button
+                    type='submit'
+                    class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
                   >
-                  <svg
-                    class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-
-              <!--
-                Entering: "transition ease-out duration-100"
-                  From: "transform opacity-0 scale-95"
-                  To: "transform opacity-100 scale-100"
-                Leaving: "transition ease-in duration-75"
-                  From: "transform opacity-100 scale-100"
-                  To: "transform opacity-0 scale-95"
-              -->
-              <div class='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                <form class='space-y-4'>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-category-0'
-                      name='category[]'
-                      value='tees'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-category-0'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Tees</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-category-1'
-                      name='category[]'
-                      value='crewnecks'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-category-1'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Crewnecks</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-category-2'
-                      name='category[]'
-                      value='hats'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-category-2'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Hats</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-category-3'
-                      name='category[]'
-                      value='bundles'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-category-3'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Bundles</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-category-4'
-                      name='category[]'
-                      value='carry'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-category-4'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Carry</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-category-5'
-                      name='category[]'
-                      value='objects'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-category-5'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Objects</label
-                    >
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div id='menu' class='relative inline-block text-left'>
-              <div>
-                <button
-                  type='button'
-                  class='group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                  aria-expanded='false'
-                >
-                  <span>Brand</span>
-                  <svg
-                    class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-
-              <!--
-                Entering: "transition ease-out duration-100"
-                  From: "transform opacity-0 scale-95"
-                  To: "transform opacity-100 scale-100"
-                Leaving: "transition ease-in duration-75"
-                  From: "transform opacity-100 scale-100"
-                  To: "transform opacity-0 scale-95"
-              -->
-              <div class='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                <form class='space-y-4'>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-brand-0'
-                      name='brand[]'
-                      value='clothing-company'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-brand-0'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Clothing Company</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-brand-1'
-                      name='brand[]'
-                      value='fashion-inc'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-brand-1'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Fashion Inc.</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-brand-2'
-                      name='brand[]'
-                      value='shoes-n-more'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-brand-2'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Shoes &#039;n More</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-brand-3'
-                      name='brand[]'
-                      value='supplies-n-stuff'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-brand-3'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Supplies &#039;n Stuff</label
-                    >
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div id='menu' class='relative inline-block text-left'>
-              <div>
-                <button
-                  type='button'
-                  class='group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                  aria-expanded='false'
-                >
-                  <span>Color</span>
-                  <svg
-                    class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-
-              <!--
-                Entering: "transition ease-out duration-100"
-                  From: "transform opacity-0 scale-95"
-                  To: "transform opacity-100 scale-100"
-                Leaving: "transition ease-in duration-75"
-                  From: "transform opacity-100 scale-100"
-                  To: "transform opacity-0 scale-95"
-              -->
-              <div class='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                <form class='space-y-4'>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-color-0'
-                      name='color[]'
-                      value='white'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-color-0'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >White</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-color-1'
-                      name='color[]'
-                      value='black'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-color-1'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Black</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-color-2'
-                      name='color[]'
-                      value='grey'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-color-2'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Grey</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-color-3'
-                      name='color[]'
-                      value='blue'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-color-3'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Blue</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-color-4'
-                      name='color[]'
-                      value='olive'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-color-4'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Olive</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-color-5'
-                      name='color[]'
-                      value='tan'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-color-5'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >Tan</label
-                    >
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div id='menu' class='relative inline-block text-left'>
-              <div>
-                <button
-                  type='button'
-                  class='group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                  aria-expanded='false'
-                >
-                  <span>Sizes</span>
-                  <svg
-                    class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                  >
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-
-              <!--
-                Entering: "transition ease-out duration-100"
-                  From: "transform opacity-0 scale-95"
-                  To: "transform opacity-100 scale-100"
-                Leaving: "transition ease-in duration-75"
-                  From: "transform opacity-100 scale-100"
-                  To: "transform opacity-0 scale-95"
-              -->
-              <div class='absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                <form class='space-y-4'>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-sizes-0'
-                      name='sizes[]'
-                      value='xs'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-sizes-0'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >XS</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-sizes-1'
-                      name='sizes[]'
-                      value='s'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-sizes-1'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >S</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-sizes-2'
-                      name='sizes[]'
-                      value='m'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-sizes-2'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >M</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-sizes-3'
-                      name='sizes[]'
-                      value='l'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-sizes-3'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >L</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-sizes-4'
-                      name='sizes[]'
-                      value='xl'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-sizes-4'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >XL</label
-                    >
-                  </div>
-                  <div class='flex items-center'>
-                    <input
-                      id='filter-sizes-5'
-                      name='sizes[]'
-                      value='2xl'
-                      type='checkbox'
-                      class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    >
-                    <label
-                      for='filter-sizes-5'
-                      class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                      >2XL</label
-                    >
-                  </div>
-                </form>
+                    Apply Filters
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+
+        <!-- Active filters -->
+        {% if search.performed %}
+          <div class='bg-gray-100'>
+            <div class='mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8'>
+              <div class='flex items-center'>
+                <h3 class='text-sm font-medium text-gray-500'>
+                  Active Filters
+                </h3>
+
+                <div
+                  aria-hidden='true'
+                  class='h-5 w-px bg-gray-300 ml-6 block'
+                ></div>
+                <div class='pl-6'>
+                  <a
+                    href='{{ colllection.url }}?sort_by={{ search.sort_by }}&q={{ search.terms }}'
+                    class='text-gray-500'
+                    >Clear all</a
+                  >
+                </div>
+              </div>
+
+              <div class='mt-2'>
+                <div class='-m-1 flex flex-wrap items-center gap-1'>
+                  {% for filter in search.filters %}
+                    {%- for filter_value in filter.active_values -%}
+                      <span class='my-1 mt-3 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900'>
+                        <span>
+                          {{ filter_value.label }}
+                        </span>
+                        <a
+                          href='{{ filter_value.url_to_remove }}'
+                          class='ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-500'
+                        >
+                          <span class='sr-only'
+                            >Remove filter for {{ filter.label }}:
+                            {{ filter_value.label -}}
+                          </span>
+                          <svg
+                            class='h-2 w-2'
+                            stroke='currentColor'
+                            fill='none'
+                            viewBox='0 0 8 8'
+                          >
+                            <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
+                          </svg>
+                        </a>
+                      </span>
+                    {%- endfor -%}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </form>
 
       <!-- Product grid -->
-      <section aria-labelledby='products-heading' class='mt-8'>
+      <section
+        aria-labelledby='products-heading'
+        class='mx-auto max-w-2xl px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 lg:max-w-7xl lg:px-8'
+      >
         <h2 id='products-heading' class='sr-only'>Products</h2>
 
-        <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8'>
-          <a href='#' class='group'>
-            <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2'>
-              <img
-                src='https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-01.jpg'
-                alt='Person using a pen to cross a task off a productivity paper card.'
-                class='h-full w-full object-cover object-center group-hover:opacity-75'
-              >
-            </div>
-            <div class='mt-4 flex items-center justify-between text-base font-medium text-gray-900'>
-              <h3>Focus Paper Refill</h3>
-              <p>$13</p>
-            </div>
-            <p class='mt-1 text-sm italic text-gray-500'>3 sizes available</p>
-          </a>
-          <a href='#' class='group'>
-            <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2'>
-              <img
-                src='https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-02.jpg'
-                alt='Paper card sitting upright in walnut card holder on desk.'
-                class='h-full w-full object-cover object-center group-hover:opacity-75'
-              >
-            </div>
-            <div class='mt-4 flex items-center justify-between text-base font-medium text-gray-900'>
-              <h3>Focus Card Holder</h3>
-              <p>$64</p>
-            </div>
-            <p class='mt-1 text-sm italic text-gray-500'>Walnut</p>
-          </a>
-          <a href='#' class='group'>
-            <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2'>
-              <img
-                src='https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-03.jpg'
-                alt='Textured gray felt pouch for paper cards with snap button flap and elastic pen holder loop.'
-                class='h-full w-full object-cover object-center group-hover:opacity-75'
-              >
-            </div>
-            <div class='mt-4 flex items-center justify-between text-base font-medium text-gray-900'>
-              <h3>Focus Carry Pouch</h3>
-              <p>$32</p>
-            </div>
-            <p class='mt-1 text-sm italic text-gray-500'>Heather Gray</p>
-          </a>
+        <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
+          {% if search.performed %}
+            {% for item in search.results %}
+              {%- case item.object_type -%}
+                {%- when 'product' -%}
+                  <a href='{{ item.url }}' class='group'>
+                    <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
+                      <img
+                        src='{{ item.featured_image |  image_url: width: master  }}'
+                        alt='{{ item.featured_image.alt | escape }}'
+                        class='h-full w-full object-cover object-center group-hover:opacity-75'
+                      >
+                    </div>
+                    <h3 class='mt-4 text-sm text-gray-700'>{{ item.title }}</h3>
+                    <p class='mt-1 text-lg font-medium text-gray-900'>
+                      {{ item.price | money }}
+                    </p>
+                  </a>
 
-          <!-- More products... -->
-        </div>
-      </section>
+                {%- when 'article' -%}
+                  <a href='{{ item.url }}' class='group'>
+                    <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
+                      <img
+                        src='{{ item.image |  image_url: width: master  }}'
+                        alt='{{ item.image.alt | escape }}'
+                        class='h-full w-full object-cover object-center group-hover:opacity-75'
+                      >
+                    </div>
+                    <h3 class='mt-4 text-sm text-gray-700'>
+                      {{ item.title }}
+                    </h3>
+                    <p class='mt-1 mb-2 text-lg font-medium text-gray-900'>
+                      {{ item.published_at | date: '%B %d, %Y' }}
+                    </p>
+                    <span class='inline-flex items-center rounded-full bg-gray-50 px-3 py-1 font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 -translate-x-1'
+                      >Blog Article</span
+                    >
+                  </a>
 
-      <section aria-labelledby='more-products-heading' class='mt-16 pb-24'>
-        <h2 id='more-products-heading' class='sr-only'>More products</h2>
-
-        <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8'>
-          <a href='#' class='group'>
-            <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2'>
-              <img
-                src='https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-07.jpg'
-                alt='Close up of long kettle spout pouring boiling water into pour-over coffee mug with frothy coffee.'
-                class='h-full w-full object-cover object-center group-hover:opacity-75'
-              >
-            </div>
-            <div class='mt-4 flex items-center justify-between text-base font-medium text-gray-900'>
-              <h3>Electric Kettle</h3>
-              <p>$149</p>
-            </div>
-            <p class='mt-1 text-sm italic text-gray-500'>Black</p>
-          </a>
-          <a href='#' class='group'>
-            <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2'>
-              <img
-                src='https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-08.jpg'
-                alt='Extra large black leather workspace pad on desk with computer, wooden shelf, desk organizer, and computer peripherals.'
-                class='h-full w-full object-cover object-center group-hover:opacity-75'
-              >
-            </div>
-            <div class='mt-4 flex items-center justify-between text-base font-medium text-gray-900'>
-              <h3>Leather Workspace Pad</h3>
-              <p>$165</p>
-            </div>
-            <p class='mt-1 text-sm italic text-gray-500'>Black</p>
-          </a>
-          <a href='#' class='group'>
-            <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2'>
-              <img
-                src='https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-09.jpg'
-                alt='Leather long wallet held open with hand-stitched card dividers, full-length bill pocket, and simple tab closure.'
-                class='h-full w-full object-cover object-center group-hover:opacity-75'
-              >
-            </div>
-            <div class='mt-4 flex items-center justify-between text-base font-medium text-gray-900'>
-              <h3>Leather Long Wallet</h3>
-              <p>$118</p>
-            </div>
-            <p class='mt-1 text-sm italic text-gray-500'>Natural</p>
-          </a>
-
-          <!-- More products... -->
+                {%- when 'page' -%}
+                  <a href='{{ item.url }}' class='flex items-baseline gap-2'>
+                    <h3 class='mt-1 text-lg font-medium text-gray-900'>
+                      {{ item.title }}
+                    </h3>
+                    <span class='inline-flex items-center rounded-full bg-gray-50 px-3 py-1 font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10'
+                      >Page</span
+                    >
+                  </a>
+              {%- endcase -%}
+            {% endfor %}
+          {% else %}
+            {% for product in collections.all.products %}
+              <a href='{{ product.url }}' class='group'>
+                <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
+                  <img
+                    src='{{ product.featured_image |  image_url: width: master  }}'
+                    alt='{{ product.featured_image.alt | escape }}'
+                    class='h-full w-full object-cover object-center group-hover:opacity-75'
+                  >
+                </div>
+                <h3 class='mt-4 text-sm text-gray-700'>{{ product.title }}</h3>
+                <p class='mt-1 text-lg font-medium text-gray-900'>
+                  {{ product.price | money }}
+                </p>
+              </a>
+            {% endfor %}
+          {% endif %}
         </div>
       </section>
     </div>
