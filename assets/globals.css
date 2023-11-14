@@ -2335,6 +2335,10 @@ select {
   max-width: 550px;
 }
 
+.max-w-screen-sm {
+  max-width: 640px;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -3906,6 +3910,14 @@ select {
 
 .pl-2 {
   padding-left: 0.5rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pl-7 {
+  padding-left: 1.75rem;
 }
 
 .text-left {
@@ -6767,6 +6779,10 @@ select {
     margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
   }
 
+  .sm\:self-center {
+    align-self: center;
+  }
+
   .sm\:p-6 {
     padding: 1.5rem;
   }
@@ -6810,6 +6826,10 @@ select {
 
   .sm\:pt-16 {
     padding-top: 4rem;
+  }
+
+  .sm\:pl-6 {
+    padding-left: 1.5rem;
   }
 
   .sm\:text-4xl {

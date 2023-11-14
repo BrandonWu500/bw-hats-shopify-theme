@@ -202,10 +202,10 @@
 
     <div>
       <div class='bg-white'>
-        <div class='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 flex flex-col gap-6 items-center'>
+        <div class='mx-auto max-w-xl px-4 py-16 sm:px-6 lg:px-8 flex flex-col gap-6 items-center'>
           {% comment %} Search bar {% endcomment %}
           <form
-            class='flex w-full max-w-[550px] items-center justify-between rounded-full bg-orange-200 pr-6'
+            class='flex w-full items-center justify-between rounded-full bg-orange-200 pr-6'
             id='search-bar-form'
           >
             <label for='search' class='sr-only'>Search</label>
@@ -214,13 +214,13 @@
               name='q'
               placeholder='What are you looking for today?'
               autoComplete='off'
+              required
               class='w-full grow rounded-full bg-orange-200 py-3 pl-6 pr-4 mr-4 font-body text-slate-700 placeholder:text-slate-600 focus:outline-none border-0 xl:text-lg'
             >
             <button type='submit' class='flex h-full items-center'>
               {% render 'icon-search' %}
             </button>
           </form>
-
           {% if search.performed %}
             <p class='self-start pl-2 text-lg font-medium tracking-tight text-gray-900'>
               <span>Found {{ search.results_count }}</span>
@@ -239,38 +239,41 @@
       </div>
 
       <!-- Filters -->
-      <form aria-labelledby='filter-heading' id='desktop-filter-and-sort-form'>
-        <h2 id='filter-heading' class='sr-only'>Filter and Sort</h2>
+      {% if search.performed %}
+        <form
+          aria-labelledby='filter-heading'
+          id='desktop-filter-and-sort-form'
+        >
+          <h2 id='filter-heading' class='sr-only'>Filter and Sort</h2>
 
-        <div class='border-b border-gray-200 bg-white pb-4'>
-          <div class='mx-auto flex max-w-7xl items-baseline justify-between px-4 sm:px-6 lg:px-8'>
-            <div class='hidden sm:flex items-center gap-4 text-left'>
-              <h3 class='text-sm font-medium'>Sort By:</h3>
-              <select
-                id='desktop-sort-select'
-                class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
-                name='sort_by'
-              >
-                {%- assign sort_by = search.sort_by
-                  | default: search.default_sort_by
-                -%}
-                {% for option in search.sort_options %}
-                  <option
-                    value='{{ option.value | escape }}'
-                    {% if option.value == sort_by %}
-                      selected
-                    {% endif %}
-                  >
-                    {{ option.name | escape }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
+          <div class='border-b border-gray-200 bg-white pb-4'>
+            <div class='mx-auto flex max-w-7xl items-baseline justify-between px-4 sm:px-6 lg:px-8'>
+              <div class='hidden sm:flex items-center gap-4 text-left'>
+                <h3 class='text-sm font-medium'>Sort By:</h3>
+                <select
+                  id='desktop-sort-select'
+                  class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                  name='sort_by'
+                >
+                  {%- assign sort_by = search.sort_by
+                    | default: search.default_sort_by
+                  -%}
+                  {% for option in search.sort_options %}
+                    <option
+                      value='{{ option.value | escape }}'
+                      {% if option.value == sort_by %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ option.name | escape }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
 
-            <!--
-              Mobile filter dialog toggle, controls the 'mobileFiltersOpen' state.
-            -->
-            {% if search.performed %}
+              <!--
+                Mobile filter dialog toggle, controls the 'mobileFiltersOpen' state.
+              -->
               <button
                 @click='mobileFiltersOpen = true'
                 type='button'
@@ -279,90 +282,88 @@
                 {% render 'icon-filter-and-sort' %}
                 Filter and Sort
               </button>
-            {% endif %}
 
-            {% comment %} Desktop Filters {% endcomment %}
-            <div class='hidden sm:block'>
-              <div class='flow-root'>
-                <div class='-mx-4 flex items-baseline divide-x divide-gray-200'>
-                  {%- for filter in search.filters -%}
-                    <div class='filter-section relative inline-block px-4 text-left'>
-                      <button
-                        type='button'
-                        class='expand-collapse-filter-button group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
-                        aria-controls='desktop-filter-section-{{ forloop.index }}'
-                        aria-expanded='false'
-                      >
-                        <span>{{ filter.label }}</span>
-                        {% if filter.active_values.size > 0 %}
-                          <span class='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>
-                            {{ filter.active_values.size }}
-                          </span>
-                        {% endif %}
-                        <svg
-                          class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                          viewBox='0 0 20 20'
-                          fill='currentColor'
-                          aria-hidden='true'
+              {% comment %} Desktop Filters {% endcomment %}
+              <div class='hidden sm:block'>
+                <div class='flow-root'>
+                  <div class='-mx-4 flex items-baseline divide-x divide-gray-200'>
+                    {%- for filter in search.filters -%}
+                      <div class='filter-section relative inline-block px-4 text-left'>
+                        <button
+                          type='button'
+                          class='expand-collapse-filter-button group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
+                          aria-controls='desktop-filter-section-{{ forloop.index }}'
+                          aria-expanded='false'
                         >
-                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                        </svg>
-                      </button>
+                          <span>{{ filter.label }}</span>
+                          {% if filter.active_values.size > 0 %}
+                            <span class='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>
+                              {{ filter.active_values.size }}
+                            </span>
+                          {% endif %}
+                          <svg
+                            class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                            viewBox='0 0 20 20'
+                            fill='currentColor'
+                            aria-hidden='true'
+                          >
+                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </button>
 
-                      <!--
-                        'Category' dropdown, show/hide based on dropdown state.
+                        <!--
+                          'Category' dropdown, show/hide based on dropdown state.
 
-                        Entering: "transition ease-out duration-100"
-                          From: "transform opacity-0 scale-95"
-                          To: "transform opacity-100 scale-100"
-                        Leaving: "transition ease-in duration-75"
-                          From: "transform opacity-100 scale-100"
-                          To: "transform opacity-0 scale-95"
-                      -->
-                      <div
-                        id='desktop-filter-section-{{ forloop.index }}'
-                        class='filter-section-values desktop hidden absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'
-                      >
-                        <div class='space-y-4'>
-                          {%- for filter_value in filter.values -%}
-                            <div class='flex items-center'>
-                              <input
-                                name='{{ filter_value.param_name }}'
-                                value='{{ filter_value.value }}'
-                                id='Filter-{{ filter.param_name }}-{{ forloop.index }}'
-                                type='checkbox'
-                                {% if filter_value.active -%}
-                                  checked
-                                {%- endif %}
-                                class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                              >
-                              <label
-                                for='Filter-{{ filter.param_name }}-{{ forloop.index }}'
-                                class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
-                              >
-                                {{- filter_value.label -}}
-                              </label>
-                            </div>
-                          {% endfor %}
+                          Entering: "transition ease-out duration-100"
+                            From: "transform opacity-0 scale-95"
+                            To: "transform opacity-100 scale-100"
+                          Leaving: "transition ease-in duration-75"
+                            From: "transform opacity-100 scale-100"
+                            To: "transform opacity-0 scale-95"
+                        -->
+                        <div
+                          id='desktop-filter-section-{{ forloop.index }}'
+                          class='filter-section-values desktop hidden absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'
+                        >
+                          <div class='space-y-4'>
+                            {%- for filter_value in filter.values -%}
+                              <div class='flex items-center'>
+                                <input
+                                  name='{{ filter_value.param_name }}'
+                                  value='{{ filter_value.value }}'
+                                  id='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                                  type='checkbox'
+                                  {% if filter_value.active -%}
+                                    checked
+                                  {%- endif %}
+                                  class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                                >
+                                <label
+                                  for='Filter-{{ filter.param_name }}-{{ forloop.index }}'
+                                  class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
+                                >
+                                  {{- filter_value.label -}}
+                                </label>
+                              </div>
+                            {% endfor %}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  {% endfor %}
-                  <input type='hidden' name='q' value='{{ search.terms }}'>
-                  <button
-                    type='submit'
-                    class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
-                  >
-                    Apply Filters
-                  </button>
+                    {% endfor %}
+                    <input type='hidden' name='q' value='{{ search.terms }}'>
+                    <button
+                      type='submit'
+                      class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
+                    >
+                      Apply Filters
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Active filters -->
-        {% if search.performed %}
+          <!-- Active filters -->
           <div class='bg-gray-100'>
             <div class='mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8'>
               <div class='flex items-center'>
@@ -415,8 +416,8 @@
               </div>
             </div>
           </div>
-        {% endif %}
-      </form>
+        </form>
+      {% endif %}
 
       <!-- Product grid -->
       <section
