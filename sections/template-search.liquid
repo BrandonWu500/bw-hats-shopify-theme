@@ -216,13 +216,88 @@
               autoComplete='off'
               required
               class='w-full grow rounded-full bg-orange-200 py-3 pl-6 pr-4 mr-4 font-body text-slate-700 placeholder:text-slate-600 focus:outline-none border-0 xl:text-lg'
+              {% if search.performed %}
+                value='{{ search.terms | escape }}'
+              {% endif %}
             >
-            <button type='submit' class='flex h-full items-center'>
+            <input type='hidden' id='search-type' name='type' value=''>
+            <button
+              type='submit'
+              class='flex h-full items-center'
+            >
               {% render 'icon-search' %}
             </button>
           </form>
+
+          <fieldset
+            id='search-page-checkboxes'
+            class='self-start pl-6'
+          >
+            <legend class='sr-only'>Include:</legend>
+            <div class='flex flex-col sm:flex-row items-baseline sm:items-center gap-5 sm:gap-10'>
+              <div class='relative flex items-start'>
+                <div class='flex h-6 items-center'>
+                  <input
+                    id='checkbox-products'
+                    type='checkbox'
+                    name='product'
+                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                    {% if search.types contains 'product' %}
+                      checked
+                    {% endif %}
+                  >
+                </div>
+                <div class='ml-3 text-sm leading-6'>
+                  <label
+                    for='checkbox-products'
+                    class='font-medium text-gray-900'
+                    >Products</label
+                  >
+                </div>
+              </div>
+              <div class='relative flex items-start'>
+                <div class='flex h-6 items-center'>
+                  <input
+                    id='checkbox-pages'
+                    type='checkbox'
+                    name='page'
+                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                    {% if search.types contains 'page' %}
+                      checked
+                    {% endif %}
+                  >
+                </div>
+                <div class='ml-3 text-sm leading-6'>
+                  <label for='checkbox-pages' class='font-medium text-gray-900'
+                    >Pages</label
+                  >
+                </div>
+              </div>
+              <div class='relative flex items-start'>
+                <div class='flex h-6 items-center'>
+                  <input
+                    id='checkbox-blog-articles'
+                    type='checkbox'
+                    name='article'
+                    class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                    {% if search.types contains 'article' %}
+                      checked
+                    {% endif %}
+                  >
+                </div>
+                <div class='ml-3 text-sm leading-6'>
+                  <label
+                    for='checkbox-blog-articles'
+                    class='font-medium text-gray-900'
+                    >Blog Articles</label
+                  >
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
           {% if search.performed %}
-            <p class='self-start pl-2 text-lg font-medium tracking-tight text-gray-900'>
+            <p class='self-start pl-6 text-lg font-medium tracking-tight text-gray-900'>
               <span>Found {{ search.results_count }}</span>
               <span>
                 {% if search.results_count == 1 %}
