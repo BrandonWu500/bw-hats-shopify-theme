@@ -1,0 +1,33 @@
+<div class='bg-white px-6 py-16 lg:px-8'>
+  <div class='mx-auto max-w-3xl text-base leading-7 text-gray-700'>
+    <time
+      datetime='{{ article.published_at }}'
+      class='text-indigo-600 text-base font-semibold leading-7'
+    >
+      {{- article.published_at | date: '%B %d, %Y' -}}
+    </time>
+    <h1 class='mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+      {{ article.title }}
+    </h1>
+    <p class='mt-6 text-xl leading-8'>
+      By: {{ article.user.name }} | {{ article.user.bio }}
+    </p>
+    <div class='mt-10 relative w-full'>
+      <img
+        src='{{ article.image |  image_url: width: 900  }}'
+        alt=''
+        class='aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
+        sizes='
+          (max-width: 425px) 400px,
+          900px
+        '
+      >
+      <div
+        class='absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10'
+      ></div>
+    </div>
+    <div class='mt-10 max-w-2xl prose prose-p:text-lg'>
+      {{ article.content }}
+    </div>
+  </div>
+</div>
