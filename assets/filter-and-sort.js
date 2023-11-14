@@ -43,16 +43,19 @@ expandCollapseFilterButtons.forEach((button) => {
   });
 });
 
-const dekstopFilterAndSortForm = document.querySelector(
+const desktopFilterAndSortForm = document.querySelector(
   '#desktop-filter-and-sort-form'
 );
-const desktopSortSelect = dekstopFilterAndSortForm.querySelector(
-  '#desktop-sort-select'
-);
 
-desktopSortSelect.addEventListener('change', () => {
-  dekstopFilterAndSortForm.submit();
-});
+if (desktopFilterAndSortForm) {
+  const desktopSortSelect = desktopFilterAndSortForm.querySelector(
+    '#desktop-sort-select'
+  );
+
+  desktopSortSelect.addEventListener('change', () => {
+    desktopFilterAndSortForm.submit();
+  });
+}
 
 const allFilterSectionValues = document.querySelectorAll(
   '.filter-section-values'
