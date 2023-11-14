@@ -19,12 +19,12 @@
     ></script>
     <script
       defer
-      src='../assets/utils.js'
+      src='{{ 'utils.js' | asset_url }}'
     ></script>
     {% comment %} App.js NEEDS to be after alpine js script {% endcomment %}
     <script
       defer
-      src='../assets/app.js'
+      src='{{ 'app.js' | asset_url }}'
     ></script>
   </head>
   <body>
