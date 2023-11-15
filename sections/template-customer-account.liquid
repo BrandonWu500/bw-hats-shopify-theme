@@ -1,0 +1,117 @@
+<div class='bg-white'>
+  <div class='mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24'>
+    <div class='max-w-xl'>
+      <h1
+        id='your-orders-heading'
+        class='text-3xl font-bold tracking-tight text-gray-900'
+      >
+        Your Orders
+      </h1>
+      <p class='mt-2 text-sm text-gray-500'>
+        Check the status of recent orders, manage returns, and discover similar
+        products.
+      </p>
+    </div>
+
+    <div class='mt-12 space-y-16 sm:mt-16'>
+      {%- if customer.orders.size > 0 -%}
+        {% paginate customer.orders by 20 %}
+          {%- for order in customer.orders -%}
+            <section aria-labelledby='{{ order.id }}-heading'>
+              <div class='space-y-1 md:flex md:items-baseline md:space-x-4 md:space-y-0'>
+                <h2
+                  id='{{ order.id }}-heading'
+                  class='text-lg font-medium text-gray-900 md:flex-shrink-0'
+                >
+                  Order {{ order.name }}
+                </h2>
+                <div class='space-y-5 sm:flex sm:items-baseline sm:justify-between sm:space-y-0 md:min-w-0 md:flex-1'>
+                  <p class='text-sm font-medium text-gray-500'>
+                    {{ order.fulfillment_status_label }}
+                  </p>
+                  <div class='flex text-sm font-medium'>
+                    <p class='text-gray-500'>
+                      {{ order.financial_status_label }}
+                    </p>
+                    <div class='ml-4 border-l border-gray-200 pl-4 sm:ml-6 sm:pl-6'>
+                      <a
+                        href='{{ order.customer_url }}'
+                        class='text-indigo-600 hover:text-indigo-500'
+                        >View Order</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class='-mb-6 mt-6 flow-root divide-y divide-gray-200 border-t border-gray-200'>
+                {% for item in order.line_items %}
+                  <div class='py-6 sm:flex'>
+                    <div class='flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8'>
+                      <img
+                        src='{{ item.image |  image_url: width: 400  }}'
+                        alt='{{ item.image.alt }}'
+                        class='h-20 w-20 flex-none rounded-md object-cover object-center sm:h-48 sm:w-48'
+                      >
+                      <div class='min-w-0 flex-1 sm:space-y-2'>
+                        <h3 class='text-lg font-medium text-gray-900'>
+                          <a href='{{ item.variant.url }}'>
+                            {{- item.title -}}
+                          </a>
+                        </h3>
+                        <p class='text-gray-500'>Qty: {{ item.quantity }}</p>
+                        <p class='mt-1 font-medium text-gray-900'>
+                          {{ item.final_line_price | money }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class='mt-6 space-y-4 sm:ml-6 sm:mt-0 sm:w-40 sm:flex-none'>
+                      <a
+                        href='{{ item.variant.url }}'
+                        class='flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-2.5 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-full sm:flex-grow-0'
+                      >
+                        Buy again
+                      </a>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </section>
+          {% endfor %}
+        {% endpaginate %}
+      {% else %}
+        <div class='rounded-md bg-blue-50 p-4'>
+          <div class='flex'>
+            <div class='flex-shrink-0'>
+              <svg
+                class='h-5 w-5 text-blue-400'
+                viewBox='0 0 20 20'
+                fill='currentColor'
+                aria-hidden='true'
+              >
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class='ml-3 flex-1 md:flex md:justify-between'>
+              <p class='text-sm text-blue-700'>
+                You haven't placed any orders yet. They will show up here once
+                you do.
+              </p>
+              <p class='mt-3 text-sm md:ml-6 md:mt-0'>
+                <a
+                  href='{{ routes.all_products_collection_url }}'
+                  class='whitespace-nowrap font-medium text-blue-700 hover:text-blue-600'
+                >
+                  Start Shopping
+                  <span aria-hidden='true'> &rarr;</span>
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- More orders... -->
+    </div>
+  </div>
+</div>
