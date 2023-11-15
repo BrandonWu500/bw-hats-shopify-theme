@@ -92,17 +92,49 @@
           </button>
         </div>
 
-        <div class='space-y-6 px-5 py-6'>
+        <div class='flex flex-col gap-5 px-5 py-6'>
           {% for link in linklists['main-menu'].links %}
-            <div class='flow-root'>
-              <a
-                href='{{ link.url }}'
-                class='-m-2 block p-2 font-medium text-gray-900'
-              >
-                {{- link.title -}}
-              </a>
-            </div>
+            <a
+              href='{{ link.url }}'
+              class='-m-2 block p-2 font-medium text-gray-900'
+            >
+              {{- link.title -}}
+            </a>
           {% endfor %}
+
+          {% comment %} Divider {% endcomment %}
+          <div class='relative my-2'>
+            <div class='absolute inset-0 flex items-center' aria-hidden='true'>
+              <div class='w-full border-t border-gray-300'></div>
+            </div>
+          </div>
+
+          {% if customer %}
+            <a
+              href='{{ routes.account_url }}'
+              class='-m-2 block p-2 font-medium text-gray-900'
+              >Account</a
+            >
+            {{
+              'Log out'
+              | customer_logout_link
+              | replace: '<a',
+                '<a class="-m-2 block p-2 font-medium text-gray-900"'
+            }}
+          {% else %}
+            {{
+              'Sign in'
+              | customer_login_link
+              | replace: '<a',
+                '<a class="-m-2 block p-2 font-medium text-gray-900"'
+            }}
+            {{
+              'Sign up'
+              | customer_register_link
+              | replace: '<a',
+                '<a class="-m-2 block p-2 font-medium text-gray-900"'
+            }}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -150,6 +182,17 @@
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
+              </a>
+            </div>
+
+            {% comment %} Account {% endcomment %}
+            <div class='hidden lg:block'>
+              <a
+                href='{{ routes.account_url }}'
+                class='flex p-2 text-gray-400 hover:text-gray-500'
+              >
+                <span class='sr-only'>Account</span>
+                {% render 'icon-user', class: 'h-6 w-6' %}
               </a>
             </div>
 
