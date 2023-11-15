@@ -116,20 +116,20 @@
               >Account</a
             >
             {{
-              'Log out'
+              'Log Out'
               | customer_logout_link
               | replace: '<a',
                 '<a class="-m-2 block p-2 font-medium text-gray-900"'
             }}
           {% else %}
             {{
-              'Sign in'
+              'Sign In'
               | customer_login_link
               | replace: '<a',
                 '<a class="-m-2 block p-2 font-medium text-gray-900"'
             }}
             {{
-              'Sign up'
+              'Create Account'
               | customer_register_link
               | replace: '<a',
                 '<a class="-m-2 block p-2 font-medium text-gray-900"'
@@ -148,7 +148,7 @@
           <div class='flex flex-1'>
             <a href='/'>
               <span class='sr-only'>BW Hats</span>
-              {% render 'logo' %}
+              {% render 'logo', class: 'w-auto h-6' %}
             </a>
           </div>
 
