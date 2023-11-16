@@ -13,7 +13,7 @@
   ```
 -->
 <div
-  class='bg-white'
+  class='bg-slate-600 text-orange-200'
   x-data='{ mobileMenuOpen: false }'
 >
   <!--
@@ -69,14 +69,14 @@
         x-transition:leave='transition ease-in-out duration-300 transform'
         x-transition:leave-start='translate-x-0'
         x-transition:leave-end='translate-x-full'
-        class='absolute h-full right-0 top-0 flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl'
+        class='absolute h-full right-0 top-0 flex w-full max-w-xs flex-col overflow-y-auto bg-slate-600 pb-12 shadow-xl'
       >
         <div class='flex px-5 pb-2 pt-5 items-center justify-between w-full'>
-          <p class='font-medium text-gray-900 text-xl'>Menu</p>
+          <p class='font-medium text-orange-200 text-xl'>Menu</p>
           <button
             x-on:click='mobileMenuOpen = false'
             type='button'
-            class='rounded-md p-2 text-gray-400'
+            class='rounded-md p-2 text-orange-200'
           >
             <span class='sr-only'>Close menu</span>
             <svg
@@ -96,7 +96,7 @@
           {% for link in linklists['main-menu'].links %}
             <a
               href='{{ link.url }}'
-              class='-m-2 block p-2 font-medium text-gray-900'
+              class='-m-2 block p-2 font-medium text-orange-200'
             >
               {{- link.title -}}
             </a>
@@ -105,34 +105,34 @@
           {% comment %} Divider {% endcomment %}
           <div class='relative my-2'>
             <div class='absolute inset-0 flex items-center' aria-hidden='true'>
-              <div class='w-full border-t border-gray-300'></div>
+              <div class='w-full border-t border-orange-200'></div>
             </div>
           </div>
 
           {% if customer %}
             <a
               href='{{ routes.account_url }}'
-              class='-m-2 block p-2 font-medium text-gray-900'
+              class='-m-2 block p-2 font-medium text-orange-200'
               >Account</a
             >
             {{
               'Sign Out'
               | customer_logout_link
               | replace: '<a',
-                '<a class="-m-2 block p-2 font-medium text-gray-900"'
+                '<a class="-m-2 block p-2 font-medium text-orange-200"'
             }}
           {% else %}
             {{
               'Sign In'
               | customer_login_link
               | replace: '<a',
-                '<a class="-m-2 block p-2 font-medium text-gray-900"'
+                '<a class="-m-2 block p-2 font-medium text-orange-200"'
             }}
             {{
               'Create Account'
               | customer_register_link
               | replace: '<a',
-                '<a class="-m-2 block p-2 font-medium text-gray-900"'
+                '<a class="-m-2 block p-2 font-medium text-orange-200"'
             }}
           {% endif %}
         </div>
@@ -140,9 +140,9 @@
     </div>
   </div>
 
-  <header class='relative bg-white'>
+  <header class='relative bg-slate-600'>
     <nav aria-label='Top' class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-      <div class='border-b border-gray-200'>
+      <div class=''>
         <div class='flex h-16 items-center justify-between'>
           <!-- Logo -->
           <div class='flex flex-1'>
@@ -157,7 +157,7 @@
             {% for link in linklists['main-menu'].links %}
               <a
                 href='{{ link.url }}'
-                class='-m-2 block p-2 whitespace-nowrap font-medium text-gray-900'
+                class='-m-2 block p-2 whitespace-nowrap font-medium text-orange-200 hover:text-orange-300'
               >
                 {{- link.title -}}
               </a>
@@ -169,7 +169,7 @@
             <div>
               <a
                 href='{{ routes.search_url }}'
-                class='flex p-2 text-gray-400 hover:text-gray-500'
+                class='flex p-2 text-orange-200 hover:text-orange-300'
               >
                 <span class='sr-only'>Search</span>
                 <svg
@@ -189,7 +189,7 @@
             <div class='hidden lg:block'>
               <a
                 href='{{ routes.account_url }}'
-                class='flex p-2 text-gray-400 hover:text-gray-500'
+                class='flex p-2 text-orange-200 hover:text-orange-300'
               >
                 <span class='sr-only'>Account</span>
                 {% render 'icon-user', class: 'h-6 w-6' %}
@@ -200,10 +200,10 @@
             <div class='lg:relative'>
               <a
                 href='{{ routes.cart_url }}'
-                class='flex items-center p-2'
+                class='flex items-center p-2 group'
               >
                 <svg
-                  class='h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                  class='h-6 w-6 flex-shrink-0 text-orange-200 group-hover:text-orange-300'
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke-width='1.5'
@@ -214,7 +214,7 @@
                 </svg>
                 <span
                   id='header-cart-item-count'
-                  class='hidden lg:flex ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800'
+                  class='hidden lg:flex ml-2 text-sm font-medium text-orange-200 group-hover:text-orange-300'
                 >
                   {{ cart.item_count }}
                 </span>
@@ -233,10 +233,10 @@
 
               <div
                 id='global-cart-popover'
-                class='hidden z-50 absolute inset-x-0 top-16 mt-px bg-white pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-black lg:ring-opacity-5 lg:hidden'
+                class='hidden z-50 absolute inset-x-0 top-16 mt-px bg-slate-600 pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-black lg:ring-opacity-5 lg:hidden'
               >
                 <div class='p-4 pb-0 flex items-center justify-between w-full'>
-                  <h2 class='flex items-center gap-2 capitalize text-lg font-medium text-gray-900'>
+                  <h2 class='flex items-center gap-2 capitalize text-lg font-medium text-orange-200'>
                     {% render 'icon-check' %}
                     <span>Added to Bag!</span>
                   </h2>
@@ -251,21 +251,21 @@
                   method='post'
                 >
                   <div
-                    class='divide-y divide-gray-200'
+                    class='divide-y divide-orange-200'
                     id='global-cart-popover-item'
                   ></div>
 
                   <button
                     type='submit'
                     name='checkout'
-                    class='w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
+                    class='w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-orange-50'
                   >
                     Checkout
                   </button>
 
                   <p class='mt-6 text-center'>
                     <a
-                      href='/cart'
+                      href='{{ routes.cart_url }}'
                       class='text-sm font-medium text-indigo-600 hover:text-indigo-500'
                       >View Shopping Bag</a
                     >
@@ -279,7 +279,7 @@
               <button
                 @click='mobileMenuOpen = true'
                 type='button'
-                class='rounded-md bg-white p-2 text-gray-400'
+                class='rounded-md bg-slate-600 p-2 text-orange-200'
               >
                 <span class='sr-only'>Open menu</span>
                 <svg
