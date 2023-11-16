@@ -6449,6 +6449,11 @@ select {
   background-color: rgb(255 237 213 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-orange-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 186 116 / var(--tw-bg-opacity));
+}
+
 .hover\:font-bold:hover {
   font-weight: 700;
 }

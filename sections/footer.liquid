@@ -5,7 +5,9 @@
     <ul class='flex w-full flex-col items-center justify-between gap-6 py-6 font-body text-lg xl:flex-row xl:gap-8'>
       {% for link in linklists.footer.links %}
         <li>
-          <a href='{{ link.url }}'>{{ link.title }}</a>
+          <a href='{{ link.url }}' class='hover:text-orange-300'>
+            {{- link.title -}}
+          </a>
         </li>
       {% endfor %}
     </ul>
@@ -34,7 +36,7 @@
         <div class='mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0'>
           <button
             type='submit'
-            class='flex w-full items-center justify-center rounded-md bg-orange-200 px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-orange-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-200'
+            class='flex w-full items-center justify-center rounded-md bg-orange-200 px-3 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-orange-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-200'
           >
             Subscribe
           </button>
@@ -49,19 +51,19 @@
       </p>
       <div class='flex w-full flex-1 items-center justify-center gap-14 px-8 xl:justify-end xl:gap-7 xl:p-0'>
         <a href='https://twitter.com/BW_Hats' target='_blank'>
-          {% render 'icon-twitter', class: 'h-6 w-6' %}
+          {% render 'icon-twitter', class: 'h-6 w-6 hover:text-orange-300' %}
         </a>
         <a
           href='https://www.facebook.com/people/BW-Hats/61553078035122'
           target='_blank'
         >
-          {% render 'icon-facebook', class: 'h-6 w-6' %}
+          {% render 'icon-facebook', class: 'h-6 w-6 hover:text-orange-300' %}
         </a>
         <a href='https://www.instagram.com/bw.hats' target='_blank'>
-          {% render 'icon-instagram', class: 'h-6 w-6' %}
+          {% render 'icon-instagram', class: 'h-6 w-6 hover:text-orange-300' %}
         </a>
         <a href='https://www.tiktok.com/@bw.hats' target='_blank'>
-          {% render 'icon-tiktok', class: 'h-6 w-6' %}
+          {% render 'icon-tiktok', class: 'h-6 w-6 hover:text-orange-300' %}
         </a>
       </div>
     </div>
