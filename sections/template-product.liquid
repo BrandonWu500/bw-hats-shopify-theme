@@ -28,7 +28,7 @@
             {% for image in product.images %}
               <button
                 id='tab-{{ forloop.index0 }}'
-                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4'
+                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-offset-4 focus:ring-orange-200 focus:ring-4'
                 role='tab'
                 type='button'
               >
@@ -37,22 +37,22 @@
                   <img
                     src='{{ image |  image_url: master }}'
                     alt='{{ image.alt }}'
-                    class='h-full w-full object-cover'
+                    class='h-full w-full object-cover hover:opacity-75'
                   >
                 </span>
                 <!--
-                  Selected: "ring-indigo-500", Not Selected: "ring-transparent"
+                  Selected: "ring-orange-200", Not Selected: "ring-transparent"
                 -->
 
                 <span
                   id='gallery-tab-border'
                   class='
                     {% if featured == image %}
-                      ring-indigo-500
+                      ring-orange-300
                       {% else %}
                       ring-transparent
                     {% endif %}
-                     pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2
+                     pointer-events-none absolute inset-0 rounded-md ring-4 ring-offset-4
                   '
                   aria-hidden='true'
                 ></span>
@@ -92,13 +92,13 @@
 
     <!-- Product info -->
     <div class='mt-10 px-0.5 sm:mt-16 sm:px-6 lg:px-0 lg:mt-0 mx-auto max-w-2xl lg:max-w-7xl'>
-      <h1 class='text-3xl font-bold tracking-tight text-gray-900'>
+      <h1 class='text-3xl font-bold tracking-tight text-slate-700'>
         {{ product.title }}
       </h1>
 
       <div class='mt-3'>
         <h2 class='sr-only'>Product information</h2>
-        <p class='text-3xl tracking-tight text-gray-900' id='product-price'>
+        <p class='text-3xl tracking-tight text-slate-700' id='product-price'>
           {{ product.selected_or_first_available_variant.price | money }}
         </p>
       </div>
@@ -106,7 +106,7 @@
       <div class='mt-6'>
         <h3 class='sr-only'>Description</h3>
 
-        <div class='space-y-6 text-base text-gray-700'>
+        <div class='space-y-6 text-base text-slate-600'>
           {% render 'prose', content: product.content %}
         </div>
       </div>
@@ -130,7 +130,7 @@
             -%}
             {%- for option in product.options_with_values -%}
               <fieldset class='flex flex-col gap-4 mt-8'>
-                <legend class='text-sm font-medium text-gray-900 mb-2'>
+                <legend class='text-sm font-medium text-slate-700 mb-2'>
                   {{ option.name }}
                 </legend>
                 <div class='grid grid-cols-3 gap-3 sm:grid-cols-6'>
@@ -173,7 +173,7 @@
                         for='{{ option.name |  handleize }}-{{ value |  handleize }}'
                         class='
                           flex items-center justify-center rounded-md border py-3 px-3 text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none peer-checked:border-transparent
-                          border-gray-200 bg-white text-gray-900 hover:bg-gray-50 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:hover:bg-indigo-700
+                          border-slate-200 bg-white text-slate-700 hover:bg-slate-50 peer-checked:bg-orange-200 peer-checked:text-slate-600 peer-checked:hover:bg-orange-300
                           peer-disabled:opacity-25 peer-disabled:cursor-not-allowed
                         '
                       >
@@ -200,7 +200,7 @@
               <select
                 id='product-page-variant-quantity'
                 name='quantity'
-                class='quantity-select h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                class='quantity-select h-full max-w-full rounded-md border border-slate-300 py-1.5 text-left text-base font-medium leading-5 text-slate-700 shadow-sm focus:border-orange-200 focus:outline-none focus:ring-1 focus:ring-orange-200'
               >
                 {% assign num = product.selected_or_first_available_variant.inventory_quantity %}
                 {% assign range = (1..num) %}
@@ -221,7 +221,7 @@
             {% endunless %}
             type='submit'
             id='add-to-cart'
-            class='add-to-cart flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full disabled:opacity-25 disabled:cursor-not-allowed'
+            class='add-to-cart flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-orange-200 px-8 py-3 text-base font-medium text-slate-600 hover:bg-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 focus:ring-offset-slate-50 sm:w-full disabled:opacity-25 disabled:cursor-not-allowed'
           >
             {% render 'loading-spinner' %}
             <p>
@@ -236,7 +236,7 @@
         {% comment %}
           <p
             id='item-in-cart-info'
-            class='hidden mt-4 text-lg text-gray-500'
+            class='hidden mt-4 text-lg text-slate-500'
           >
             You can update the item quantity or remove the item from your cart on
             the cart page.
@@ -302,7 +302,7 @@
   // }));
   // const defaultCheckedInputs = document.querySelectorAll('.product-option input[type="radio"]:checked')
   // defaultCheckedInputs.forEach((input) => {
-  //   input.parentElement.classList.add('ring-2', 'ring-indigo-600', 'ring-offset-2')
+  //   input.parentElement.classList.add('ring-2', 'ring-orange-200', 'ring-offset-2')
   // })
 
   const radioInputs = document.querySelectorAll('.product-option input[type="radio"]')
