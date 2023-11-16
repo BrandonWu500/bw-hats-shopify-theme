@@ -13,7 +13,7 @@
   }
   ```
 -->
-<div class='bg-gray-50' x-data='{mobileFiltersOpen: false}'>
+<div class='bg-slate-50' x-data='{mobileFiltersOpen: false}'>
   <div>
     <!--
       Mobile filter dialog
@@ -71,10 +71,10 @@
           class='relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl'
         >
           <div class='flex items-center justify-between px-4'>
-            <h2 class='text-lg font-medium text-gray-900'>Filter and Sort</h2>
+            <h2 class='text-lg font-medium text-slate-700'>Filter and Sort</h2>
             <button
               type='button'
-              class='-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400'
+              class='-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-slate-400'
             >
               <span class='sr-only'>Close menu</span>
               <svg
@@ -93,20 +93,20 @@
           <!-- Filters -->
           <form class='mt-4' id='mobile-filter-and-sort-form'>
             <div
-              class='border-t border-gray-200 px-4 py-6 flex justify-between items-center'
+              class='border-t border-slate-200 px-4 py-6 flex justify-between items-center'
             >
               <h3 class='-mx-2 -my-3 flow-root'>
                 <!-- Expand/collapse section button -->
                 <label
-                  class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
+                  class='flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-slate-400'
                   for='mobile-sort-select'
                 >
-                  <span class='font-medium text-gray-900'>Sort</span>
+                  <span class='font-medium text-slate-700'>Sort</span>
                 </label>
               </h3>
               <select
                 id='mobile-sort-select'
-                class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                class='h-full max-w-full rounded-md border border-slate-300 py-1.5 text-left text-sm font-medium leading-5 text-slate-700 shadow-sm focus:border-orange-100 focus:outline-none focus:ring-1 focus:ring-orange-100'
                 name='sort_by'
               >
                 {%- assign sort_by = collection.sort_by
@@ -126,17 +126,17 @@
             </div>
             {%- for filter in collection.filters -%}
               <div
-                class='filter-section border-t border-gray-200 px-4 py-6'
+                class='filter-section border-t border-slate-200 px-4 py-6'
               >
                 <h3 class='-mx-2 -my-3 flow-root'>
                   <!-- Expand/collapse section button -->
                   <button
                     type='button'
-                    class='expand-collapse-filter-button flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400'
+                    class='expand-collapse-filter-button flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-slate-400'
                     aria-controls='mobile-filter-section-{{ forloop.index }}'
                     aria-expanded='false'
                   >
-                    <span class='font-medium text-gray-900'>
+                    <span class='font-medium text-slate-700'>
                       {{ filter.label }}
                     </span>
 
@@ -173,11 +173,11 @@
                           {% if filter_value.active -%}
                             checked
                           {%- endif %}
-                          class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                          class='h-4 w-4 rounded border-slate-300 text-orange-300 focus:ring-orange-200'
                         >
                         <label
                           for='mobile-filter-{{ filter.param_name }}-{{ forloop.index }}'
-                          class='ml-3 text-sm text-gray-500'
+                          class='ml-3 text-sm text-slate-500'
                         >
                           {{- filter_value.label -}}
                         </label>
@@ -190,7 +190,7 @@
             <button
               @click='mobileFiltersOpen = false'
               type='submit'
-              class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
+              class='ml-3 mt-4 rounded-md bg-orange-200 px-3.5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:bg-orange-300'
             >
               Apply Filters and Sort
             </button>
@@ -202,11 +202,11 @@
     <div>
       <div class='bg-white'>
         <div class='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8'>
-          <h1 class='text-3xl font-bold tracking-tight text-gray-900'>
+          <h1 class='text-3xl font-bold tracking-tight text-slate-700'>
             {{ collection.title }}
           </h1>
           {% if collection.description %}
-            <p class='mt-4 max-w-xl text-sm text-gray-700'>
+            <p class='mt-4 max-w-xl text-sm text-slate-700'>
               {{ collection.description }}
             </p>
           {% endif %}
@@ -217,13 +217,13 @@
       <form aria-labelledby='filter-heading' id='desktop-filter-and-sort-form'>
         <h2 id='filter-heading' class='sr-only'>Filter and Sort</h2>
 
-        <div class='border-b border-gray-200 bg-white pb-4'>
+        <div class='border-b border-slate-200 bg-white pb-4'>
           <div class='mx-auto flex max-w-7xl items-baseline justify-between px-4 sm:px-6 lg:px-8'>
             <div class='hidden sm:flex items-center gap-4 text-left'>
               <h3 class='text-sm font-medium'>Sort By:</h3>
               <select
                 id='desktop-sort-select'
-                class='h-full max-w-full rounded-md border border-gray-300 py-1.5 text-left text-sm font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+                class='h-full max-w-full rounded-md border border-slate-300 py-1.5 text-left text-sm font-medium leading-5 text-slate-700 shadow-sm focus:border-orange-200 focus:outline-none focus:ring-1 focus:ring-orange-200'
                 name='sort_by'
               >
                 {%- assign sort_by = collection.sort_by
@@ -248,7 +248,7 @@
             <button
               @click='mobileFiltersOpen = true'
               type='button'
-              class='ms-auto flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden'
+              class='ms-auto flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-slate-700 sm:hidden'
             >
               {% render 'icon-filter-and-sort' %}
               Filter and Sort
@@ -257,23 +257,23 @@
             {% comment %} Desktop Filters {% endcomment %}
             <div class='hidden sm:block'>
               <div class='flow-root'>
-                <div class='-mx-4 flex items-baseline divide-x divide-gray-200'>
+                <div class='-mx-4 flex items-baseline divide-x divide-slate-200'>
                   {%- for filter in collection.filters -%}
                     <div class='filter-section relative inline-block px-4 text-left'>
                       <button
                         type='button'
-                        class='expand-collapse-filter-button group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900'
+                        class='expand-collapse-filter-button group inline-flex justify-center text-sm font-medium text-slate-700 hover:text-slate-700'
                         aria-controls='desktop-filter-section-{{ forloop.index }}'
                         aria-expanded='false'
                       >
                         <span>{{ filter.label }}</span>
                         {% if filter.active_values.size > 0 %}
-                          <span class='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>
+                          <span class='ml-1.5 rounded bg-slate-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-slate-700'>
                             {{ filter.active_values.size }}
                           </span>
                         {% endif %}
                         <svg
-                          class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                          class='-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-slate-400 group-hover:text-slate-500'
                           viewBox='0 0 20 20'
                           fill='currentColor'
                           aria-hidden='true'
@@ -307,11 +307,11 @@
                                 {% if filter_value.active -%}
                                   checked
                                 {%- endif %}
-                                class='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                                class='h-4 w-4 rounded border-slate-300 text-orange-300 focus:ring-orange-200'
                               >
                               <label
                                 for='Filter-{{ filter.param_name }}-{{ forloop.index }}'
-                                class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900'
+                                class='ml-3 whitespace-nowrap pr-6 text-sm font-medium text-slate-700'
                               >
                                 {{- filter_value.label -}}
                               </label>
@@ -323,7 +323,7 @@
                   {% endfor %}
                   <button
                     type='submit'
-                    class='ml-3 mt-4 rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100'
+                    class='ml-3 mt-4 rounded-md bg-orange-200 px-3.5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:bg-orange-300'
                   >
                     Apply Filters
                   </button>
@@ -334,19 +334,19 @@
         </div>
 
         <!-- Active filters -->
-        <div class='bg-gray-100'>
+        <div class='bg-slate-100'>
           <div class='mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8'>
             <div class='flex items-center'>
-              <h3 class='text-sm font-medium text-gray-500'>Active Filters</h3>
+              <h3 class='text-sm font-medium text-slate-500'>Active Filters</h3>
 
               <div
                 aria-hidden='true'
-                class='h-5 w-px bg-gray-300 ml-6 block'
+                class='h-5 w-px bg-slate-300 ml-6 block'
               ></div>
               <div class='pl-6'>
                 <a
                   href='{{ colllection.url }}?sort_by={{ collection.sort_by }}'
-                  class='text-gray-500'
+                  class='text-slate-500'
                   >Clear all</a
                 >
               </div>
@@ -356,13 +356,13 @@
               <div class='-m-1 flex flex-wrap items-center gap-1'>
                 {% for filter in collection.filters %}
                   {%- for filter_value in filter.active_values -%}
-                    <span class='my-1 mt-3 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900'>
+                    <span class='my-1 mt-3 inline-flex items-center rounded-full border border-slate-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-slate-700'>
                       <span>
                         {{ filter_value.label }}
                       </span>
                       <a
                         href='{{ filter_value.url_to_remove }}'
-                        class='ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-500'
+                        class='ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-500'
                       >
                         <span class='sr-only'
                           >Remove filter for {{ filter.label }}:
@@ -396,15 +396,15 @@
         <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
           {% for product in collection.products %}
             <a href='{{ product.url }}' class='group'>
-              <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
+              <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-slate-200 xl:aspect-h-8 xl:aspect-w-7'>
                 <img
                   src='{{ product.featured_image |  image_url: width: master  }}'
                   alt='{{ product.featured_image.alt | escape }}'
                   class='h-full w-full object-cover object-center group-hover:opacity-75'
                 >
               </div>
-              <h3 class='mt-4 text-sm text-gray-700'>{{ product.title }}</h3>
-              <p class='mt-1 text-lg font-medium text-gray-900'>
+              <h3 class='mt-4 text-sm text-slate-700'>{{ product.title }}</h3>
+              <p class='mt-1 text-lg font-medium text-slate-700'>
                 {{ product.price | money }}
               </p>
             </a>
