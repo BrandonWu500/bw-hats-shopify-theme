@@ -1,0 +1,15 @@
+<div class='mx-auto max-w-7xl p-4 sm:p-6 lg:p-8'>
+  {% section 'template-product' %}
+  <!-- Start of Judge.me code -->
+  <div
+    id='judgeme_product_reviews'
+    class='jdgm-widget jdgm-review-widget md:max-w-3xl md:mx-auto lg:max-w-none lg:px-5'
+    data-product-title='{{ product.title | escape }}'
+    data-id='{{ product.id }}'
+    data-auto-install='false'
+  >
+    {{ product.metafields.judgeme.widget }}
+  </div>
+  <!-- End of Judge.me code -->
+  {% section 'product-recommendations' %}
+</div>
