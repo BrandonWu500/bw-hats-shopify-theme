@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --heading-font: 'Raleway', sans-serif;
+  --body-font: 'Roboto', sans-serif;
+}
+
 .billboard-gradient {
   background: linear-gradient(62deg, #fed7aa 0%, #ffedd5 100%);
 }
