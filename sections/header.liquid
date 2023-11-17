@@ -109,32 +109,11 @@
             </div>
           </div>
 
-          {% if customer %}
-            <a
-              href='{{ routes.account_url }}'
-              class='-m-2 block p-2 font-medium text-orange-200'
-              >Account</a
-            >
-            {{
-              'Sign Out'
-              | customer_logout_link
-              | replace: '<a',
-                '<a class="-m-2 block p-2 font-medium text-orange-200"'
-            }}
-          {% else %}
-            {{
-              'Sign In'
-              | customer_login_link
-              | replace: '<a',
-                '<a class="-m-2 block p-2 font-medium text-orange-200"'
-            }}
-            {{
-              'Create Account'
-              | customer_register_link
-              | replace: '<a',
-                '<a class="-m-2 block p-2 font-medium text-orange-200"'
-            }}
-          {% endif %}
+          <a
+            href='{{ routes.account_url }}'
+            class='-m-2 block p-2 font-medium text-orange-200'
+            >Account</a
+          >
         </div>
       </div>
     </div>
