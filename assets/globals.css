@@ -4781,6 +4781,11 @@ select {
   --tw-ring-color: rgb(253 186 116 / 0.2);
 }
 
+.ring-slate-300 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(203 213 225 / var(--tw-ring-opacity));
+}
+
 .ring-opacity-5 {
   --tw-ring-opacity: 0.05;
 }
@@ -6560,6 +6565,16 @@ select {
   color: rgb(71 85 105 / var(--tw-text-opacity));
 }
 
+.placeholder\:text-slate-400::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity));
+}
+
+.placeholder\:text-slate-400::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity));
+}
+
 .hover\:scale-100:hover {
   --tw-scale-x: 1;
   --tw-scale-y: 1;
@@ -6619,6 +6634,11 @@ select {
 .hover\:bg-slate-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-slate-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
 }
 
 .hover\:font-bold:hover {
@@ -6686,6 +6706,11 @@ select {
 .hover\:text-slate-800:hover {
   --tw-text-opacity: 1;
   color: rgb(30 41 59 / var(--tw-text-opacity));
+}
+
+.hover\:text-orange-200:hover {
+  --tw-text-opacity: 1;
+  color: rgb(254 215 170 / var(--tw-text-opacity));
 }
 
 .hover\:opacity-75:hover {
@@ -6845,6 +6870,10 @@ select {
 
 .focus-visible\:outline-orange-200:focus-visible {
   outline-color: #fed7aa;
+}
+
+.focus-visible\:outline-slate-600:focus-visible {
+  outline-color: #475569;
 }
 
 .disabled\:cursor-not-allowed:disabled {
