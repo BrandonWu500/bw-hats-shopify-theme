@@ -3598,6 +3598,10 @@ select {
   border-color: rgb(203 213 225 / var(--tw-border-opacity));
 }
 
+.border-slate-700\/5 {
+  border-color: rgb(51 65 85 / 0.05);
+}
+
 .bg-\[rgb\(255\2c 0\2c 0\)\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 0 0 / var(--tw-bg-opacity));
