@@ -5,7 +5,7 @@
   data-url='{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related'
 >
   {%- if recommendations.performed? and recommendations.products_count > 0 -%}
-    <h2 class='text-3xl font-bold tracking-tight text-gray-900'>
+    <h2 class='text-3xl font-bold tracking-tight text-slate-700'>
       {% if recommendations.intent == 'related' %}
         You may also like
       {% elsif recommendations.intent == 'complementary' %}
@@ -33,7 +33,7 @@
               alt='{{ product.featured_image.alt }}'
             >
 
-            <div class='mt-4 flex items-center justify-between text-lg xl:text-xl font-medium text-gray-900'>
+            <div class='mt-4 flex items-center justify-between text-lg xl:text-xl font-medium text-slate-700'>
               <h3 class='product__title'>
                 {{ product.title }}
               </h3>
