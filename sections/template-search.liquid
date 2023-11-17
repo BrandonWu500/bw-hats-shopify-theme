@@ -518,10 +518,10 @@
                         class='h-full w-full object-cover object-center group-hover:opacity-75'
                       >
                     </div>
-                    <h3 class='mt-4 text-sm text-slate-700'>
+                    <h3 class='mt-4 font-heading text-2xl font-semibold text-slate-700'>
                       {{ item.title }}
                     </h3>
-                    <p class='mt-1 text-lg font-medium text-slate-700'>
+                    <p class='mt-1 text-xl text-slate-700'>
                       {{ item.price | money }}
                     </p>
                   </a>
@@ -535,15 +535,15 @@
                         class='h-full w-full object-cover object-center group-hover:opacity-75'
                       >
                     </div>
-                    <h3 class='mt-4 text-sm text-slate-700'>
+                    <h3 class='mt-4 text-xl font-medium text-slate-700'>
                       {{ item.title }}
                     </h3>
-                    <p class='mt-1 mb-2 text-lg font-medium text-slate-700'>
+                    <p class='mt-1 mb-2 text-lg text-slate-700'>
                       {{ item.published_at | date: '%B %d, %Y' }}
                     </p>
 
                     {% comment %} Badge {% endcomment %}
-                    <span class='inline-flex items-center rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600 ring-1 ring-inset ring-slate-500/10 -translate-x-1'
+                    <span class='inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-slate-700 text-lg ring-1 ring-inset ring-slate-500/10 -translate-x-1'
                       >Blog Article</span
                     >
                   </a>
@@ -558,12 +558,12 @@
                         class: 'h-full w-full object-cover object-center group-hover:opacity-75'
                       %}
                     </div>
-                    <h3 class='mt-4 mb-2 text-lg font-medium text-slate-700'>
+                    <h3 class='mt-4 mb-2 text-2xl font-heading font-semibold text-slate-700'>
                       {{ item.title }}
                     </h3>
 
                     {% comment %} Badge {% endcomment %}
-                    <span class='inline-flex items-center rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600 ring-1 ring-inset ring-slate-500/10 -translate-x-1'
+                    <span class='inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-slate-700 text-lg ring-1 ring-inset ring-slate-500/10 -translate-x-1'
                       >Page</span
                     >
                   </a>
@@ -579,8 +579,10 @@
                     class='h-full w-full object-cover object-center group-hover:opacity-75'
                   >
                 </div>
-                <h3 class='mt-4 text-sm text-slate-700'>{{ product.title }}</h3>
-                <p class='mt-1 text-lg font-medium text-slate-700'>
+                <h3 class='mt-4 font-heading text-2xl font-semibold text-slate-700'>
+                  {{ product.title }}
+                </h3>
+                <p class='mt-1 text-xl text-slate-700'>
                   {{ product.price | money }}
                 </p>
               </a>
