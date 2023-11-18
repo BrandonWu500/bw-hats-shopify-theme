@@ -92,7 +92,7 @@
 
     <!-- Product info -->
     <div class='mt-10 px-0.5 sm:mt-16 sm:px-6 lg:px-0 lg:mt-0 mx-auto max-w-2xl lg:max-w-7xl'>
-      <h1 class='text-3xl font-bold tracking-tight text-slate-700'>
+      <h1 class='text-5xl xl:text-7xl font-semibold font-heading tracking-tight text-slate-700'>
         {{ product.title }}
       </h1>
 
@@ -172,7 +172,7 @@
                       <label
                         for='{{ option.name |  handleize }}-{{ value |  handleize }}'
                         class='
-                          flex items-center justify-center rounded-md border py-3 px-3 text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none peer-checked:border-transparent
+                          flex items-center justify-center rounded-md border py-3 px-3 capitalize sm:flex-1 cursor-pointer focus:outline-none peer-checked:border-transparent
                           border-slate-200 bg-white text-slate-700 hover:bg-slate-50 peer-checked:bg-orange-200 peer-checked:text-slate-600 peer-checked:hover:bg-orange-300
                           peer-disabled:opacity-25 peer-disabled:cursor-not-allowed
                         '
@@ -200,7 +200,7 @@
               <select
                 id='product-page-variant-quantity'
                 name='quantity'
-                class='quantity-select h-full max-w-full rounded-md border border-slate-300 py-1.5 text-left text-base font-medium leading-5 text-slate-700 shadow-sm focus:border-orange-200 focus:outline-none focus:ring-1 focus:ring-orange-200'
+                class='quantity-select h-full max-w-full rounded-md border border-slate-300 py-1.5 text-left text-lg font-medium leading-5 text-slate-600 shadow-sm focus:border-orange-200 focus:outline-none focus:ring-1 focus:ring-orange-200'
               >
                 {% assign num = product.selected_or_first_available_variant.inventory_quantity %}
                 {% assign range = (1..num) %}
@@ -221,7 +221,7 @@
             {% endunless %}
             type='submit'
             id='add-to-cart'
-            class='add-to-cart flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-orange-200 px-8 py-3 text-base font-medium text-slate-600 hover:bg-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 focus:ring-offset-slate-50 sm:w-full disabled:opacity-25 disabled:cursor-not-allowed'
+            class='add-to-cart flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-orange-200 px-8 py-3 text-xl font-semibold font-heading capitalize text-slate-600 hover:bg-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 focus:ring-offset-slate-50 sm:w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:text-slate-700 disabled:hover:bg-orange-200'
           >
             {% render 'loading-spinner' %}
             <p>

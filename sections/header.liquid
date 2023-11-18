@@ -96,7 +96,7 @@
           {% for link in linklists['main-menu'].links %}
             <a
               href='{{ link.url }}'
-              class='-m-2 block p-2 font-medium text-orange-200'
+              class='-m-2 block p-2 text-orange-200'
             >
               {{- link.title -}}
             </a>
@@ -111,7 +111,7 @@
 
           <a
             href='{{ routes.account_url }}'
-            class='-m-2 block p-2 font-medium text-orange-200'
+            class='-m-2 block p-2 text-orange-200'
             >Account</a
           >
         </div>
@@ -136,7 +136,7 @@
             {% for link in linklists['main-menu'].links %}
               <a
                 href='{{ link.url }}'
-                class='-m-2 block p-2 whitespace-nowrap font-medium text-orange-200 hover:text-orange-300'
+                class='-m-2 block p-2 whitespace-nowrap xl:text-lg text-orange-200 hover:text-orange-300'
               >
                 {{- link.title -}}
               </a>
@@ -215,7 +215,7 @@
                 class='hidden z-50 absolute inset-x-0 top-16 mt-px bg-orange-200 pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-slate-700 lg:ring-opacity-5 lg:hidden'
               >
                 <div class='p-4 pb-0 flex items-center justify-between w-full'>
-                  <h2 class='flex items-center gap-2 capitalize text-lg font-medium text-slate-600'>
+                  <h2 class='flex items-center gap-2 capitalize text-lg font-semibold font-heading text-slate-600'>
                     {% render 'icon-check' %}
                     <span>Added to Bag!</span>
                   </h2>
@@ -240,7 +240,7 @@
                   <button
                     type='submit'
                     name='checkout'
-                    class='w-full rounded-md border border-transparent bg-slate-600 px-4 py-2 text-sm font-medium text-orange-200 shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-orange-50'
+                    class='w-full rounded-md border border-transparent bg-slate-600 px-4 py-2 text-sm font-semibold font-heading text-orange-200 shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-orange-50 capitalize'
                   >
                     Checkout
                   </button>

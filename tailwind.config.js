@@ -2,6 +2,10 @@
 module.exports = {
   content: ['./**/*.{liquid,js}'],
   theme: {
+    fontFamily: {
+      heading: 'var(--heading-font)',
+      body: 'var(--body-font)',
+    },
     extend: {},
   },
   plugins: [
