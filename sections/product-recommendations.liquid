@@ -5,7 +5,7 @@
   data-url='{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related'
 >
   {%- if recommendations.performed? and recommendations.products_count > 0 -%}
-    <h2 class='text-3xl font-bold tracking-tight text-slate-700'>
+    <h2 class='text-3xl font-semibold font-heading text-slate-700'>
       {% if recommendations.intent == 'related' %}
         You may also like
       {% elsif recommendations.intent == 'complementary' %}
@@ -25,16 +25,16 @@
         >
           <a
             href='{{ product.url }}'
-            class='aspect-square w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-[300px]'
+            class='aspect-square w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none h-[300px]'
           >
             <img
-              class='product__img rounded-md'
+              class='product__img rounded-md group-hover:opacity-75'
               src='{{ product.featured_image | image_url: width: 300, height: 300 }}'
               alt='{{ product.featured_image.alt }}'
             >
 
-            <div class='mt-4 flex items-center justify-between text-lg xl:text-xl font-medium text-slate-700'>
-              <h3 class='product__title'>
+            <div class='mt-4 flex items-center justify-between text-lg xl:text-xl  text-slate-700'>
+              <h3 class='product__title font-semibold capitalize font-heading'>
                 {{ product.title }}
               </h3>
               <p class='product__price'>
