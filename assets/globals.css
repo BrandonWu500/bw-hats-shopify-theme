@@ -6683,6 +6683,10 @@ select {
   opacity: 0.25;
 }
 
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
+}
+
 .disabled\:hover\:bg-orange-200:hover:disabled {
   --tw-bg-opacity: 1;
   background-color: rgb(254 215 170 / var(--tw-bg-opacity));
