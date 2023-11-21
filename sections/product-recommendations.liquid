@@ -31,6 +31,9 @@
               class='product__img rounded-md group-hover:opacity-75'
               src='{{ product.featured_image | image_url: width: 300, height: 300 }}'
               alt='{{ product.featured_image.alt }}'
+              loading='lazy'
+              width='{{ product.featured_image.width }}'
+              height='{{ product.featured_image.height }}'
             >
 
             <div class='mt-4 flex items-center justify-between text-lg xl:text-xl  text-slate-700'>

@@ -14,13 +14,21 @@
     </p>
     <div class='mt-10 relative w-full'>
       <img
+        srcset='
+          {{ article.image | image_url: width: 400 }} 400w,
+          {{ article.image | image_url: width: 600 }} 600w,
+          {{ article.image | image_url: width: 900 }} 900w
+        '
         src='{{ article.image |  image_url: width: 900  }}'
         alt=''
         class='aspect-[16/9] w-full rounded-2xl bg-slate-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
         sizes='
           (max-width: 425px) 400px,
+          (max-width: 768px) 600px,
           900px
         '
+        width='{{ article.image.width }}'
+        height='{{ article.image.height }}'
       >
       <div
         class='absolute inset-0 rounded-2xl ring-1 ring-inset ring-slate-700/10'

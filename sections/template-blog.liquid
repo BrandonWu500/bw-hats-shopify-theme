@@ -12,8 +12,18 @@
           <article class='relative isolate flex flex-col gap-8 lg:flex-row'>
             <div class='relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0'>
               <img
+                srcset='
+                  {{ article.image | image_url: width: 400 }} 400w,
+                  {{ article.image | image_url: width: 600 }} 600w
+                '
                 src='{{ article.image |  image_url: width: 600  }}'
-                alt=''
+                alt='{{ article.image.alt | escape }}'
+                sizes='
+                  (max-width: 425px) 400px,
+                  600px
+                '
+                width='{{ article.image.width }}'
+                height='{{ article.image.height }}'
                 class='absolute inset-0 h-full w-full rounded-2xl bg-slate-50 object-cover'
               >
               <div
@@ -52,6 +62,8 @@
                       src='{{ article.user.image |  image_url: width: 40 }}'
                       alt=''
                       class='h-10 w-10 rounded-full bg-slate-100'
+                      width='40'
+                      height='40'
                     >
                   {% endif %}
 
