@@ -35,9 +35,12 @@
                 <span class='sr-only'>Alternate view</span>
                 <span class='absolute inset-0 overflow-hidden rounded-md'>
                   <img
-                    src='{{ image |  image_url: master }}'
+                    src='{{ image | image_url: width: 200, height: 200 }}'
                     alt='{{ image.alt }}'
                     class='h-full w-full object-cover hover:opacity-75'
+                    loading='lazy'
+                    width='{{ image.width }}'
+                    height='{{ image.height }}'
                   >
                 </span>
                 <!--
@@ -71,21 +74,25 @@
         >
           {% if product.selected_or_first_available_variant.featured_image %}
             {% assign featured = product.selected_or_first_available_variant.featured_image %}
-            <img
-              id='product-image'
-              src='{{ featured |  image_url: width: 800 }}'
-              alt='{{ featured.alt }}'
-              class='h-full w-full object-cover object-center rounded-lg'
-            >
           {% else %}
             {% assign featured = product.featured_image %}
-            <img
-              id='product-image'
-              src='{{ featured |  image_url: width: 800 }}'
-              alt='{{ featured.alt }}'
-              class='h-full w-full object-cover object-center rounded-lg'
-            >
           {% endif %}
+          <img
+            srcset='
+              {{ featured | image_url: width: 400 }} 400w,
+              {{ featured | image_url: width: 800 }} 800w
+            '
+            src='{{ featured |  image_url: width: 800 }}'
+            alt='{{ featured.alt }}'
+            sizes='
+              (max-width: 425px) 400px,
+              800px
+            '
+            width='{{ featured.width }}'
+            height='{{ featured.height }}'
+            class='h-full w-full object-cover object-center rounded-lg'
+            id='product-image'
+          >
         </div>
       </div>
     </div>

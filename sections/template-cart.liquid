@@ -45,9 +45,19 @@
               >
                 <div class='flex-shrink-0'>
                   <img
+                    srcset='
+                      {{ item.image | image_url: width: 200 }} 200w,
+                      {{ item.image | image_url: width: 300 }} 300w
+                    '
                     src='{{ item.image | image_url: width: 300 }}'
                     alt='{{ item.image.alt }}'
                     class='h-full w-24 rounded-md object-cover object-center sm:h-48 sm:w-48'
+                    sizes='
+                      (max-width: 425px) 200px,
+                      300px
+                    '
+                    width='{{ item.image.width }}'
+                    height='{{ item.image.height }}'
                   >
                 </div>
 

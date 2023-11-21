@@ -2,13 +2,19 @@
   <a href='{{ product.url }}' class='group'>
     <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2'>
       <img
-        src='{{ product.featured_image |  image_url: width: 700 }}'
-        alt='{{ product.featured_image.alt }}'
+        srcset='
+          {{ product.featured_image | image_url: width: 400 }} 400w,
+          {{ product.featured_image | image_url: width: 700 }} 700w
+        '
+        src='{{ product.featured_image | image_url: width: 700 }}'
+        alt='{{ product.featured_image.alt | escape }}'
         class='h-full w-full object-cover object-center group-hover:opacity-75'
         sizes='
           (max-width: 425px) 400px,
           700px
         '
+        width='{{ product.featured_image.width }}'
+        height='{{ product.featured_image.height }}'
       >
     </div>
     <div class='mt-4 flex items-center justify-between text-xl xl:text-2xl text-slate-700'>

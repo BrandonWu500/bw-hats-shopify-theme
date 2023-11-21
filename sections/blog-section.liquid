@@ -12,13 +12,20 @@
       <article class='flex flex-col items-start justify-between border-t border-slate-700/10 pt-8 lg:pt-0 lg:border-0'>
         <div class='relative w-full'>
           <img
+            srcset='
+              {{ article.image | image_url: width: 400 }} 400w,
+              {{ article.image | image_url: width: 600 }} 600w
+            '
             src='{{ article.image |  image_url: width: 600  }}'
-            alt=''
+            alt='{{ article.image.alt | escape }}'
             class='aspect-[16/9] w-full rounded-2xl bg-slate-200 object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
             sizes='
               (max-width: 425px) 400px,
               600px
             '
+            loading='lazy'
+            width='{{ article.image.width }}'
+            height='{{ article.image.height }}'
           >
           <div
             class='absolute inset-0 rounded-2xl ring-1 ring-inset ring-slate-700/10'
@@ -49,9 +56,12 @@
           <div class='relative mt-4 flex items-center gap-x-4'>
             {% if article.user.image %}
               <img
-                src='{{ article.user.image |  image_url: width: 40 }}'
+                src='{{ article.user.image |  image_url: width: 40, height: 40 }}'
                 alt=''
                 class='h-10 w-10 rounded-full bg-slate-100'
+                loading='lazy'
+                width='40'
+                height='40'
               >
             {% endif %}
             <div class='text-sm leading-6'>

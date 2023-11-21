@@ -52,6 +52,8 @@ addToCartForms.forEach((form) => {
             src='${addedItem.image}'
             alt=''
             class='h-16 w-16 object-cover flex-none rounded-md border border-slate-200'
+            width='64'
+            height='64'
           >
           <div class='ml-4 flex-auto'>
             <h3 class='font-semibold font-heading text-slate-600 hover:text-slate-700'>
