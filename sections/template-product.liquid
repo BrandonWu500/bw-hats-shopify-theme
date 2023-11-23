@@ -31,12 +31,17 @@
                 class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-offset-4 focus:ring-orange-200 focus:ring-4'
                 role='tab'
                 type='button'
+                data-image-srcset='
+                  {{ image | image_url: width: 400 }} 400w,
+                  {{ image | image_url: width: 800 }} 800w
+                '
+                data-image-src='{{ image | image_url: width: 800 }}'
               >
                 <span class='sr-only'>Alternate view</span>
                 <span class='absolute inset-0 overflow-hidden rounded-md'>
                   <img
                     src='{{ image | image_url: width: 200, height: 200 }}'
-                    alt='{{ image.alt }}'
+                    alt='{{ image.alt | escape }}'
                     class='h-full w-full object-cover hover:opacity-75'
                     loading='lazy'
                     width='{{ image.width }}'
@@ -409,7 +414,14 @@
   const galleryTabs = document.querySelectorAll('.gallery-tab')
   galleryTabs.forEach((tab) => (
     tab.addEventListener(('click'), () => {
-      document.querySelector('#product-image').setAttribute('src', tab.querySelector('img').getAttribute('src'))
+      const productImage =  document.querySelector('#product-image')
+      const imageSrcset = tab.dataset.imageSrcset
+      const imageSrc = tab.dataset.imageSrc
+      
+      productImage.setAttribute('srcset', imageSrcset)
+      productImage.setAttribute('src', imageSrc)
+      productImage.setAttribute('alt', tab.querySelector('img').getAttribute('alt'))
+
     })
   ))
 
