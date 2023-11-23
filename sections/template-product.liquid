@@ -28,15 +28,20 @@
             {% for image in product.images %}
               <button
                 id='tab-{{ forloop.index0 }}'
-                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-offset-4 focus:ring-orange-200 focus:ring-4'
+                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-offset-4 focus:ring-orange-300 focus:ring'
                 role='tab'
                 type='button'
+                data-image-srcset='
+                  {{ image | image_url: width: 400 }} 400w,
+                  {{ image | image_url: width: 800 }} 800w
+                '
+                data-image-src='{{ image | image_url: width: 800 }}'
               >
                 <span class='sr-only'>Alternate view</span>
                 <span class='absolute inset-0 overflow-hidden rounded-md'>
                   <img
                     src='{{ image | image_url: width: 200, height: 200 }}'
-                    alt='{{ image.alt }}'
+                    alt='{{ image.alt | escape }}'
                     class='h-full w-full object-cover hover:opacity-75'
                     loading='lazy'
                     width='{{ image.width }}'
@@ -50,12 +55,12 @@
                 <span
                   id='gallery-tab-border'
                   class='
-                    {% if featured == image %}
-                      ring-orange-300
+                    {% if product.selected_or_first_available_variant.featured_image == image %}
+                      ring-slate-600
                       {% else %}
                       ring-transparent
                     {% endif %}
-                     pointer-events-none absolute inset-0 rounded-md ring-4 ring-offset-4
+                     pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2
                   '
                   aria-hidden='true'
                 ></span>
@@ -407,11 +412,19 @@
   })
 
   const galleryTabs = document.querySelectorAll('.gallery-tab')
+  const productImage =  document.querySelector('#product-image')
   galleryTabs.forEach((tab) => (
     tab.addEventListener(('click'), () => {
-      document.querySelector('#product-image').setAttribute('src', tab.querySelector('img').getAttribute('src'))
+      const imageSrcset = tab.dataset.imageSrcset
+      const imageSrc = tab.dataset.imageSrc
+
+      productImage.setAttribute('srcset', imageSrcset)
+      productImage.setAttribute('src', imageSrc)
+      productImage.setAttribute('alt', tab.querySelector('img').getAttribute('alt'))
     })
   ))
+
+
 
   // document.querySelector('#buy-it-now').addEventListener('click', (e) => {
   //   e.preventDefault()
