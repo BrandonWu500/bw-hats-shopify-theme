@@ -28,7 +28,7 @@
             {% for image in product.images %}
               <button
                 id='tab-{{ forloop.index0 }}'
-                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-offset-4 focus:ring-orange-300 focus:ring'
+                class='gallery-tab relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-offset-4 focus:ring-orange-200 focus:ring-[6px]'
                 role='tab'
                 type='button'
                 data-image-srcset='
@@ -56,11 +56,11 @@
                   id='gallery-tab-border'
                   class='
                     {% if product.selected_or_first_available_variant.featured_image == image %}
-                      ring-slate-600
+                      ring-orange-300
                       {% else %}
                       ring-transparent
                     {% endif %}
-                     pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2
+                     pointer-events-none absolute inset-0 rounded-md ring-4 ring-offset-2
                   '
                   aria-hidden='true'
                 ></span>
