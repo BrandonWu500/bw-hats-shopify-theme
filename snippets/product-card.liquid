@@ -4,14 +4,14 @@
       <img
         srcset='
           {{ product.featured_image | image_url: width: 400 }} 400w,
-          {{ product.featured_image | image_url: width: 700 }} 700w
+          {{ product.featured_image | image_url: width: 600 }} 600w
         '
-        src='{{ product.featured_image | image_url: width: 700 }}'
+        src='{{ product.featured_image | image_url: width: 600 }}'
         alt='{{ product.featured_image.alt | escape }}'
         class='h-full w-full object-cover object-center group-hover:opacity-75'
         sizes='
           (max-width: 425px) 400px,
-          700px
+          600px
         '
         width='{{ product.featured_image.width }}'
         height='{{ product.featured_image.height }}'
