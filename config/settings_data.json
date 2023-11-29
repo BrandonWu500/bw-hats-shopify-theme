@@ -2,6 +2,8 @@
   "current": {
     "checkout_logo_image": "shopify:\/\/shop_images\/bw-hats-logo_4x_1579d84e-b7ef-4628-a0f5-2bcce85802c2.png",
     "checkout_logo_position": "right",
+    "checkout_heading_font": "Raleway",
+    "checkout_body_font": "Roboto",
     "sections": {
       "header": {
         "type": "header",
