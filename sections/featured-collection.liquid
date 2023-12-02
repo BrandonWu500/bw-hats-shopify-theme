@@ -4,7 +4,7 @@
       <h2
         class='text-3xl xl:text-4xl font-heading font-semibold tracking-tight text-slate-700'
       >
-        {{ section.settings.title }}
+        {{ section.settings.featured_collection.title }}
       </h2>
       <a
         href='{{ section.settings.featured_collection.url }}'
@@ -40,12 +40,6 @@
   "name": "Featured Collection",
   "settings": [
     {
-      "type": "text",
-      "id": "title",
-      "default": "Featured Collection",
-      "label": "Title"
-    },
-    {
       "type": "collection",
       "id": "featured_collection",
       "label": "Collection"
@@ -53,10 +47,10 @@
     {
       "type": "range",
       "id": "number_of_products_to_show",
-      "step": 1,
-      "min": 4,
-      "max": 12,
-      "default": 6,
+      "step": 3,
+      "min": 3,
+      "max": 9,
+      "default": 3,
       "label": "Number of products to show"
     }
   ],
