@@ -7616,6 +7616,10 @@ select {
     padding-right: 4rem;
   }
 
+  .lg\:pt-32 {
+    padding-top: 8rem;
+  }
+
   .lg\:text-6xl {
     font-size: 3.75rem;
     line-height: 1;
