@@ -3405,6 +3405,10 @@ select {
   border-radius: 0.375rem;
 }
 
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+
 .rounded-b {
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
@@ -7582,6 +7586,10 @@ select {
 
   .lg\:rounded-lg {
     border-radius: 0.5rem;
+  }
+
+  .lg\:rounded-xl {
+    border-radius: 0.75rem;
   }
 
   .lg\:border-0 {
