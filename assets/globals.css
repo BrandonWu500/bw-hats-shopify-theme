@@ -3978,6 +3978,11 @@ select {
   padding-bottom: 8rem;
 }
 
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -7206,6 +7211,11 @@ select {
     padding-bottom: 16rem;
   }
 
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
   .sm\:pb-24 {
     padding-bottom: 6rem;
   }
@@ -7247,6 +7257,11 @@ select {
   .sm\:text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+
+  .sm\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 
   .sm\:leading-6 {
@@ -7618,6 +7633,10 @@ select {
 
   .lg\:pt-32 {
     padding-top: 8rem;
+  }
+
+  .lg\:pt-16 {
+    padding-top: 4rem;
   }
 
   .lg\:text-6xl {

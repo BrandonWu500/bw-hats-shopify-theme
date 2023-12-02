@@ -23,6 +23,15 @@
         {% render 'product-card', product: product %}
       {% endfor %}
     </div>
+    <div class='mt-8 md:hidden'>
+      <a
+        href='{{ section.settings.featured_collection.url }}'
+        class='font-medium text-slate-600 hover:text-slate-500'
+      >
+        Shop the collection
+        <span aria-hidden='true'> &rarr;</span>
+      </a>
+    </div>
   </div>
 </section>
 
