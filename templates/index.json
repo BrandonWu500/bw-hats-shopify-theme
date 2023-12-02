@@ -3,12 +3,16 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "collection1": "",
+        "collection2": ""
       }
     },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "featured_collection": "best-sellers"
+        "title": "Best Sellers",
+        "featured_collection": "best-sellers",
+        "number_of_products_to_show": 6
       }
     },
     "testimonials": {
