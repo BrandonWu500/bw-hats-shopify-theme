@@ -3,8 +3,8 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "collection1": "",
-        "collection2": ""
+        "collection1": "stylish",
+        "collection2": "fun"
       }
     },
     "featured-collection": {
@@ -12,7 +12,7 @@
       "settings": {
         "title": "Best Sellers",
         "featured_collection": "best-sellers",
-        "number_of_products_to_show": 6
+        "number_of_products_to_show": 4
       }
     },
     "testimonials": {
