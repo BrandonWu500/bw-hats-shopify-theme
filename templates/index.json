@@ -1,20 +1,31 @@
 {
   "sections": {
     "hero": {
-      "type": "hero"
+      "type": "hero",
+      "settings": {
+      }
     },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "featured_collection": "the-collection"
+        "featured_collection": "best-sellers"
       }
     },
     "testimonials": {
-      "type": "testimonials"
+      "type": "testimonials",
+      "settings": {
+      }
     },
     "blog-section": {
-      "type": "blog-section"
+      "type": "blog-section",
+      "settings": {
+      }
     }
   },
-  "order": ["hero", "featured-collection", "testimonials", "blog-section"]
+  "order": [
+    "hero",
+    "featured-collection",
+    "testimonials",
+    "blog-section"
+  ]
 }
