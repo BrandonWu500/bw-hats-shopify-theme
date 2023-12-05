@@ -1,8 +1,13 @@
 {
   "sections": {
     "template": {
-      "type": "template-collection"
+      "type": "template-collection",
+      "settings": {
+        "description": "Browse our catalog."
+      }
     }
   },
-  "order": ["template"]
+  "order": [
+    "template"
+  ]
 }
