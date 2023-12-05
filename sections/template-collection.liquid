@@ -206,9 +206,13 @@
           <h1 class='text-3xl xl:text-4xl font-semibold font-heading tracking-tight text-slate-700'>
             {{ collection.title }}
           </h1>
-          {% if collection.description %}
-            <p class='mt-4 max-w-xl text-sm text-slate-700'>
+          {% if collection.description != blank %}
+            <p class='mt-4 max-w-xl text-lg text-slate-600'>
               {{ collection.description }}
+            </p>
+          {% elsif section.settings.description != blank %}
+            <p class='mt-4 max-w-xl text-lg text-slate-600'>
+              {{ section.settings.description }}
             </p>
           {% endif %}
         </div>
@@ -419,3 +423,16 @@
     </div>
   </div>
 </div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description"
+    }
+  ]
+}
+{% endschema %}
