@@ -210,9 +210,9 @@
             <p class='mt-4 max-w-xl text-lg text-slate-600'>
               {{ collection.description }}
             </p>
-          {% elsif section.settings.description != blank %}
+          {% elsif collection.handle == 'all' %}
             <p class='mt-4 max-w-xl text-lg text-slate-600'>
-              {{ section.settings.description }}
+              Browse all our hats.
             </p>
           {% endif %}
         </div>

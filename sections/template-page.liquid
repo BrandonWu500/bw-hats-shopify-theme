@@ -7,5 +7,14 @@
     <div class='mt-10 max-w-2xl prose prose-headings:text-slate-600 prose-headings:font-medium prose-p:text-lg'>
       {{ page.content }}
     </div>
+
+    {% if page.handle == 'our-story' %}
+      <a
+        href='{{ routes.all_products_collection_url  }}'
+        class='mt-10 inline-block rounded-md bg-orange-200 px-8 py-3 capitalize font-medium text-slate-600 shadow-sm hover:bg-orange-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-200'
+      >
+        View our products
+      </a>
+    {% endif %}
   </div>
 </div>
