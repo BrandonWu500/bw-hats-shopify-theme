@@ -6673,6 +6673,10 @@ select {
   outline-color: #fed7aa;
 }
 
+.focus-visible\:outline-orange-300:focus-visible {
+  outline-color: #fdba74;
+}
+
 .disabled\:cursor-not-allowed:disabled {
   cursor: not-allowed;
 }
