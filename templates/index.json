@@ -4,7 +4,11 @@
       "type": "hero",
       "settings": {
         "collection1": "stylish",
-        "collection2": "fun"
+        "collection2": "fun",
+        "headline": "Stylish and Fun Hats!",
+        "subheading": "Our hats are custom-designed and handcrafted to perfection.",
+        "button_label": "Shop Now",
+        "button_link": "shopify://collections/all"
       }
     },
     "featured-collection": {
