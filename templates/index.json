@@ -8,24 +8,31 @@
         "headline": "Stylish and Fun Hats!",
         "subheading": "Our hats are custom-designed and handcrafted to perfection.",
         "button_label": "Shop Now",
-        "button_link": "shopify://collections/all"
+        "button_link": "shopify:\/\/collections\/all"
       }
     },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Best Sellers",
-        "featured_collection": "best-sellers"
+        "featured_collection": "best-sellers",
+        "number_of_products_to_show": 3
       }
     },
     "testimonials": {
       "type": "testimonials",
-      "settings": {}
+      "settings": {
+      }
     },
     "blog-section": {
       "type": "blog-section",
-      "settings": {}
+      "settings": {
+      }
     }
   },
-  "order": ["hero", "featured-collection", "testimonials", "blog-section"]
+  "order": [
+    "hero",
+    "featured-collection",
+    "testimonials",
+    "blog-section"
+  ]
 }

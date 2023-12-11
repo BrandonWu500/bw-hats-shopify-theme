@@ -1,6 +1,6 @@
 {
   "current": {
-    "checkout_logo_image": "shopify://shop_images/bw-hats-logo_4x_1579d84e-b7ef-4628-a0f5-2bcce85802c2.png",
+    "checkout_logo_image": "shopify:\/\/shop_images\/bw-hats-logo_4x_1579d84e-b7ef-4628-a0f5-2bcce85802c2.png",
     "checkout_logo_position": "right",
     "checkout_input_background_color_mode": "white",
     "checkout_heading_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
@@ -8,11 +8,13 @@
     "sections": {
       "header": {
         "type": "header",
-        "settings": {}
+        "settings": {
+        }
       },
       "footer": {
         "type": "footer",
-        "settings": {}
+        "settings": {
+        }
       },
       "announcement-bar": {
         "type": "announcement-bar",
@@ -21,16 +23,20 @@
         }
       }
     },
-    "content_for_index": [],
+    "content_for_index": [
+
+    ],
     "blocks": {
       "14060646107696862457": {
-        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "type": "shopify:\/\/apps\/judge-me-reviews\/blocks\/judgeme_core\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": false,
-        "settings": {}
+        "settings": {
+        }
       }
     }
   },
   "presets": {
-    "Default": {}
+    "Default": {
+    }
   }
 }
