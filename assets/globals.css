@@ -2069,6 +2069,14 @@ select {
   margin-top: 1px;
 }
 
+.-mt-48 {
+  margin-top: -12rem;
+}
+
+.mb-24 {
+  margin-bottom: 6rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -2245,6 +2253,10 @@ select {
 
 .h-full {
   height: 100%;
+}
+
+.h-40 {
+  height: 10rem;
 }
 
 .min-h-full {
@@ -4024,6 +4036,14 @@ select {
 
 .pt-8 {
   padding-top: 2rem;
+}
+
+.pb-48 {
+  padding-bottom: 12rem;
+}
+
+.pb-64 {
+  padding-bottom: 16rem;
 }
 
 .text-left {
@@ -6922,6 +6942,16 @@ select {
     margin-right: auto;
   }
 
+  .sm\:my-8 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .sm\:my-16 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
   .sm\:ml-4 {
     margin-left: 1rem;
   }
@@ -6948,6 +6978,14 @@ select {
 
   .sm\:mt-6 {
     margin-top: 1.5rem;
+  }
+
+  .sm\:mt-8 {
+    margin-top: 2rem;
+  }
+
+  .sm\:mb-8 {
+    margin-bottom: 2rem;
   }
 
   .sm\:block {
@@ -7024,6 +7062,22 @@ select {
 
   .sm\:max-w-sm {
     max-width: 24rem;
+  }
+
+  .sm\:max-w-4xl {
+    max-width: 56rem;
+  }
+
+  .sm\:max-w-5xl {
+    max-width: 64rem;
+  }
+
+  .sm\:max-w-3xl {
+    max-width: 48rem;
+  }
+
+  .sm\:max-w-2xl {
+    max-width: 42rem;
   }
 
   .sm\:flex-1 {
@@ -7221,6 +7275,14 @@ select {
     height: 10rem;
   }
 
+  .md\:h-48 {
+    height: 12rem;
+  }
+
+  .md\:h-56 {
+    height: 14rem;
+  }
+
   .md\:min-w-0 {
     min-width: 0px;
   }
@@ -7239,6 +7301,10 @@ select {
 
   .md\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .md\:items-center {
@@ -7282,11 +7348,6 @@ select {
   .md\:text-6xl {
     font-size: 3.75rem;
     line-height: 1;
-  }
-
-  .md\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
   }
 }
 
@@ -7389,6 +7450,14 @@ select {
     height: 18rem;
   }
 
+  .lg\:h-24 {
+    height: 6rem;
+  }
+
+  .lg\:h-64 {
+    height: 16rem;
+  }
+
   .lg\:w-64 {
     width: 16rem;
   }
@@ -7407,6 +7476,10 @@ select {
 
   .lg\:max-w-none {
     max-width: none;
+  }
+
+  .lg\:max-w-3xl {
+    max-width: 48rem;
   }
 
   .lg\:flex-1 {
@@ -7552,6 +7625,10 @@ select {
 
   .xl\:h-80 {
     height: 20rem;
+  }
+
+  .xl\:max-w-4xl {
+    max-width: 56rem;
   }
 
   .xl\:grid-cols-4 {
