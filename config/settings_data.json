@@ -15,6 +15,12 @@
         "type": "footer",
         "settings": {
         }
+      },
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "text": "Free shipping on orders over $50 USD!"
+        }
       }
     },
     "content_for_index": [
