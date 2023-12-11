@@ -3,7 +3,7 @@
     <p class='flex-1 text-center font-medium text-slate-700 lg:flex-none'>
       {{ section.settings.text }}
     </p>
-    {% form 'localization', class: 'flex gap-8' %}
+    {% form 'localization', class: 'gap-8 hidden lg:flex' %}
       <input
         type='hidden'
         name='country_code'
