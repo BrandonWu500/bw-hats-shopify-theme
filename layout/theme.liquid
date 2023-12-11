@@ -58,6 +58,7 @@
     ></script>
   </head>
   <body class='bg-white text-slate-700 font-body'>
+    {% section 'announcement-bar' %}
     {% section 'header' %}
     <main role='main' class='min-h-screen'>
       {{ content_for_layout }}
@@ -65,6 +66,7 @@
     {% section 'footer' %}
     {{ 'add-to-cart.js' | asset_url | script_tag }}
     {{ 'filter-and-sort.js' | asset_url | script_tag }}
+    {{ 'annoucement-bar.js' | asset_url | script_tag }}
     {% comment %} {{ 'search.js' | asset_url | script_tag }} {% endcomment %}
   </body>
 </html>

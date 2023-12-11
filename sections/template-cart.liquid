@@ -12,7 +12,10 @@
   }
   ```
 -->
-<div class='bg-white' data-currency='{{ currency.iso_code }}'>
+<div
+  class='bg-white'
+  data-money-format='{{ shop.money_format }}'
+>
   <div class='mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8'>
     {% if cart.item_count > 0 %}
       <div class='flex w-full justify-between'>
@@ -238,16 +241,22 @@
         quantity,
       })
       .then((res) => {
+        const format = document
+          .querySelector('[data-money-format]')
+          .getAttribute('data-money-format');
+
         const totalPrice = res.data.total_price;
         const totalItemCount = res.data.item_count;
         const item = res.data.items.find((item) => item.key === key);
         const itemPrice = item.final_line_price;
 
-        document.querySelector('#cart-total-price').textContent =
-          formatPrice(totalPrice);
+        document.querySelector('#cart-total-price').textContent = formatMoney(
+          totalPrice,
+          format
+        );
         document.querySelector(
           `[data-key="${key}"] .line-item-price`
-        ).textContent = formatPrice(itemPrice);
+        ).textContent = formatMoney(itemPrice, format);
         document.querySelector('#header-cart-item-count').textContent =
           totalItemCount;
       });
@@ -281,11 +290,15 @@
           } else {
             item.remove();
 
+            const format = document
+              .querySelector('[data-money-format]')
+              .getAttribute('data-money-format');
+
             const totalPrice = res.data.total_price;
             const totalItemCount = res.data.item_count;
 
             document.querySelector('#cart-total-price').textContent =
-              formatPrice(totalPrice);
+              formatMoney(totalPrice, format);
             document.querySelector('#header-cart-item-count').textContent =
               totalItemCount;
           }
