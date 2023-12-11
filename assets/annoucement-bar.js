@@ -16,6 +16,12 @@ countryCodeOptions.forEach((option) => {
     countryCodeValueInput.value = option.dataset.countryIsoCode;
     localizationForm.submit();
   });
+  option.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      countryCodeValueInput.value = option.dataset.countryIsoCode;
+      localizationForm.submit();
+    }
+  });
 });
 languageCodeOptions.forEach((option) => {
   option.addEventListener('click', () => {
