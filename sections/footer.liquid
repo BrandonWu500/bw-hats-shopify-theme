@@ -1,19 +1,93 @@
 <footer class='bg-slate-600 text-orange-200' aria-labelledby='footer-heading'>
   <h2 id='footer-heading' class='sr-only'>Footer</h2>
-  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+  <div class='mx-auto max-w-7xl pb-8 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 lg:pt-32'>
     {% comment %} Links {% endcomment %}
-    <ul class='flex w-full flex-col items-center justify-between gap-6 py-6 font-body text-lg xl:flex-row xl:gap-8'>
-      {% for link in linklists.footer.links %}
-        <li>
-          <a href='{{ link.url }}' class='hover:text-orange-300'>
-            {{- link.title -}}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+    {% comment %}
+      <ul class='flex w-full flex-col items-center justify-between gap-6 py-6 font-body text-lg xl:flex-row xl:gap-8'>
+        {% for link in linklists.footer.links %}
+          <li>
+            <a href='{{ link.url }}' class='hover:text-orange-300'>
+              {{- link.title -}}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endcomment %}
+    <div class='xl:grid xl:grid-cols-3 xl:gap-8'>
+      <a href='/'>
+        <span class='sr-only'>BW Hats</span>
+        {% render 'logo', class: 'w-auto h-7' %}
+      </a>
+      <div class='mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0'>
+        <div class='md:grid md:grid-cols-2 md:gap-8'>
+          <div>
+            <h3 class='font-medium leading-6'>Products</h3>
+            <ul role='list' class='mt-6 space-y-4'>
+              {% for link in linklists.products.links %}
+                <li>
+                  <a
+                    href='{{ link.url }}'
+                    class='text-orange-100 hover:text-orange-300 leading-6'
+                  >
+                    {{- link.title -}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class='mt-16 md:mt-0'>
+            <h3 class='font-medium leading-6'>Customer Service</h3>
+            <ul role='list' class='mt-6 space-y-4'>
+              {% for link in linklists['customer-service'].links %}
+                <li>
+                  <a
+                    href='{{ link.url }}'
+                    class='text-orange-100 hover:text-orange-300 leading-6'
+                  >
+                    {{- link.title -}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class='md:grid md:grid-cols-2 md:gap-8'>
+          <div>
+            <h3 class='font-medium leading-6'>Company</h3>
+            <ul role='list' class='mt-6 space-y-4'>
+              {% for link in linklists.company.links %}
+                <li>
+                  <a
+                    href='{{ link.url }}'
+                    class='text-orange-100 hover:text-orange-300 leading-6'
+                  >
+                    {{- link.title -}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class='mt-16 md:mt-0'>
+            <h3 class='font-medium leading-6'>Legal</h3>
+            <ul role='list' class='mt-6 space-y-4'>
+              {% for link in linklists.legal.links %}
+                <li>
+                  <a
+                    href='{{ link.url }}'
+                    class='text-orange-100 hover:text-orange-300 leading-6'
+                  >
+                    {{- link.title -}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
     {% comment %} Newsletter {% endcomment %}
-    <div class='mb-6 w-full border-t border-orange-200 pt-6 lg:flex lg:items-center lg:justify-between'>
+    <div class='mt-16 sm:mt-20 lg:mt-24 mb-8 w-full border-t border-orange-200 pt-8 lg:flex lg:items-center lg:justify-between'>
       <div>
         <h3 class='font-medium leading-6 text-orange-200'>
           Subscribe to our newsletter
@@ -45,11 +119,8 @@
     </div>
 
     {% comment %} Copyright and Social Links {% endcomment %}
-    <div class='flex w-full flex-col-reverse items-center gap-6 border-t border-orange-200 py-6 xl:flex-row'>
-      <p class='flex-1 text-center xl:text-left'>
-        © 2023 BW Hats Inc. All rights reserved.
-      </p>
-      <div class='flex w-full flex-1 items-center justify-center gap-14 px-8 xl:justify-end xl:gap-7 xl:p-0'>
+    <div class='mt-8 border-t border-orange-200 pt-8 md:flex md:items-center md:justify-between w-full'>
+      <div class='flex space-x-6 md:order-2'>
         <a href='https://twitter.com/BW_Hats' target='_blank'>
           {% render 'icon-twitter', class: 'h-6 w-6 hover:text-orange-300' %}
         </a>
@@ -66,6 +137,9 @@
           {% render 'icon-tiktok', class: 'h-6 w-6 hover:text-orange-300' %}
         </a>
       </div>
+      <p class='mt-8 leading-5 text-orange-200 md:order-1 md:mt-0'>
+        © 2023 BW Hats Inc. All rights reserved.
+      </p>
     </div>
   </div>
 </footer>

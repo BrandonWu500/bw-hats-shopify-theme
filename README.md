@@ -11,7 +11,7 @@
 
 ## Description
 
-**BW Hats** is an e-commerce hat shop. It is a personal project that I created for my portfolio. It is not a real shop and uses fake products which I came up with using free images. However, I tried to make it as realistic as possible to accurately simulate how I would create a custom Shopify theme for a client.
+**BW Hats** is my demo store. It uses a custom Shopify theme that I created. I tried to make it as realistic as possible to accurately simulate how I would create a Shopify website for a client.
 
 ## Technologies
 
