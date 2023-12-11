@@ -1,6 +1,6 @@
-<div class='bg-white'>
+<div class='bg-orange-200'>
   <div class='mx-auto flex h-10 max-w-7xl items-center justify-between p-4 sm:p-6 lg:p-8'>
-    <p class='flex-1 text-center font-medium text-slate-700 lg:flex-none'>
+    <p class='flex-1 text-center font-medium text-slate-600 lg:flex-none'>
       {{ section.settings.text }}
     </p>
     {% form 'localization', class: 'gap-8 hidden lg:flex' %}
@@ -19,13 +19,13 @@
       <div class='flex items-baseline gap-4'>
         <label
           id='listbox-label'
-          class='block text-sm font-medium leading-6 text-slate-700'
+          class='block text-sm font-medium leading-6 text-slate-600'
           >Country</label
         >
         <div class='relative w-60' x-data='{ openOptions: false }'>
           <button
             type='button'
-            class='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-300 sm:text-sm sm:leading-6'
+            class='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slate-600 sm:text-sm sm:leading-6'
             aria-haspopup='listbox'
             aria-labelledby='listbox-label'
             @click='openOptions = ! openOptions'
@@ -78,7 +78,7 @@
               <!--
                 Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
 
-                Highlighted: "bg-indigo-600 text-white", Not Highlighted: "text-slate-700"
+                Highlighted: "bg-indigo-600 text-white", Not Highlighted: "text-slate-600"
               -->
               <li
                 class='localization-country-code-option text-slate-700 relative cursor-default select-none py-2 pl-3 pr-9 hover:bg-orange-200 focus:bg-orange-200 focus:outline-none'
@@ -113,13 +113,13 @@
       <div class='flex items-baseline gap-4'>
         <label
           id='listbox-label'
-          class='block text-sm font-medium leading-6 text-slate-700'
+          class='block text-sm font-medium leading-6 text-slate-600'
           >Language</label
         >
         <div class='relative w-40' x-data='{ openLanguageOptions: false }'>
           <button
             type='button'
-            class='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-300 sm:text-sm sm:leading-6'
+            class='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slate-600 sm:text-sm sm:leading-6'
             aria-haspopup='listbox'
             aria-labelledby='listbox-label'
             @click='openLanguageOptions = ! openLanguageOptions'
@@ -167,7 +167,7 @@
               <!--
                 Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
 
-                Highlighted: "bg-indigo-600 text-white", Not Highlighted: "text-slate-700"
+                Highlighted: "bg-indigo-600 text-white", Not Highlighted: "text-slate-600"
               -->
               <li
                 class='localization-language-code-option text-slate-700 relative cursor-default select-none py-2 pl-3 pr-9 hover:bg-orange-200 focus:bg-orange-200 focus:outline-none'
