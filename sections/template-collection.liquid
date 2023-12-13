@@ -391,35 +391,91 @@
         </div>
       </form>
 
-      <!-- Product grid -->
-      <section
-        aria-labelledby='products-heading'
-        class='mx-auto max-w-2xl px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 lg:max-w-7xl lg:px-8'
-      >
-        <h2 id='products-heading' class='sr-only'>Products</h2>
+      {% paginate collection.products by section.settings.products_per_page %}
+        <!-- Product grid -->
+        <section
+          aria-labelledby='products-heading'
+          class='mx-auto max-w-2xl px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 lg:max-w-7xl lg:px-8'
+        >
+          <h2 id='products-heading' class='sr-only'>Products</h2>
 
-        <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
-          {% for product in collection.products %}
-            <a href='{{ product.url }}' class='group'>
-              <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-slate-200 xl:aspect-h-8 xl:aspect-w-7'>
-                <img
-                  src='{{ product.featured_image |  image_url: width: 400  }}'
-                  alt='{{ product.featured_image.alt | escape }}'
-                  width='{{ product.featured_image.width }}'
-                  height='{{ product.featured_image.height }}'
-                  class='h-full w-full object-cover object-center group-hover:opacity-75'
-                >
-              </div>
-              <h3 class='mt-4 font-heading text-2xl font-semibold text-slate-700'>
-                {{ product.title }}
-              </h3>
-              <p class='mt-1 text-xl text-slate-700'>
-                {{ product.price | money }}
-              </p>
-            </a>
-          {% endfor %}
-        </div>
-      </section>
+          <div class='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
+            {% for product in collection.products %}
+              <a href='{{ product.url }}' class='group'>
+                <div class='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-slate-200 xl:aspect-h-8 xl:aspect-w-7'>
+                  <img
+                    src='{{ product.featured_image |  image_url: width: 400  }}'
+                    alt='{{ product.featured_image.alt | escape }}'
+                    width='{{ product.featured_image.width }}'
+                    height='{{ product.featured_image.height }}'
+                    class='h-full w-full object-cover object-center group-hover:opacity-75'
+                  >
+                </div>
+                <h3 class='mt-4 font-heading text-2xl font-semibold text-slate-700'>
+                  {{ product.title }}
+                </h3>
+                <p class='mt-1 text-xl text-slate-700'>
+                  {{ product.price | money }}
+                </p>
+              </a>
+            {% endfor %}
+          </div>
+        </section>
+
+        {%- if paginate.parts.size > 0 -%}
+          <!-- Pagination -->
+          <nav
+            aria-label='Pagination'
+            class='pb-24 mx-auto mt-6 flex max-w-7xl justify-between px-4 text-sm font-medium text-slate-700 sm:px-6 lg:px-8'
+          >
+            <div class='min-w-0 flex-1'>
+              <a
+                href='{{ paginate.previous.url }}'
+                class='inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 hover:bg-slate-100 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-orange-300'
+                >Previous</a
+              >
+            </div>
+
+            <div class='hidden space-x-2 sm:flex'>
+              <!--
+                Current: "border-orange-300 ring-1 ring-orange-300", Default: "border-slate-300"
+              -->
+              {%- for part in paginate.parts -%}
+                {% if part.is_link %}
+                  <a
+                    href='{{ part.url }}'
+                    class='inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 hover:bg-slate-100 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-orange-300'
+                  >
+                    {{- part.title -}}
+                  </a>
+                {% else %}
+                  {%- if part.title == paginate.current_page -%}
+                    <span
+                      class='inline-flex h-10 items-center rounded-md border border-orange-300 bg-white px-4 ring-1 ring-orange-300 hover:bg-slate-100 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-orange-300'
+                    >
+                      {{- part.title -}}
+                    </span>
+                  {% else %}
+                    {% comment %} For the three dots {% endcomment %}
+                    <span
+                      class='inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 hover:bg-slate-100 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-orange-300'
+                    >
+                      {{- part.title -}}
+                    </span>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class='flex min-w-0 flex-1 justify-end'>
+              <a
+                href='{{ paginate.next.url }}'
+                class='inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 hover:bg-slate-100 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-orange-300'
+                >Next</a
+              >
+            </div>
+          </nav>
+        {% endif %}
+      {% endpaginate %}
     </div>
   </div>
 </div>
@@ -428,6 +484,15 @@
 {
   "name": "Collection",
   "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 1,
+      "max": 24,
+      "step": 1,
+      "default": 12,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
     {
       "type": "text",
       "id": "description",
