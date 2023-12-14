@@ -112,7 +112,11 @@
                         value='{{ item.quantity }}'
                         class='quantity-select max-w-full rounded-md border border-slate-300 py-1.5 text-left text-base font-medium leading-5 text-slate-700 shadow-sm focus:border-orange-200 focus:outline-none focus:ring-1 focus:ring-orange-200'
                       >
-                        {% assign num = item.variant.inventory_quantity %}
+                        {% if item.variant.inventory_quantity > 0 %}
+                          {% assign num = item.variant.inventory_quantity %}
+                        {% else %}
+                          {% assign num = 10 %}
+                        {% endif %}
                         {% assign range = (1..num) %}
                         {% for i in range %}
                           <option
