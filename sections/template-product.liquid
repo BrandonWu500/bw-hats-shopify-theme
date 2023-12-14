@@ -217,7 +217,13 @@
                 name='quantity'
                 class='quantity-select h-full max-w-full rounded-md border border-slate-300 py-1.5 text-left text-lg font-medium leading-5 text-slate-600 shadow-sm focus:border-orange-200 focus:outline-none focus:ring-1 focus:ring-orange-200'
               >
-                {% assign num = product.selected_or_first_available_variant.inventory_quantity %}
+                {% if product.selected_or_first_available_variant.inventory_quantity
+                    > 0
+                %}
+                  {% assign num = product.selected_or_first_available_variant.inventory_quantity %}
+                {% else %}
+                  {% assign num = 10 %}
+                {% endif %}
                 {% assign range = (1..num) %}
                 {% for i in range %}
                   <option
