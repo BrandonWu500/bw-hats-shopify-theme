@@ -2,12 +2,50 @@
   "sections": {
     "main": {
       "type": "template-product",
-      "settings": {}
+      "blocks": {
+        "a3aa08e7-efd3-4526-bb62-8c84adc006d6": {
+          "type": "shopify:\/\/apps\/recharge-subscriptions\/blocks\/subscription-widget\/371eed76-0b44-4869-9813-730372ea378e",
+          "settings": {
+            "product": "{{product}}"
+          }
+        }
+      },
+      "block_order": [
+        "a3aa08e7-efd3-4526-bb62-8c84adc006d6"
+      ],
+      "settings": {
+      }
+    },
+    "1702586882c47d3509": {
+      "type": "apps",
+      "blocks": {
+        "7fccaae7-f0b9-45be-a504-eb8cbe6a7ef6": {
+          "type": "shopify:\/\/apps\/judge-me-reviews\/blocks\/review_widget\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "7fccaae7-f0b9-45be-a504-eb8cbe6a7ef6"
+      ],
+      "custom_css": [
+        "#judgeme_product_reviews {padding: 0.5rem; margin: 0 auto;}",
+        "@media screen and (min-width: 640px) {#judgeme_product_reviews {padding: 1rem; }}",
+        "@media screen and (min-width: 768px) {#judgeme_product_reviews {max-width: 768px; }}",
+        "@media screen and (min-width: 1024px) {#judgeme_product_reviews {max-width: 1280px; }}"
+      ],
+      "settings": {
+      }
     },
     "related-products": {
       "type": "product-recommendations",
-      "settings": {}
+      "settings": {
+      }
     }
   },
-  "order": ["main", "related-products"]
+  "order": [
+    "main",
+    "1702586882c47d3509",
+    "related-products"
+  ]
 }
