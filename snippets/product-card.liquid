@@ -19,7 +19,13 @@
     </div>
     <div class='mt-4 flex items-center justify-between text-xl xl:text-2xl text-slate-700'>
       <h3 class='font-heading font-semibold'>{{ product.title }}</h3>
-      <p class='font-body'>{{ product.price | money }}</p>
+      <p class='font-body'>
+        {% if product.price == 0 %}
+          Free
+        {% else %}
+          {{ product.price | money }}
+        {% endif %}
+      </p>
     </div>
   </a>
 </div>

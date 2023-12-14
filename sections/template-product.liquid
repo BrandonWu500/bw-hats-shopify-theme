@@ -111,11 +111,33 @@
         {{ product.title }}
       </h1>
 
-      <div class='mt-3'>
+      <div class='mt-3 flex flex-wrap gap-4'>
         <h2 class='sr-only'>Product information</h2>
+        {% if product.selected_or_first_available_variant.compare_at_price %}
+          <p
+            class='text-3xl tracking-tight text-slate-700 line-through'
+            id='compare-at-product-price'
+          >
+            {{
+              product.selected_or_first_available_variant.compare_at_price
+              | money
+            }}
+          </p>
+        {% endif %}
         <p class='text-3xl tracking-tight text-slate-700' id='product-price'>
-          {{ product.selected_or_first_available_variant.price | money }}
+          {% if product.selected_or_first_available_variant.price == 0 %}
+            Free
+          {% else %}
+            {{ product.selected_or_first_available_variant.price | money }}
+          {% endif %}
         </p>
+
+        {% if product.selected_or_first_available_variant.compare_at_price %}
+          {% comment %} Badge {% endcomment %}
+          <span class='inline-flex items-center rounded-full bg-orange-200 px-3 py-1 text-slate-600 text-lg ring-1 ring-inset ring-orange-300/10'
+            >Discounted Price</span
+          >
+        {% endif %}
       </div>
 
       <div class='mt-6'>
