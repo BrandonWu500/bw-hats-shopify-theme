@@ -13,6 +13,10 @@
       "block_order": [
         "a3aa08e7-efd3-4526-bb62-8c84adc006d6"
       ],
+      "custom_css": [
+        ".rc-subscription-details {padding-inline: 0; margin-top: 0.5rem;}",
+        ".rc-tooltip {font-size: 16px;}"
+      ],
       "settings": {
       }
     },
@@ -37,6 +41,11 @@
       "settings": {
       }
     },
+    "170258689422b783ef": {
+      "type": "apps",
+      "settings": {
+      }
+    },
     "related-products": {
       "type": "product-recommendations",
       "settings": {
@@ -46,6 +55,7 @@
   "order": [
     "main",
     "1702586882c47d3509",
+    "170258689422b783ef",
     "related-products"
   ]
 }
