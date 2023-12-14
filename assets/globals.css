@@ -4703,6 +4703,14 @@ select {
   --tw-ring-color: transparent;
 }
 
+.ring-orange-300\/10 {
+  --tw-ring-color: rgb(253 186 116 / 0.1);
+}
+
+.ring-orange-500\/10 {
+  --tw-ring-color: rgb(249 115 22 / 0.1);
+}
+
 .ring-opacity-5 {
   --tw-ring-opacity: 0.05;
 }

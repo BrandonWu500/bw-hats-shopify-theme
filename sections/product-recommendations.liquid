@@ -41,7 +41,11 @@
                 {{ product.title }}
               </h3>
               <p class='product__price'>
-                {{ product.price | money }}
+                {% if product.price == 0 %}
+                  Free
+                {% else %}
+                  {{ product.price | money }}
+                {% endif %}
               </p>
             </div>
           </a>

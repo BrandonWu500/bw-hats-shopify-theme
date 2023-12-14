@@ -529,7 +529,11 @@
                       {{ item.title }}
                     </h3>
                     <p class='mt-1 text-xl text-slate-700'>
-                      {{ item.price | money }}
+                      {% if item.price == 0 %}
+                        Free
+                      {% else %}
+                        {{ item.price | money }}
+                      {% endif %}
                     </p>
                   </a>
 
@@ -594,7 +598,11 @@
                   {{ product.title }}
                 </h3>
                 <p class='mt-1 text-xl text-slate-700'>
-                  {{ product.price | money }}
+                  {% if product.price == 0 %}
+                    Free
+                  {% else %}
+                    {{ product.price | money }}
+                  {% endif %}
                 </p>
               </a>
             {% endfor %}
