@@ -126,10 +126,10 @@
         </div>
       </div>
 
-      {% form 'product', product, class: 'mt-6', id: 'product-form' %}
+      {% form 'product', product, data-productid: product.id, class: 'mt-6', id: 'product-form' %}
         <input
           type='hidden'
-          name='id'
+          name='id' data-productid='{{ product.id }}'
           id='product-id'
           value='{{ product.selected_or_first_available_variant.id }}'
           data-url='{{ product.url }}'
