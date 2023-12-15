@@ -39,10 +39,16 @@
         "settings": {
           "button_color": "#475569",
           "button_icon": "chat_bubble",
+          "button_text": "chat_with_us",
           "button_horizontal_position": "bottom_right",
           "button_vertical_position": "lowest",
-          "button_text": "chat_with_us",
           "greeting_message": "👋 Hi, message us with any questions. We're happy to help!"
+        }
+      },
+      "8154336783611098045": {
+        "type": "shopify:\/\/apps\/izyrent\/blocks\/izyrent\/cda4a37a-6d4d-4f3d-b8e5-c19d5c367c6a",
+        "disabled": false,
+        "settings": {
         }
       }
     }
