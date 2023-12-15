@@ -47,7 +47,7 @@
       },
       "8154336783611098045": {
         "type": "shopify:\/\/apps\/izyrent\/blocks\/izyrent\/cda4a37a-6d4d-4f3d-b8e5-c19d5c367c6a",
-        "disabled": true,
+        "disabled": false,
         "settings": {
         }
       }
