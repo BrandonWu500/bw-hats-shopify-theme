@@ -1,0 +1,14 @@
+<div class='text-center flex flex-col items-center justify-center'>
+  {% render 'icon-shopping-bag', class: 'h-16' %}
+  <h2 class='mt-6 text-center font-heading text-3xl font-semibold'>
+    Your bag is empty.
+  </h2>
+  <div class='mt-10'>
+    <a
+      href='{{ routes.all_products_collection_url }}'
+      class='inline-block rounded-md border border-transparent bg-orange-200 px-8 py-3 font-medium text-slate-600 hover:bg-orange-300'
+    >
+      Continue Shopping
+    </a>
+  </div>
+</div>
