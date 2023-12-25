@@ -1,496 +1,689 @@
-<!--
-  This example requires some changes to your config:
+<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- if settings.predictive_search_enabled -%}
+  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- endif -%}
+{%- if section.settings.menu_type_desktop == 'mega' -%}
+  <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript>{{ 'component-mega-menu.css' | asset_url | stylesheet_tag }}</noscript>
+{%- endif -%}
 
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
+{%- if settings.cart_type == "drawer" -%}
+  {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+  {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+  {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+<noscript>{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-search.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}</noscript>
+
+<style>
+  header-drawer {
+    justify-self: start;
+    margin-left: -1.2rem;
   }
-  ```
--->
-<div
-  class='bg-slate-600 text-orange-200'
-  x-data='{ mobileMenuOpen: false }'
->
-  <!--
-    Mobile menu
 
-    Off-canvas menu for mobile, show/hide based on off-canvas menu state.
-  -->
-  <div
-    x-show='mobileMenuOpen'
-    class='hidden relative z-40 lg:hidden'
-    role='dialog'
-    aria-modal='true'
-    id='mobile-menu'
-  >
-    <!--
-      Off-canvas menu backdrop, show/hide based on off-canvas menu state.
+  {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
+    .scrolled-past-header .header__heading-logo-wrapper {
+      width: 75%;
+    }
+  {%- endif -%}
 
-      Entering: "transition-opacity ease-linear duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "transition-opacity ease-linear duration-300"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
-    <div
-      x-show='mobileMenuOpen'
-      x-transition:enter='transition-opacity ease-linear duration-300'
-      x-transition:enter-start='opacity-0'
-      x-transition:enter-end='opacity-100'
-      x-transition:leave='transition-opacity ease-linear duration-300'
-      x-transition:leave-start='opacity-100'
-      x-transition:leave-end='opacity-0'
-      class='fixed inset-0 bg-black bg-opacity-25'
-    ></div>
+  {%- if section.settings.menu_type_desktop != "drawer" -%}
+    @media screen and (min-width: 990px) {
+      header-drawer {
+        display: none;
+      }
+    }
+  {%- endif -%}
 
-    <div class='fixed inset-0 z-40 flex'>
-      <!--
-        Off-canvas menu, show/hide based on off-canvas menu state.
+  .menu-drawer-container {
+    display: flex;
+  }
 
-        Entering: "transition ease-in-out duration-300 transform"
-          From: "-translate-x-full"
-          To: "translate-x-0"
-        Leaving: "transition ease-in-out duration-300 transform"
-          From: "translate-x-0"
-          To: "-translate-x-full"
-      -->
-      <div
-        @click.away='mobileMenuOpen = false'
-        x-show='mobileMenuOpen'
-        x-transition:enter='transition ease-in-out duration-300 transform'
-        x-transition:enter-start='translate-x-full'
-        x-transition:enter-end='translate-x-0'
-        x-transition:leave='transition ease-in-out duration-300 transform'
-        x-transition:leave-start='translate-x-0'
-        x-transition:leave-end='translate-x-full'
-        class='absolute h-full right-0 top-0 flex w-full max-w-xs flex-col overflow-y-auto bg-slate-600 pb-12 shadow-xl'
-      >
-        <div class='flex px-5 pb-2 pt-5 items-center justify-between w-full'>
-          <p class='font-medium text-orange-200 text-xl'>Menu</p>
-          <button
-            x-on:click='mobileMenuOpen = false'
-            type='button'
-            class='rounded-md p-2 text-orange-200'
-          >
-            <span class='sr-only'>Close menu</span>
-            <svg
-              class='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke-width='1.5'
-              stroke='currentColor'
-              aria-hidden='true'
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+  .list-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-        <div class='flex flex-col gap-5 px-5 py-6'>
-          {% for link in linklists['main-menu'].links %}
-            <a
-              href='{{ link.url }}'
-              class='-m-2 block p-2 text-orange-200'
-            >
-              {{- link.title -}}
-            </a>
-          {% endfor %}
+  .list-menu--inline {
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
 
-          {% comment %} Divider {% endcomment %}
-          <div class='relative my-2'>
-            <div class='absolute inset-0 flex items-center' aria-hidden='true'>
-              <div class='w-full border-t border-orange-200'></div>
-            </div>
-          </div>
+  summary.list-menu__item {
+    padding-right: 2.7rem;
+  }
 
-          <a
-            href='{{ routes.account_url }}'
-            class='-m-2 block p-2 text-orange-200'
-            >Account</a
-          >
+  .list-menu__item {
+    display: flex;
+    align-items: center;
+    line-height: calc(1 + 0.3 / var(--font-body-scale));
+  }
 
-          {% comment %} Divider {% endcomment %}
-          <div class='relative my-2'>
-            <div class='absolute inset-0 flex items-center' aria-hidden='true'>
-              <div class='w-full border-t border-orange-200'></div>
-            </div>
-          </div>
+  .list-menu__item--link {
+    text-decoration: none;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    line-height: calc(1 + 0.8 / var(--font-body-scale));
+  }
 
-          {% form 'localization', class: 'gap-8 flex flex-col lg:hidden' %}
-            <input
-              type='hidden'
-              name='country_code'
-              class='localization-country-code-value'
-            >
-            <input
-              type='hidden'
-              name='locale_code'
-              class='localization-language-code-value'
-            >
+  @media screen and (min-width: 750px) {
+    .list-menu__item--link {
+      padding-bottom: 0.5rem;
+      padding-top: 0.5rem;
+    }
+  }
+</style>
 
-            <!-- Country selector -->
-            <div class='flex flex-col items-baseline gap-4'>
-              <label
-                id='listbox-label'
-                class='block text-sm font-medium leading-6 text-orange-200'
-                >Country</label
-              >
-              <div class='relative w-60' x-data='{ openOptions: false }'>
-                <button
-                  type='button'
-                  class='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-300 sm:text-sm sm:leading-6'
-                  aria-haspopup='listbox'
-                  aria-labelledby='listbox-label'
-                  @click='openOptions = ! openOptions'
-                >
-                  <span class='flex gap-1 truncate'>
-                    {{- localization.country.name -}}
-                    <span>
-                      (
-                      {{- localization.country.currency.iso_code -}}
-                      )
-                    </span>
-                  </span>
-                  <span class='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
-                    <svg
-                      class='h-5 w-5 text-gray-400'
-                      viewBox='0 0 20 20'
-                      fill='currentColor'
-                      aria-hidden='true'
-                    >
-                      <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
-                    </svg>
-                  </span>
-                </button>
+{%- style -%}
+  .header {
+    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
+  }
 
-                <!--
-                  Select popover, show/hide based on select state.
+  .section-header {
+    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
+    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+  }
 
-                  Entering: ""
-                    From: ""
-                    To: ""
-                  Leaving: "transition ease-in duration-100"
-                    From: "opacity-100"
-                    To: "opacity-0"
-                -->
-                <ul
-                  x-transition:enter=''
-                  x-transition:enter-start=''
-                  x-transition:enter-end=''
-                  x-transition:leave='transition ease-in duration-100'
-                  x-transition:leave-start='opacity-100'
-                  x-transition:leave-end='opacity-0'
-                  x-show='openOptions'
-                  @click.away='openOptions = false'
-                  class='country-selector-values hidden absolute w-full z-10 mt-1 max-h-60 flex-col overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
-                  tabindex='-1'
-                  role='listbox'
-                  aria-labelledby='listbox-label'
-                >
-                  {% for country in localization.available_countries %}
-                    <!--
-                      Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
+  @media screen and (min-width: 750px) {
+    .section-header {
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  }
 
-                      Highlighted: "bg-indigo-600 text-white", Not Highlighted: "text-slate-700"
-                    -->
-                    <li
-                      class='localization-country-code-option text-slate-700 relative cursor-default select-none py-2 pl-3 pr-9 hover:bg-orange-200 focus:bg-orange-200 focus:outline-none'
-                      role='option'
-                      tabindex='0'
-                      @click='openOptions = false'
-                      data-country-iso-code='{{ country.iso_code }}'
-                    >
-                      <!--
-                        Selected: "font-semibold", Not Selected: "font-normal"
-                      -->
+  @media screen and (min-width: 990px) {
+    .header {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 
-                      <span
-                        class='
-                          {%- if country.iso_code == localization.country.iso_code %}
-                            font-semibold
-                          {% else %}
-                          font-normal
-                          {% endif %}
-                          block truncate
-                        '
-                      >
-                        {{ country.name }} ({{ country.currency.iso_code }})
-                      </span>
-                    </li>
-                  {% endfor %}
+<script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+{%- if settings.cart_type == "drawer" -%}
+  <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
-                  <!-- More items... -->
-                </ul>
+<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+  <symbol id="icon-search" viewbox="0 0 18 19" fill="none">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z" fill="currentColor"/>
+  </symbol>
+
+  <symbol id="icon-reset" class="icon icon-close"  fill="none" viewBox="0 0 18 18" stroke="currentColor">
+    <circle r="8.5" cy="9" cx="9" stroke-opacity="0.2"/>
+    <path d="M6.82972 6.82915L1.17193 1.17097" stroke-linecap="round" stroke-linejoin="round" transform="translate(5 5)"/>
+    <path d="M1.22896 6.88502L6.77288 1.11523" stroke-linecap="round" stroke-linejoin="round" transform="translate(5 5)"/>
+  </symbol>
+
+  <symbol id="icon-close" class="icon icon-close" fill="none" viewBox="0 0 18 17">
+    <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor">
+  </symbol>
+</svg>
+
+{%- liquid
+  for block in section.blocks
+    if block.type == '@app'
+      assign has_app_block = true
+    endif
+  endfor
+-%}
+
+<{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}">
+  {%- liquid
+    assign social_links = false
+    assign localization_forms = false
+
+    if settings.social_twitter_link != blank or settings.social_facebook_link != blank or settings.social_pinterest_link != blank or settings.social_instagram_link != blank or settings.social_youtube_link != blank or settings.social_vimeo_link != blank or settings.social_tiktok_link != blank or settings.social_tumblr_link != blank or settings.social_snapchat_link != blank
+      assign social_links = true
+    endif
+
+    if localization.available_countries.size > 1 and section.settings.enable_country_selector or section.settings.enable_language_selector and localization.available_languages.size > 1
+      assign localization_forms = true
+    endif
+  -%}
+  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
+    {%- liquid
+      if section.settings.menu != blank
+        render 'header-drawer'
+      endif
+
+      if section.settings.logo_position == 'top-center' or section.settings.menu == blank
+        render 'header-search', input_id: 'Search-In-Modal-1'
+      endif
+    -%}
+
+    {%- if section.settings.logo_position != 'middle-center' -%}
+      {%- if request.page_type == 'index' -%}
+        <h1 class="header__heading">
+      {%- endif -%}
+          <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+            {%- if settings.logo != blank -%}
+              <div class="header__heading-logo-wrapper">
+                {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+                {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+                {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+                {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+                {{ settings.logo | image_url: width: 600 | image_tag:
+                  class: 'header__heading-logo motion-reduce',
+                  widths: widths,
+                  height: logo_height,
+                  width: settings.logo_width,
+                  alt: logo_alt,
+                  sizes: sizes,
+                  preload: true
+                }}
               </div>
-            </div>
+            {%- else -%}
+              <span class="h2">{{ shop.name }}</span>
+            {%- endif -%}
+          </a>
+      {%- if request.page_type == 'index' -%}
+        </h1>
+      {%- endif -%}
+    {%- endif -%}
 
-            {% comment %}
-              <!-- Language selector -->
-              <div class='flex flex-col items-baseline gap-4'>
-                <label
-                  id='listbox-label'
-                  class='block text-sm font-medium leading-6 text-orange-200'
-                  >Language</label
-                >
-                <div
-                  class='relative w-40'
-                  x-data='{ openLanguageOptions: false }'
-                >
-                  <button
-                    type='button'
-                    class='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-slate-700 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-300 sm:text-sm sm:leading-6'
-                    aria-haspopup='listbox'
-                    aria-labelledby='listbox-label'
-                    @click='openLanguageOptions = ! openLanguageOptions'
-                  >
-                    <span class='flex gap-1 truncate'>
-                      {{- localization.language.endonym_name | capitalize -}}
-                    </span>
-                    <span class='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
-                      <svg
-                        class='h-5 w-5 text-gray-400'
-                        viewBox='0 0 20 20'
-                        fill='currentColor'
-                        aria-hidden='true'
-                      >
-                        <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
-                      </svg>
-                    </span>
-                  </button>
+    {%- liquid
+      if section.settings.menu != blank
+        if section.settings.menu_type_desktop == 'dropdown'
+          render 'header-dropdown-menu'
+        elsif section.settings.menu_type_desktop != 'drawer'
+          render 'header-mega-menu'
+        endif
+      endif
+    %}
 
-                  <!--
-                    Select popover, show/hide based on select state.
-
-                    Entering: ""
-                      From: ""
-                      To: ""
-                    Leaving: "transition ease-in duration-100"
-                      From: "opacity-100"
-                      To: "opacity-0"
-                  -->
-                  <ul
-                    x-transition:enter=''
-                    x-transition:enter-start=''
-                    x-transition:enter-end=''
-                    x-transition:leave='transition ease-in duration-100'
-                    x-transition:leave-start='opacity-100'
-                    x-transition:leave-end='opacity-0'
-                    x-show='openLanguageOptions'
-                    @click.away='openLanguageOptions = false'
-                    class='language-selector-values hidden absolute w-full z-10 mt-1 max-h-60 flex-col overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
-                    tabindex='-1'
-                    role='listbox'
-                    aria-labelledby='listbox-label'
-                  >
-                    {% for language in localization.available_languages %}
-                      <!--
-                        Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
-
-                        Highlighted: "bg-indigo-600 text-white", Not Highlighted: "text-slate-700"
-                      -->
-                      <li
-                        class='localization-language-code-option text-slate-700 relative cursor-default select-none py-2 pl-3 pr-9 hover:bg-orange-200 focus:bg-orange-200 focus:outline-none'
-                        role='option'
-                        tabindex='0'
-                        @click='openLanguageOptions = false'
-                        data-language-iso-code='{{ language.iso_code }}'
-                      >
-                        <!--
-                          Selected: "font-semibold", Not Selected: "font-normal"
-                        -->
-
-                        <span
-                          class='
-                            {%- if language.iso_code == localization.language.iso_code %}
-                              font-semibold
-                            {% else %}
-                            font-normal
-                            {% endif %}
-                            block truncate
-                          '
-                        >
-                          {{ language.endonym_name | capitalize }}
-                        </span>
-                      </li>
-                    {% endfor %}
-
-                    <!-- More items... -->
-                  </ul>
-                </div>
+    {%- if section.settings.logo_position == 'middle-center' -%}
+      {%- if request.page_type == 'index' -%}
+        <h1 class="header__heading">
+      {%- endif -%}
+          <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+            {%- if settings.logo != blank -%}
+              <div class="header__heading-logo-wrapper">
+                {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+                {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+                {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
+                {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+                {{ settings.logo | image_url: width: 600 | image_tag:
+                  class: 'header__heading-logo',
+                  widths: widths,
+                  height: logo_height,
+                  width: settings.logo_width,
+                  alt: logo_alt,
+                  sizes: sizes,
+                  preload: true
+                }}
               </div>
-            {% endcomment %}
-          {% endform %}
-        </div>
+            {%- else -%}
+              <span class="h2">{{ shop.name }}</span>
+            {%- endif -%}
+          </a>
+      {%- if request.page_type == 'index' -%}
+        </h1>
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
+      <div class="desktop-localization-wrapper">
+        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+          <noscript class="small-hide medium-hide">
+            {%- form 'localization', id: 'HeaderCountryMobileFormNoScript', class: 'localization-form' -%}
+              <div class="localization-form__select">
+                <h2 class="visually-hidden" id="HeaderCountryMobileLabelNoScript">{{ 'localization.country_label' | t }}</h2>
+                <select class="localization-selector link" name="country_code" aria-labelledby="HeaderCountryMobileLabelNoScript">
+                  {%- for country in localization.available_countries -%}
+                    <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {% render 'icon-caret' %}
+              </div>
+              <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
+            {%- endform -%}
+          </noscript>
+
+          <localization-form class="small-hide medium-hide no-js-hidden">
+            {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {% endif %}
+
+        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+          <noscript class="small-hide medium-hide">
+            {%- form 'localization', id: 'HeaderLanguageMobileFormNoScript', class: 'localization-form' -%}
+              <div class="localization-form__select">
+                <h2 class="visually-hidden" id="HeaderLanguageMobileLabelNoScript">{{ 'localization.language_label' | t }}</h2>
+                <select class="localization-selector link" name="locale_code" aria-labelledby="HeaderLanguageMobileLabelNoScript">
+                  {%- for language in localization.available_languages -%}
+                    <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                      {{ language.endonym_name | capitalize }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {% render 'icon-caret' %}
+              </div>
+              <button class="button button--tertiary">{{ 'localization.update_language' | t }}</button>
+            {%- endform -%}
+          </noscript>
+
+          <localization-form class="small-hide medium-hide no-js-hidden">
+            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {%- endif -%}
       </div>
+      {% render 'header-search', input_id: 'Search-In-Modal' %}
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
+          {% render 'icon-account' %}
+          <span class="visually-hidden">
+            {%- liquid
+              if customer
+                echo 'customer.account_fallback' | t
+              else
+                echo 'customer.log_in' | t
+              endif
+            -%}
+          </span>
+        </a>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+        {%- endcase -%}
+      {%- endfor -%}
+
+      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+        {%- liquid
+          if cart == empty
+            render 'icon-cart-empty'
+          else
+            render 'icon-cart'
+          endif
+        -%}
+        <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+        {%- if cart != empty -%}
+          <div class="cart-count-bubble">
+            {%- if cart.item_count < 100 -%}
+              <span aria-hidden="true">{{ cart.item_count }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+          </div>
+        {%- endif -%}
+      </a>
     </div>
-  </div>
-
-  <header class='relative bg-slate-600'>
-    <nav aria-label='Top' class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-      <div class=''>
-        <div class='flex h-16 items-center justify-between'>
-          <!-- Logo -->
-          <div class='flex flex-1'>
-            <a href='/'>
-              <span class='sr-only'>BW Hats</span>
-              {% render 'logo', class: 'w-auto h-6' %}
-            </a>
-          </div>
-
-          <div class='hidden lg:flex lg:flex-1 lg:justify-center lg:space-x-8'>
-            <!-- Links -->
-            {% for link in linklists['main-menu'].links %}
-              <a
-                href='{{ link.url }}'
-                class='-m-2 block p-2 whitespace-nowrap xl:text-lg text-orange-200 hover:text-orange-300'
-              >
-                {{- link.title -}}
-              </a>
-            {% endfor %}
-          </div>
-
-          <div class='flex flex-1 items-center gap-2 justify-end'>
-            <!-- Search -->
-            <div>
-              <a
-                href='{{ routes.search_url }}'
-                class='flex p-2 text-orange-200 hover:text-orange-300'
-              >
-                <span class='sr-only'>Search</span>
-                <svg
-                  class='h-6 w-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke-width='1.5'
-                  stroke='currentColor'
-                  aria-hidden='true'
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-              </a>
-            </div>
-
-            {% comment %} Account {% endcomment %}
-            <div class='hidden lg:block'>
-              <a
-                href='{{ routes.account_url }}'
-                class='flex p-2 text-orange-200 hover:text-orange-300'
-              >
-                <span class='sr-only'>Account</span>
-                {% render 'icon-user', class: 'h-6 w-6' %}
-              </a>
-            </div>
-
-            <!-- Cart -->
-            <div class='lg:relative'>
-              <a
-                href='{{ routes.cart_url }}'
-                class='flex items-center p-2 group'
-              >
-                <svg
-                  class='h-6 w-6 flex-shrink-0 text-orange-200 group-hover:text-orange-300'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke-width='1.5'
-                  stroke='currentColor'
-                  aria-hidden='true'
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                </svg>
-                <span
-                  id='header-cart-item-count'
-                  class='hidden lg:flex ml-2 text-sm font-medium text-orange-200 group-hover:text-orange-300'
-                >
-                  {{ cart.item_count }}
-                </span>
-                <span class='hidden lg:sr-only'>items in cart, view bag</span>
-              </a>
-
-              {% comment %} Cart popover {% endcomment %}
-              <!--
-                Entering: "transition ease-out duration-200"
-                  From: "opacity-0"
-                  To: "opacity-100"
-                Leaving: "transition ease-in duration-150"
-                  From: "opacity-100"
-                  To: "opacity-0"
-              -->
-
-              <div
-                id='global-cart-popover'
-                class='hidden z-50 absolute inset-x-0 top-16 mt-px bg-orange-200 pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-slate-700 lg:ring-opacity-5 lg:hidden'
-              >
-                <div class='p-4 pb-0 flex items-center justify-between w-full'>
-                  <h2 class='flex items-center gap-2 capitalize text-lg font-semibold font-heading text-slate-600'>
-                    {% render 'icon-check' %}
-                    <span>Added to Bag!</span>
-                  </h2>
-                  <button>
-                    {% render 'icon-close',
-                      id: 'close-global-cart-popover',
-                      class: 'w-6 h-6 text-slate-600'
-                    %}
-                  </button>
-                </div>
-
-                <form
-                  class='mx-auto max-w-2xl px-4'
-                  action='{{ routes.cart_url }}'
-                  method='post'
-                >
-                  <div
-                    class='divide-y divide-orange-200'
-                    id='global-cart-popover-item'
-                  ></div>
-
-                  <button
-                    type='submit'
-                    name='checkout'
-                    class='w-full rounded-md border border-transparent bg-slate-600 px-4 py-2 text-sm font-semibold font-heading text-orange-200 shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-orange-50 capitalize'
-                  >
-                    Checkout
-                  </button>
-
-                  <p class='mt-6 text-center'>
-                    <a
-                      href='{{ routes.cart_url }}'
-                      class='text-sm font-medium text-slate-600 hover:text-slate-500'
-                      >View Shopping Bag</a
-                    >
-                  </p>
-                </form>
-              </div>
-            </div>
-
-            <div class='lg:hidden mt-0.5'>
-              <!-- Mobile menu toggle, controls the 'mobileMenuOpen' state. -->
-              <button
-                @click='mobileMenuOpen = true'
-                type='button'
-                class='rounded-md bg-slate-600 p-2 text-orange-200'
-              >
-                <span class='sr-only'>Open menu</span>
-                <svg
-                  class='h-6 w-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke-width='1.5'
-                  stroke='currentColor'
-                  aria-hidden='true'
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
   </header>
-</div>
+</{% if section.settings.sticky_header_type != 'none' %}sticky-header{% else %}div{% endif %}>
+
+{%- if settings.cart_type == "notification" -%}
+  {%- render 'cart-notification', color_scheme: section.settings.color_scheme, desktop_menu_type: section.settings.menu_type_desktop -%}
+{%- endif -%}
+
+{% javascript %}
+  class StickyHeader extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.header = document.querySelector('.section-header');
+      this.headerIsAlwaysSticky = this.getAttribute('data-sticky-type') === 'always' || this.getAttribute('data-sticky-type') === 'reduce-logo-size';
+      this.headerBounds = {};
+
+      this.setHeaderHeight();
+
+      window.matchMedia('(max-width: 990px)').addEventListener('change', this.setHeaderHeight.bind(this));
+
+      if (this.headerIsAlwaysSticky) {
+        this.header.classList.add('shopify-section-header-sticky');
+      };
+
+      this.currentScrollTop = 0;
+      this.preventReveal = false;
+      this.predictiveSearch = this.querySelector('predictive-search');
+
+      this.onScrollHandler = this.onScroll.bind(this);
+      this.hideHeaderOnScrollUp = () => this.preventReveal = true;
+
+      this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.addEventListener('scroll', this.onScrollHandler, false);
+
+      this.createObserver();
+    }
+
+    setHeaderHeight() {
+      document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.removeEventListener('scroll', this.onScrollHandler);
+    }
+
+    createObserver() {
+      let observer = new IntersectionObserver((entries, observer) => {
+        this.headerBounds = entries[0].intersectionRect;
+        observer.disconnect();
+      });
+
+      observer.observe(this.header);
+    }
+
+    onScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+
+      if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        if (this.preventHide) return;
+        requestAnimationFrame(this.hide.bind(this));
+      } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        if (!this.preventReveal) {
+          requestAnimationFrame(this.reveal.bind(this));
+        } else {
+          window.clearTimeout(this.isScrolling);
+
+          this.isScrolling = setTimeout(() => {
+            this.preventReveal = false;
+          }, 66);
+
+          requestAnimationFrame(this.hide.bind(this));
+        }
+      } else if (scrollTop <= this.headerBounds.top) {
+        this.header.classList.remove('scrolled-past-header');
+        requestAnimationFrame(this.reset.bind(this));
+      }
+
+      this.currentScrollTop = scrollTop;
+    }
+
+    hide() {
+      if (this.headerIsAlwaysSticky) return;
+      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+      this.closeMenuDisclosure();
+      this.closeSearchModal();
+    }
+
+    reveal() {
+      if (this.headerIsAlwaysSticky) return;
+      this.header.classList.add('shopify-section-header-sticky', 'animate');
+      this.header.classList.remove('shopify-section-header-hidden');
+    }
+
+    reset() {
+      if (this.headerIsAlwaysSticky) return;
+      this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
+    }
+
+    closeMenuDisclosure() {
+      this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu');
+      this.disclosures.forEach(disclosure => disclosure.close());
+    }
+
+    closeSearchModal() {
+      this.searchModal = this.searchModal || this.header.querySelector('details-modal');
+      this.searchModal.close(false);
+    }
+  }
+
+  customElements.define('sticky-header', StickyHeader);
+{% endjavascript %}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if settings.logo %}
+      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_twitter_link | json }},
+      {{ settings.social_facebook_link | json }},
+      {{ settings.social_pinterest_link | json }},
+      {{ settings.social_instagram_link | json }},
+      {{ settings.social_tiktok_link | json }},
+      {{ settings.social_tumblr_link | json }},
+      {{ settings.social_snapchat_link | json }},
+      {{ settings.social_youtube_link | json }},
+      {{ settings.social_vimeo_link | json }}
+    ],
+    "url": {{ request.origin | append: page.url | json }}
+  }
+</script>
+
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ request.origin | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "select",
+      "id": "logo_position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "t:sections.header.settings.logo_position.options__2.label"
+        },
+        {
+          "value": "top-center",
+          "label": "t:sections.header.settings.logo_position.options__3.label"
+        },
+        {
+          "value": "middle-left",
+          "label": "t:sections.header.settings.logo_position.options__1.label"
+        },
+        {
+          "value": "middle-center",
+          "label": "t:sections.header.settings.logo_position.options__4.label"
+        }
+      ],
+      "default": "middle-left",
+      "label": "t:sections.header.settings.logo_position.label",
+      "info": "t:sections.header.settings.logo_help.content"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "select",
+      "id": "menu_type_desktop",
+      "options": [
+        {
+          "value": "dropdown",
+          "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
+        },
+        {
+          "value": "mega",
+          "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
+        },
+        {
+          "value": "drawer",
+          "label": "t:sections.header.settings.menu_type_desktop.options__3.label"
+        }
+      ],
+      "default": "dropdown",
+      "label": "t:sections.header.settings.menu_type_desktop.label",
+      "info": "t:sections.header.settings.menu_type_desktop.info"
+    },
+    {
+      "type": "select",
+      "id": "sticky_header_type",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.header.settings.sticky_header_type.options__1.label"
+        },
+        {
+          "value": "on-scroll-up",
+          "label": "t:sections.header.settings.sticky_header_type.options__2.label"
+        },
+        {
+          "value": "always",
+          "label": "t:sections.header.settings.sticky_header_type.options__3.label"
+        },
+        {
+          "value": "reduce-logo-size",
+          "label": "t:sections.header.settings.sticky_header_type.options__4.label"
+        }
+      ],
+      "default": "on-scroll-up",
+      "label": "t:sections.header.settings.sticky_header_type.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": true,
+      "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__1.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "background-1"
+    },
+      {
+      "type": "color_scheme",
+      "id": "menu_color_scheme",
+      "label": "t:sections.header.settings.menu_color_scheme.label",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__3.content",
+      "info": "t:sections.header.settings.header__4.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "t:sections.header.settings.enable_country_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__5.content",
+      "info": "t:sections.header.settings.header__6.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "t:sections.header.settings.enable_language_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.mobile_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "mobile_logo_position",
+      "options": [
+        {
+          "value": "center",
+          "label": "t:sections.header.settings.mobile_logo_position.options__1.label"
+        },
+        {
+          "value": "left",
+          "label": "t:sections.header.settings.mobile_logo_position.options__2.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.header.settings.mobile_logo_position.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.header.settings.margin_bottom.label",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}
