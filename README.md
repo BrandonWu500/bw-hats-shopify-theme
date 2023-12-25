@@ -1,35 +1,13 @@
 # BW Hats Custom Shopify Theme
 
-![BW Hats Landing Page](/bw-hats-shopify-theme-thumbnail.png)
-
 ## Table of Contents
 
 - [Description](#description)
-- [Technologies](#technologies)
-- [Links](#links)
 - [Getting Started](#getting-started)
 
 ## Description
 
-**BW Hats** is my demo store. It uses a custom Shopify theme that I created. I tried to make it as realistic as possible to accurately simulate how I would create a Shopify website for a client.
-
-## Technologies
-
-Here is what I used to create BW Hats:
-
-- Figma
-- Adobe Photoshop
-- Adobe Illustrator
-- Jira
-- Shopify
-- Liquid
-- HTML
-- Tailwind
-- JavaScript
-
-## Links
-
-[Deployment](https://bw-hats.com)
+This is a custom Shopify theme that I created. Currently, it is not the live theme for my Shopify store (I am using an edited version of Dawn for that). However, this repository still serves as an example of how I would go about creating a custom Shopify theme for a client.
 
 ## Getting Started
 
