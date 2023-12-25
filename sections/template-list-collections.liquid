@@ -1,0 +1,74 @@
+<div class='mx-auto max-w-7xl p-4 py-16 sm:px-6 lg:px-8'>
+  <div class='md:flex md:items-center md:justify-between'>
+    <h2 class='text-3xl xl:text-5xl font-heading font-semibold tracking-tight text-slate-700'>
+      {{ section.settings.title }}
+    </h2>
+    <a
+      href='{{ routes.all_products_collection_url }}'
+      class='hidden bg-orange-200 px-4 py-2 rounded-md font-medium text-slate-600 hover:bg-orange-300 md:block text-sm xl:text-base'
+    >
+      Browse all our products
+      <span aria-hidden='true'> &rarr;</span>
+    </a>
+  </div>
+  <div class='mt-6 xl:mt-8 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8'>
+    {% for collection in collections %}
+      {% if collection.all_products_count > 0 %}
+        <div class='group relative'>
+          <div class='h-56 w-full overflow-hidden rounded-md bg-slate-200 group-hover:opacity-75 lg:h-72 xl:h-80'>
+            <img
+              srcset='
+                {{ collection.featured_image | image_url: width: 200 }} 200w,
+                {{ collection.featured_image | image_url: width: 400 }} 400w
+              '
+              src='{{ collection.featured_image |  image_url: width: 400 }}'
+              alt='{{ collection.featured_image.alt | escape }}'
+              sizes='
+                (max-width: 425px) 200px,
+                400px
+              '
+              width='{{ collection.featured_image.width }}'
+              height='{{ collection.featured_image.height }}'
+              class='h-full w-full object-cover object-center'
+            >
+          </div>
+          <h3 class='mt-4 text-xl xl:text-2xl text-slate-700 font-heading font-semibold'>
+            <a href='{{ collection.url }}'>
+              <span class='absolute inset-0'></span>
+              {{ collection.title }}
+            </a>
+          </h3>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class='mt-8 text-sm md:hidden'>
+    <a
+      href='{{ routes.all_products_collection_url }}'
+      class='font-medium bg-orange-200 px-4 py-2 rounded-md text-slate-600 hover:bg-orange-300'
+    >
+      Browse all our products
+      <span aria-hidden='true'> &rarr;</span>
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Collections",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections List"
+    }
+  ]
+}
+{% endschema %}

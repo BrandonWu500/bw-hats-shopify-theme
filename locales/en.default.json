@@ -40,9 +40,9 @@
       "reset": "Clear search term"
     },
     "cart": {
-      "view": "View shopping bag ({{ count }})",
-      "view_empty_cart": "View shopping bag",
-      "item_added": "Item added to shopping bag"
+      "view": "View cart ({{ count }})",
+      "view_empty_cart": "View cart",
+      "item_added": "Item added to your cart"
     },
     "share": {
       "close": "Close share",
@@ -106,7 +106,7 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Add to bag",
+      "add_to_cart": "Add to cart",
       "choose_options": "Choose options",
       "choose_product_options": "Choose options for {{ product_name }}",
       "description": "Description",
@@ -250,7 +250,7 @@
         "email": "Email",
         "phone": "Phone number",
         "comment": "Comment",
-        "send": "Send Message",
+        "send": "Send",
         "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"
       }
@@ -277,16 +277,16 @@
       }
     },
     "cart": {
-      "title": "Shopping Bag",
+      "title": "Your cart",
       "caption": "Cart items",
       "remove_title": "Remove {{ title }}",
       "estimated_total": "Estimated total",
       "new_estimated_total": "New estimated total",
       "note": "Order special instructions",
       "checkout": "Check out",
-      "empty": "Your shopping bag is empty.",
-      "cart_error": "There was an error while updating shopping bag. Please try again.",
-      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to shopping bag.",
+      "empty": "Your cart is empty",
+      "cart_error": "There was an error while updating your cart. Please try again.",
+      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
       "taxes_and_shipping_policy_at_checkout_html": "Taxes, Discounts and <a href=\"{{ link }}\">shipping<\/a> calculated at checkout",
       "taxes_included_but_shipping_at_checkout": "Tax included and shipping and discounts calculated at checkout",
       "taxes_included_and_shipping_policy_html": "Tax included. <a href=\"{{ link }}\">Shipping<\/a> and discounts calculated at checkout.",
@@ -341,7 +341,7 @@
     },
     "quick_order_list": {
       "product_total": "Product subtotal",
-      "view_cart": "View shopping bag",
+      "view_cart": "View cart",
       "each": "{{ money }}\/ea",
       "product": "Product",
       "variant": "Variant",
@@ -356,7 +356,7 @@
       },
       "product_variants": "Product variants",
       "total_items": "Total items",
-      "remove_all_items_confirmation": "Remove all {{ quantity }} items from shopping bag?",
+      "remove_all_items_confirmation": "Remove all {{ quantity }} items from your cart?",
       "remove_all": "Remove all",
       "cancel": "Cancel"
     }

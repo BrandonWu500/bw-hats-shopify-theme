@@ -1,0 +1,97 @@
+{% comment %} Reference: https://shopify.dev/docs/themes/product-merchandising/recommendations/related-products {% endcomment %}
+
+<div
+  class='product-recommendations mx-auto max-w-2xl p-4 sm:p-6 lg:max-w-7xl lg:p-8 mt-8 lg:mt-0 mb-8'
+  data-url='{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related'
+>
+  {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+    <h2 class='text-3xl font-semibold font-heading text-slate-700'>
+      {% if recommendations.intent == 'related' %}
+        You may also like
+      {% elsif recommendations.intent == 'complementary' %}
+        Pair it with
+      {% endif %}
+    </h2>
+
+    <ul class='mt-6 flex gap-x-6 gap-y-10 xl:gap-x-8 overflow-x-auto'>
+      {%- for product in recommendations.products -%}
+        <li
+          class='
+            product group relative flex-shrink-0
+            {% if recommendations.products_count >= 4 %}
+              lg:flex-1
+            {% endif %}
+          '
+        >
+          <a
+            href='{{ product.url }}'
+            class='aspect-square w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none h-[300px]'
+          >
+            <img
+              class='product__img rounded-md group-hover:opacity-75'
+              src='{{ product.featured_image | image_url: width: 300, height: 300 }}'
+              alt='{{ product.featured_image.alt }}'
+              loading='lazy'
+              width='300'
+              height='300'
+            >
+
+            <div class='mt-4 flex items-center justify-between text-lg xl:text-xl  text-slate-700'>
+              <h3 class='product__title font-semibold capitalize font-heading'>
+                {{ product.title }}
+              </h3>
+              <p class='product__price'>
+                {% if product.price == 0 %}
+                  Free
+                {% else %}
+                  {{ product.price | money }}
+                {% endif %}
+              </p>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+{% javascript %}
+  const handleIntersection = (entries, observer) => {
+    if (!entries[0].isIntersecting) return;
+
+    observer.unobserve(productRecommendationsSection);
+
+    const url = productRecommendationsSection.dataset.url;
+
+    fetch(url)
+      .then((response) => response.text())
+      .then((text) => {
+        const html = document.createElement('div');
+        html.innerHTML = text;
+        const recommendations = html.querySelector('.product-recommendations');
+
+        if (recommendations && recommendations.innerHTML.trim().length) {
+          productRecommendationsSection.innerHTML = recommendations.innerHTML;
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  const productRecommendationsSection = document.querySelector(
+    '.product-recommendations'
+  );
+  const observer = new IntersectionObserver(handleIntersection, {
+    rootMargin: '0px 0px 200px 0px',
+  });
+
+  observer.observe(productRecommendationsSection);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "settings": []
+}
+{% endschema %}
