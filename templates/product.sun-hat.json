@@ -3,6 +3,13 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
         "title": {
           "type": "title",
           "settings": {
@@ -27,7 +34,7 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": false,
+            "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
           }
         },
@@ -35,23 +42,47 @@
           "type": "description",
           "settings": {
           }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "1608aed9-4ddb-4f95-b20d-f14611af6985": {
+          "type": "rating",
+          "settings": {
+          }
+        },
+        "8fea9977-d5c0-4c37-97ea-3bee7f04cd98": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Collapsible row",
+            "icon": "clipboard",
+            "content": "<p>test<\/p>",
+            "page": ""
+          }
         }
       },
       "block_order": [
+        "vendor",
         "title",
         "price",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "description"
+        "description",
+        "share",
+        "1608aed9-4ddb-4f95-b20d-f14611af6985",
+        "8fea9977-d5c0-4c37-97ea-3bee7f04cd98"
       ],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "background-1",
-        "media_size": "medium",
+        "media_size": "large",
         "constrain_to_viewport": true,
-        "media_fit": "cover",
-        "gallery_layout": "thumbnail_slider",
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
         "media_position": "left",
         "image_zoom": "lightbox",
         "mobile_thumbnails": "hide",

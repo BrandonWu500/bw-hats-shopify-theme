@@ -1,12 +1,57 @@
 {
   "sections": {
-    "template": {
-      "type": "template-page",
+    "main": {
+      "type": "main-page",
       "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "d62cda0c-6f2e-488d-8f6a-bf422424ba7e": {
+      "type": "rich-text",
+      "blocks": {
+        "template--21614849229079__d62cda0c-6f2e-488d-8f6a-bf422424ba7e-button-1": {
+          "type": "button",
+          "settings": {
+            "button_label": "View our products",
+            "button_link": "shopify:\/\/collections\/all",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "template--21614849229079__d62cda0c-6f2e-488d-8f6a-bf422424ba7e-button-1"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "64744058-ce66-47f5-a37d-cd0f9e5444a7": {
+      "type": "custom-liquid",
+      "custom_css": [
+        ".our-story__cta {border-radius: 8px; background-color: #fed7aa; color: #475569; padding: 20px 24px; cursor: pointer; font-size: 20px; text-decoration: none;}",
+        ".our-story__cta:hover {background-color: #fdba74;}"
+      ],
+      "settings": {
+        "custom_liquid": "<div class=\"page-width page-width--narrow\">\n  <a\n    href=\"{{ routes.all_products_collection_url }}\"\n    class=\"our-story__cta\"\n  >\n    View our products\n  <\/a>\n<\/div>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     }
   },
   "order": [
-    "template"
+    "main",
+    "d62cda0c-6f2e-488d-8f6a-bf422424ba7e",
+    "64744058-ce66-47f5-a37d-cd0f9e5444a7"
   ]
 }
